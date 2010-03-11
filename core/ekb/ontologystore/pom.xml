@@ -16,14 +16,10 @@
    limitations under the License.
 
 -->
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-
-  <properties>
-    <componentName>servicemix-bean</componentName>
-  </properties>
 
   <parent>
     <artifactId>openengsb-parent</artifactId>
@@ -32,23 +28,20 @@
     <relativePath>../../..</relativePath>
   </parent>
 
-  <artifactId>openengsb-ekb-su</artifactId>
-  <name>openengsb-ekb-su</name>
-  <packaging>jbi-service-unit</packaging>
+  <artifactId>openengsb-core-ekb-ontologystore</artifactId>
+  <name>openengsb-core-ekb-ontologystore</name>
+  <packaging>jar</packaging>
 
   <description>
-    Engineering Knowledge Base used to transform messages into the right format.
+    This component provides ontology storage functionality as well as ontology versioning and lifecycle support.
   </description>
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.servicemix</groupId>
-      <artifactId>servicemix-bean</artifactId>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.servicemix</groupId>
-      <artifactId>servicemix-core</artifactId>
-    </dependency>
+
   </dependencies>
 
 </project>

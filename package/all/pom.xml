@@ -76,12 +76,6 @@
       <artifactId>openengsb-workflow-su</artifactId>
     </dependency>
 
-    <!-- Engineering Knowledge Base -->
-    <dependency>
-      <groupId>org.openengsb</groupId>
-      <artifactId>openengsb-ekb-su</artifactId>
-    </dependency>
-
     <!-- Engineering Data Base -->
     <dependency>
       <groupId>org.openengsb</groupId>

@@ -133,8 +133,7 @@
     <module>core/workflow/service-unit</module>
 
     <!-- Engineering Knowledge Base -->
-    <module>core/ekb/core</module>
-    <module>core/ekb/service-unit</module>
+    <module>core/ekb/ontologystore</module>
 
     <!-- Enterprise Data Base -->
     <module>features/edb/core</module>
@@ -763,12 +762,7 @@
       <!-- Engineering Knowledge Base -->
       <dependency>
         <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-ekb-core</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-ekb-su</artifactId>
+        <artifactId>openengsb-ekb-ontologystore</artifactId>
         <version>${pom.version}</version>
       </dependency>
 
