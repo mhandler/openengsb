@@ -6,14 +6,15 @@ import org.openengsb.ontologystore.core.OntologyDescriptor;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class FileOntologyDescriptor extends OntologyDescriptor {
 
     private File ontologyFile;
 
-    public FileOntologyDescriptor(String ontologyUri, File ontologyFile) {
-        super(ontologyUri);
+    FileOntologyDescriptor(OWLOntologyID ontologyId, File ontologyFile) {
+        super(ontologyId.getOntologyIRI(), ontologyId.getVersionIRI());
         this.ontologyFile = ontologyFile;
     }
 

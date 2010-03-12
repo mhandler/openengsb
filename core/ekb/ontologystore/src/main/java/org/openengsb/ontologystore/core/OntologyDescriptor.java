@@ -1,34 +1,25 @@
 package org.openengsb.ontologystore.core;
 
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public abstract class OntologyDescriptor {
 
-    private String ontologyUri;
+    private IRI ontologyIRI;
 
-    private int version = -1;
+    private IRI versionIRI;
 
-    public OntologyDescriptor(String ontologyUri) {
-        this.ontologyUri = ontologyUri;
+    public OntologyDescriptor(IRI ontologyIRI, IRI versionIRI) {
+        this.ontologyIRI = ontologyIRI;
+        this.versionIRI = versionIRI;
     }
 
-    public String getOntologyUri() {
-        return ontologyUri;
+    public IRI getOntologyIRI() {
+        return ontologyIRI;
     }
 
-    public int getVersion() {
-        return version;
-    }
-
-    void setVersion(int version) {
-        if (isVersionSet()) {
-            throw new IllegalStateException("Version already set");
-        }
-        this.version = version;
-    }
-
-    public boolean isVersionSet() {
-        return this.version != -1;
+    public IRI getVersionIRI() {
+        return versionIRI;
     }
 
     public abstract OWLOntology getOntology();
@@ -37,8 +28,8 @@ public abstract class OntologyDescriptor {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((ontologyUri == null) ? 0 : ontologyUri.hashCode());
-        result = prime * result + version;
+        result = prime * result + ((ontologyIRI == null) ? 0 : ontologyIRI.hashCode());
+        result = prime * result + ((versionIRI == null) ? 0 : versionIRI.hashCode());
         return result;
     }
 
@@ -51,14 +42,22 @@ public abstract class OntologyDescriptor {
         if (getClass() != obj.getClass())
             return false;
         OntologyDescriptor other = (OntologyDescriptor) obj;
-        if (ontologyUri == null) {
-            if (other.ontologyUri != null)
+        if (ontologyIRI == null) {
+            if (other.ontologyIRI != null)
                 return false;
-        } else if (!ontologyUri.equals(other.ontologyUri))
+        } else if (!ontologyIRI.equals(other.ontologyIRI))
             return false;
-        if (version != other.version)
+        if (versionIRI == null) {
+            if (other.versionIRI != null)
+                return false;
+        } else if (!versionIRI.equals(other.versionIRI))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "OntologyDescriptor [ontologyUri=" + ontologyIRI + ", version=" + versionIRI + "]";
     }
 
 }

@@ -22,8 +22,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>openengsb-parent</artifactId>
     <groupId>org.openengsb</groupId>
+    <artifactId>openengsb-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../../..</relativePath>
   </parent>
@@ -36,6 +36,17 @@
     This component provides ontology storage functionality as well as ontology versioning and lifecycle support.
   </description>
 
+  <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+      </testResource>
+    </testResources>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>org.openengsb</groupId>
@@ -45,6 +56,12 @@
     <dependency>
       <groupId>org.owlapi</groupId>
       <artifactId>owlapi</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 

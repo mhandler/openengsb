@@ -2,27 +2,17 @@ package org.openengsb.ontologystore.core;
 
 import java.util.Set;
 
-public abstract class OntologyStore {
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 
-    public abstract void addOntology(OntologyDescriptor ontology) throws OntologyStoreException;
+public interface OntologyStore {
 
-    public abstract void deleteOntology(OntologyDescriptor ontology) throws OntologyStoreException;
+    void addOntology(OWLOntology ontology) throws OntologyStoreException;
 
-    public abstract Set<OntologyDescriptor> getOntologyVersions(String ontologyUri);
+    void deleteOntology(OntologyDescriptor ontology) throws OntologyStoreException;
 
-    protected void setVersionNumber(OntologyDescriptor ontology) {
-        Set<OntologyDescriptor> versions = getOntologyVersions(ontology.getOntologyUri());
-        int versionNumber = getNextVersionNumber(versions);
-        ontology.setVersion(versionNumber);
-    }
+    Set<OntologyDescriptor> getOntologyVersions(IRI ontologyIRI);
 
-    private int getNextVersionNumber(Set<OntologyDescriptor> set) {
-        int max = 1;
-        for (OntologyDescriptor ontology : set) {
-            if (ontology.getVersion() >= max) {
-                max = ontology.getVersion() + 1;
-            }
-        }
-        return max;
-    }
+    OntologyDescriptor getOntology(IRI ontologyIRI, IRI versionIRI);
+
 }
