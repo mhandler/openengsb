@@ -16,16 +16,17 @@ import org.openengsb.ekb.core.messagetransformation.TransformationException;
  * specify transformer for the fields. As key always the name of the field in
  * the source class is used.
  * 
+ * @param <T> The target type
  */
-public class FieldCopyTransfomation implements Transformation {
+public class FieldCopyTransfomation<T> implements Transformation {
 
     private Map<String, String> fieldNameMapping = new HashMap<String, String>();
 
     private Map<String, Transformation> fieldTransformations = new HashMap<String, Transformation>();
 
-    private Class<?> targetClass;
+    private Class<T> targetClass;
 
-    public void setTargetClassToken(Class<?> targetClass) {
+    public void setTargetClassToken(Class<T> targetClass) {
         this.targetClass = targetClass;
     }
 
@@ -38,19 +39,19 @@ public class FieldCopyTransfomation implements Transformation {
     }
 
     @Override
-    public Object transform(Object input) throws TransformationException {
-        Object target = createInstance();
+    public T transform(Object input) throws TransformationException {
+        T target = createInstance();
         copyFields(input, target);
         return target;
 
     }
 
-    private Object createInstance() throws TransformationException {
+    private T createInstance() throws TransformationException {
         try {
-            Constructor<?> noArgConstructor = targetClass.getDeclaredConstructor();
+            Constructor<T> noArgConstructor = targetClass.getDeclaredConstructor();
             boolean accessible = noArgConstructor.isAccessible();
             noArgConstructor.setAccessible(true);
-            Object target = noArgConstructor.newInstance();
+            T target = noArgConstructor.newInstance();
             noArgConstructor.setAccessible(accessible);
             return target;
         } catch (Exception e) {

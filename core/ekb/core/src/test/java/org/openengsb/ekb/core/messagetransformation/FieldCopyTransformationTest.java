@@ -21,45 +21,45 @@ public class FieldCopyTransformationTest {
 
     @Test
     public void testDirectCopy() throws TransformationException {
-        FieldCopyTransfomation t = getTransformation(TestBeanB.class);
-        TestBeanB result = (TestBeanB) t.transform(testBeanA);
+        FieldCopyTransfomation<TestBeanB> t = getTransformation(TestBeanB.class);
+        TestBeanB result = t.transform(testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), result.getFoo());
     }
 
     @Test
     public void testFieldNameMapping() throws TransformationException {
-        FieldCopyTransfomation t = getTransformation(TestBeanC.class);
+        FieldCopyTransfomation<TestBeanC> t = getTransformation(TestBeanC.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
-        TestBeanC result = (TestBeanC) t.transform(testBeanA);
+        TestBeanC result = t.transform(testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), result.getBar());
     }
 
     @Test(expected = TransformationException.class)
     public void testFieldNameMappingFailure() throws TransformationException {
-        FieldCopyTransfomation t = getTransformation(TestBeanC.class);
+        FieldCopyTransfomation<TestBeanC> t = getTransformation(TestBeanC.class);
         t.transform(testBeanA);
     }
 
     @Test
     public void testFieldTransformation() throws TransformationException {
-        FieldCopyTransfomation t = getTransformation(TestBeanD.class);
+        FieldCopyTransfomation<TestBeanD> t = getTransformation(TestBeanD.class);
         t.setFieldTransformators(createTransfomations("foo", new StringToIntTransformation()));
-        TestBeanD result = (TestBeanD) t.transform(testBeanA);
+        TestBeanD result = t.transform(testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getFoo()));
     }
 
     @Test
     public void testFieldNameMappingAndTransformation() throws TransformationException {
-        FieldCopyTransfomation t = getTransformation(TestBeanE.class);
+        FieldCopyTransfomation<TestBeanE> t = getTransformation(TestBeanE.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
         t.setFieldTransformators(createTransfomations("foo", new StringToIntTransformation()));
-        TestBeanE result = (TestBeanE) t.transform(testBeanA);
+        TestBeanE result = t.transform(testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getBar()));
 
     }
 
-    private FieldCopyTransfomation getTransformation(Class<?> clazzToken) {
-        FieldCopyTransfomation t = new FieldCopyTransfomation();
+    private <T> FieldCopyTransfomation<T> getTransformation(Class<T> clazzToken) {
+        FieldCopyTransfomation<T> t = new FieldCopyTransfomation<T>();
         t.setTargetClassToken(clazzToken);
         return t;
     }

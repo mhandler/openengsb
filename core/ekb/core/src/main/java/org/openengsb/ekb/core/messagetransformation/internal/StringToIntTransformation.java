@@ -5,7 +5,7 @@ import org.openengsb.ekb.core.messagetransformation.TransformationException;
 
 public class StringToIntTransformation implements Transformation {
 
-    public int transform(String input) throws TransformationException {
+    public Integer transform(String input) throws TransformationException {
         try {
             return Integer.parseInt((String) input);
         } catch (Exception e) {
@@ -14,7 +14,7 @@ public class StringToIntTransformation implements Transformation {
     }
 
     @Override
-    public Object transform(Object input) throws TransformationException {
+    public Integer transform(Object input) throws TransformationException {
         return transform(String.valueOf(input));
     }
 
