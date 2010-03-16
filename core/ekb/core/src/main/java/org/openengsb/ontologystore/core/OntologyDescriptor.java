@@ -1,7 +1,8 @@
-package org.openengsb.ontologystore.core;
+package org.openengsb.ekb.core.ontologystore;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 public abstract class OntologyDescriptor {
 
@@ -20,6 +21,10 @@ public abstract class OntologyDescriptor {
 
     public IRI getVersionIRI() {
         return versionIRI;
+    }
+
+    public OWLOntologyID getOntologyID() {
+        return new OWLOntologyID(ontologyIRI, versionIRI);
     }
 
     public abstract OWLOntology getOntology();

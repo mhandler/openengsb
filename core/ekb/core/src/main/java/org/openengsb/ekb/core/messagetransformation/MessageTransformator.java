@@ -4,6 +4,7 @@ import org.openengsb.core.model.Event;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
+import org.openengsb.ekb.core.transformations.TransformationStore;
 
 public interface MessageTransformator {
 
@@ -11,10 +12,12 @@ public interface MessageTransformator {
 
     void setTargetOntology(OntologyDescriptor targetOntology);
 
-    MethodCall transformMethodCall(MethodCall methodCall);
+    void setTransformationStore(TransformationStore transformationStore);
 
-    ReturnValue transformReturnValue(ReturnValue returnValue);
+    MethodCall transformMethodCall(MethodCall methodCall) throws TransformationException;
 
-    Event transformEvent(Event event);
+    ReturnValue transformReturnValue(ReturnValue returnValue) throws TransformationException;
+
+    Event transformEvent(Event event) throws TransformationException;
 
 }
