@@ -1,13 +1,13 @@
-package org.openengsb.ontologystore.core.internal;
+package org.openengsb.ekb.core.ontologystore.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.openengsb.ontologystore.core.OntologyDescriptor;
-import org.openengsb.ontologystore.core.OntologyStore;
-import org.openengsb.ontologystore.core.OntologyStoreException;
+import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
+import org.openengsb.ekb.core.ontologystore.OntologyStore;
+import org.openengsb.ekb.core.ontologystore.OntologyStoreException;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 

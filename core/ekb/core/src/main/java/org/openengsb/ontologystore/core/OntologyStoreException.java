@@ -1,4 +1,4 @@
-package org.openengsb.ontologystore.core;
+package org.openengsb.ekb.core.ontologystore;
 
 public class OntologyStoreException extends Exception {
 

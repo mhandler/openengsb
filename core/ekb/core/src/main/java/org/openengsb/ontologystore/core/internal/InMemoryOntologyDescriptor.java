@@ -1,6 +1,6 @@
-package org.openengsb.ontologystore.core.internal;
+package org.openengsb.ekb.core.ontologystore.internal;
 
-import org.openengsb.ontologystore.core.OntologyDescriptor;
+import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 public class InMemoryOntologyDescriptor extends OntologyDescriptor {

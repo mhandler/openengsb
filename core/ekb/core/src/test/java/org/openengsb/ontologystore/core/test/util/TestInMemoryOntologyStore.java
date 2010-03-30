@@ -1,4 +1,4 @@
-package org.openengsb.ontologystore.core.test.util;
+package org.openengsb.ekb.core.ontologystore;
 
 import java.io.File;
 import java.util.Set;
@@ -6,15 +6,15 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openengsb.ontologystore.core.OntologyDescriptor;
-import org.openengsb.ontologystore.core.OntologyStore;
-import org.openengsb.ontologystore.core.OntologyStoreException;
-import org.openengsb.ontologystore.core.internal.InMemoryOntologyStore;
+import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
+import org.openengsb.ekb.core.ontologystore.OntologyStore;
+import org.openengsb.ekb.core.ontologystore.OntologyStoreException;
+import org.openengsb.ekb.core.ontologystore.internal.InMemoryOntologyStore;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-public class TestInMemoryOntologyStore {
+public class InMemoryOntologyStoreTest {
 
     private OntologyStore store;
 

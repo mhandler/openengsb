@@ -1,8 +1,8 @@
-package org.openengsb.ontologystore.core.internal;
+package org.openengsb.ekb.core.ontologystore.internal;
 
 import java.io.File;
 
-import org.openengsb.ontologystore.core.OntologyDescriptor;
+import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
