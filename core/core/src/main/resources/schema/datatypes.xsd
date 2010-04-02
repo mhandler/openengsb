@@ -67,7 +67,7 @@
       <xs:element name="domain" type="xs:string" />
       <xs:element name="name" type="xs:string" />
       <xs:element name="toolConnector" type="xs:string" nillable="true" />
-      <xs:element name="elements" type="XMLMapEntry" maxOccurs="unbounded" />
+      <xs:element name="elements" type="XMLStringKeyMapEntry" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
 
@@ -84,6 +84,13 @@
     <xs:sequence>
       <xs:element name="fieldName" type="xs:string" />
       <xs:element name="value" type="XMLMapable"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="XMLStringKeyMapEntry">
+    <xs:sequence>
+      <xs:element name="key" type="xs:string" />
+      <xs:element name="value" type="XMLMapable" />
     </xs:sequence>
   </xs:complexType>
 
@@ -116,6 +123,7 @@
     <xs:sequence>
       <xs:element name="type" type="xs:string" />
       <xs:element name="value" type="XMLMapable" />
+      <xs:element name="conceptIRI" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 

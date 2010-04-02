@@ -42,7 +42,7 @@
     <value style="element" name="name" get-method="getName" set-method="setName"/>
     <value style="element" name="toolConnector" get-method="getToolConnector" set-method="setToolConnector" usage="optional"/>
     <collection get-method="getElements" set-method="setElements" create-type="java.util.ArrayList">
-      <structure map-as="XMLMapEntry" name="elements"/>
+      <structure map-as="XMLStringKeyMapEntry" name="elements"/>
     </collection>
   </mapping>
   <mapping class="org.openengsb.core.xmlmapping.XMLEvent" name="XMLEvent">
@@ -56,6 +56,10 @@
   </mapping>
   <mapping abstract="true" type-name="XMLField" class="org.openengsb.core.xmlmapping.XMLField">
     <value style="element" name="fieldName" get-method="getFieldName" set-method="setFieldName"/>
+    <structure map-as="XMLMapable" get-method="getValue" set-method="setValue" name="value"/>
+  </mapping>
+  <mapping abstract="true" type-name="XMLStringKeyMapEntry" class="org.openengsb.core.xmlmapping.XMLStringKeyMapEntry">
+    <value style="element" name="key" get-method="getKey" set-method="setKey"/>
     <structure map-as="XMLMapable" get-method="getValue" set-method="setValue" name="value"/>
   </mapping>
   <mapping abstract="true" type-name="XMLMapEntry" class="org.openengsb.core.xmlmapping.XMLMapEntry">
@@ -75,6 +79,7 @@
   <mapping abstract="true" type-name="XMLTypedValue" class="org.openengsb.core.xmlmapping.XMLTypedValue">
     <value style="element" name="type" get-method="getType" set-method="setType"/>
     <structure map-as="XMLMapable" get-method="getValue" set-method="setValue" name="value"/>
+    <value style="element" name="conceptIRI" get-method="getConceptIRI" set-method="setConceptIRI"/>
   </mapping>
   <mapping abstract="true" type-name="XMLContextEntry" class="org.openengsb.core.xmlmapping.XMLContextEntry">
     <value style="element" name="key" get-method="getKey" set-method="setKey"/>

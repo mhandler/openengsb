@@ -18,6 +18,7 @@
 
 package org.openengsb.core.model;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -27,26 +28,45 @@ import org.openengsb.core.InvocationFailedException;
 @ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#ServiceCall")
 public class MethodCall {
     private final String methodName;
-    private final Object[] args;
-    private final Class<?>[] types;
+    private final Value[] arguments;
 
-    public MethodCall(String methodName, Object[] args, Class<?>[] types) {
+    public MethodCall(String methodName, Value[] arguments) {
         this.methodName = methodName;
-        this.args = args;
-        this.types = types;
+        this.arguments = arguments;
     }
 
     public MethodCall(Method method, Object[] args) {
-        this(method.getName(), args, method.getParameterTypes());
+        this(method.getName(), extractArguments(method, args));
+    }
+
+    private static Value[] extractArguments(Method method, Object[] args) {
+        Value[] arguments = new Value[args.length];
+        for (int i = 0; i < args.length; i++) {
+            arguments[i] = new Value(args[i], method.getParameterTypes()[i], getConceptIRI(method, i));
+        }
+        return arguments;
+    }
+
+    private static String getConceptIRI(Method method, int argIndex) {
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        Annotation[] argAnnotations = parameterAnnotations[argIndex];
+        for (Annotation annotation : argAnnotations) {
+            if (annotation instanceof ReturnValueConceptIRI) {
+                return ((ReturnValueConceptIRI) annotation).value();
+            }
+        }
+        throw new IllegalStateException("No conceptIRI found for parameter with index: " + argIndex + " of method: "
+                + method);
     }
 
     public ReturnValue invoke(Object instance) throws InvocationFailedException {
         try {
             Class<?> clazz = instance.getClass();
-            Method method = clazz.getMethod(methodName, types);
-            Object result = method.invoke(instance, args);
-
-            return new ReturnValue(result, method.getReturnType());
+            Method method = clazz.getMethod(methodName, getTypes());
+            Object result = method.invoke(instance, getArgValues());
+            ReturnValueConceptIRI annotation = method.getAnnotation(ReturnValueConceptIRI.class);
+            Value val = new Value(result, method.getReturnType(), annotation.value());
+            return new ReturnValue(val);
         } catch (SecurityException e) {
             throwException(e);
         } catch (NoSuchMethodException e) {
@@ -64,18 +84,31 @@ public class MethodCall {
 
     private void throwException(Throwable cause) throws InvocationFailedException {
         throw new InvocationFailedException(String.format("Invocation failed for method '%s' %s", methodName, Arrays
-                .toString(types)), cause);
+                .toString(getTypes())), cause);
     }
 
-    public Class<?>[] getTypes() {
+    private Class<?>[] getTypes() {
+        Class<?>[] types = new Class<?>[arguments.length];
+        for (int i = 0; i < types.length; i++) {
+            types[i] = arguments[i].getType();
+        }
         return types;
+    }
+
+    private Object[] getArgValues() {
+        Object[] values = new Object[arguments.length];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = arguments[i].getValue();
+        }
+        return values;
     }
 
     public String getMethodName() {
         return methodName;
     }
 
-    public Object[] getArgs() {
-        return args;
+    public Value[] getArguments() {
+        return arguments;
     }
+
 }

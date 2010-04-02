@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openengsb.core.model.MethodCall;
+import org.openengsb.core.model.Value;
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
@@ -17,66 +18,38 @@ public abstract class MethodCallTransformation implements Transformation {
         }
         MethodCall inCall = (MethodCall) input;
 
-        Argument args[] = copyArgs(inCall);
-        Argument[] dropped = dropArguments(inCall, args);
-        Argument[] transformed = transformArguments(inCall, map, dropped);
-        Argument[] added = addNewArguments(inCall, transformed);
+        Value[] dropped = dropArguments(inCall, inCall.getArguments());
+        Value[] transformed = transformArguments(inCall, map, dropped);
+        Value[] added = addNewArguments(inCall, transformed);
 
-        return createMethodCall(transformName(inCall), added);
+        return new MethodCall(transformName(inCall), added);
     }
 
-    private Argument[] dropArguments(MethodCall inCall, Argument[] args) {
-        List<Argument> result = new ArrayList<Argument>();
+    private Value[] dropArguments(MethodCall inCall, Value[] args) {
+        List<Value> result = new ArrayList<Value>();
         for (int i = 0; i < args.length; i++) {
             if (!dropArgument(i, inCall)) {
                 result.add(args[i]);
             }
         }
-        return result.toArray(new Argument[result.size()]);
+        return result.toArray(new Value[result.size()]);
     }
 
     protected abstract boolean dropArgument(int pos, MethodCall inCall);
 
-    private Argument[] transformArguments(MethodCall inCall, TransformationMap map, Argument[] args) {
+    private Value[] transformArguments(MethodCall inCall, TransformationMap map, Value[] args) {
         for (int i = 0; i < args.length; i++) {
-            Argument arg = args[i];
+            Value arg = args[i];
 
         }
         return null;
     }
 
-    private Argument[] addNewArguments(MethodCall inCall, Argument[] transformed) {
+    private Value[] addNewArguments(MethodCall inCall, Value[] transformed) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private MethodCall createMethodCall(String methodName, Argument[] arguments) {
-        Object[] args = new Object[arguments.length];
-        Class<?>[] types = new Class<?>[arguments.length];
-        for (int i = 0; i < arguments.length; i++) {
-            args[i] = arguments[i].value;
-            types[i] = arguments[i].type;
-        }
-        return new MethodCall(methodName, args, types);
-    }
-
-    private Argument[] copyArgs(MethodCall inCall) {
-        Argument[] args = new Argument[inCall.getArgs().length];
-        for (int i = 0; i < args.length; i++) {
-            args[i] = new Argument(inCall.getArgs()[i], inCall.getTypes()[i]);
-        }
-        return args;
-    }
-
     protected abstract String transformName(MethodCall inCall);
 
-    private class Argument {
-        private Object value;
-        private Class<?> type;
-
-        public Argument(Object value, Class<?> type) {
-            this.value = value;
-            this.type = type;
-        }
-    }
 }

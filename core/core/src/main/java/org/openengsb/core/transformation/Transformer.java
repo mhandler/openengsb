@@ -25,6 +25,7 @@ import java.util.List;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
+import org.openengsb.core.model.Value;
 import org.openengsb.core.xmlmapping.XMLEvent;
 import org.openengsb.core.xmlmapping.XMLMethodCall;
 import org.openengsb.core.xmlmapping.XMLReturnValue;
@@ -46,11 +47,13 @@ public class Transformer {
         ToXmlTypesTransformer transformer = new ToXmlTypesTransformer();
 
         List<XMLTypedValue> arguments = new ArrayList<XMLTypedValue>();
-        for (int i = 0; i < methodCall.getArgs().length; i++) {
-            Object o = methodCall.getArgs()[i];
+        for (int i = 0; i < methodCall.getArguments().length; i++) {
+            Value argument = methodCall.getArguments()[i];
+            Object o = argument.getValue();
             XMLTypedValue arg = new XMLTypedValue();
             arg.setValue(transformer.toMapable(o));
-            arg.setType(methodCall.getTypes()[i].getName());
+            arg.setType(argument.getType().getName());
+            arg.setConceptIRI(argument.getConceptIRI());
             arguments.add(arg);
         }
 
@@ -63,10 +66,12 @@ public class Transformer {
         ToXmlTypesTransformer transformer = new ToXmlTypesTransformer();
         XMLReturnValue xrv = new XMLReturnValue();
 
-        XMLTypedValue typedValue = new XMLTypedValue();
-        typedValue.setType(returnValue.getType().getName());
+        Value value = returnValue.getValue();
 
-        typedValue.setValue(transformer.toMapable(returnValue.getValue()));
+        XMLTypedValue typedValue = new XMLTypedValue();
+        typedValue.setType(value.getType().getName());
+        typedValue.setConceptIRI(value.getConceptIRI());
+        typedValue.setValue(transformer.toMapable(value));
 
         xrv.setValue(typedValue);
         return xml(xrv);
@@ -93,16 +98,15 @@ public class Transformer {
         FromXmlTypesTransformer transformer = new FromXmlTypesTransformer();
         XMLMethodCall xmc = serializer.deserialize(XMLMethodCall.class, new StringReader(xml));
 
-        List<Object> args = new ArrayList<Object>();
-        List<Class<?>> types = new ArrayList<Class<?>>();
+        List<Value> arguments = new ArrayList<Value>();
 
         for (XMLTypedValue arg : xmc.getArgs()) {
             Object o = transformer.toObject(arg.getValue());
-            args.add(o);
-            types.add(TransformerUtil.simpleGetClass(arg.getType()));
+            Value value = new Value(o, TransformerUtil.simpleGetClass(arg.getType()), arg.getConceptIRI());
+            arguments.add(value);
         }
 
-        return new MethodCall(xmc.getMethodName(), args.toArray(), types.toArray(new Class<?>[types.size()]));
+        return new MethodCall(xmc.getMethodName(), arguments.toArray(new Value[arguments.size()]));
     }
 
     public static ReturnValue toReturnValue(String xml) throws SerializationException {
@@ -116,7 +120,8 @@ public class Transformer {
         } else {
             simpleGetClass = TransformerUtil.simpleGetClass(typedValue.getType());
         }
-        return new ReturnValue(o, simpleGetClass);
+
+        return new ReturnValue(new Value(o, simpleGetClass, typedValue.getConceptIRI()));
     }
 
     public static Event toEvent(String xml) throws SerializationException {

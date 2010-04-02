@@ -13,7 +13,7 @@ import java.util.List;
  *     &lt;xs:element type="xs:string" name="domain"/>
  *     &lt;xs:element type="xs:string" name="name"/>
  *     &lt;xs:element type="xs:string" nillable="true" name="toolConnector"/>
- *     &lt;xs:element type="XMLMapEntry" name="elements" maxOccurs="unbounded"/>
+ *     &lt;xs:element type="XMLStringKeyMapEntry" name="elements" maxOccurs="unbounded"/>
  *   &lt;/xs:sequence>
  * &lt;/xs:complexType>
  * </pre>
@@ -24,7 +24,7 @@ public class XMLEvent
     private String domain;
     private String name;
     private String toolConnector;
-    private List<XMLMapEntry> elementList = new ArrayList<XMLMapEntry>();
+    private List<XMLStringKeyMapEntry> elementList = new ArrayList<XMLStringKeyMapEntry>();
 
     /** 
      * Get the 'className' element value.
@@ -103,7 +103,7 @@ public class XMLEvent
      * 
      * @return list
      */
-    public List<XMLMapEntry> getElements() {
+    public List<XMLStringKeyMapEntry> getElements() {
         return elementList;
     }
 
@@ -112,7 +112,7 @@ public class XMLEvent
      * 
      * @param list
      */
-    public void setElements(List<XMLMapEntry> list) {
+    public void setElements(List<XMLStringKeyMapEntry> list) {
         elementList = list;
     }
 }

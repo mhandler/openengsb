@@ -23,15 +23,7 @@ public class SimpleMessageTransformator extends AbstractMessageTransformator {
 
     @Override
     public ReturnValue transformReturnValue(ReturnValue returnValue) throws TransformationException {
-        Object value = returnValue.getValue();
-        Object newValue = handleConcept(value);
-
-        Class<?> clazz = void.class;
-        if (newValue != null) {
-            clazz = newValue.getClass();
-        }
-
-        return new ReturnValue(newValue, clazz);
+        return (ReturnValue) handleConcept(returnValue);
     }
 
     private Object handleConcept(Object concept) throws TransformationException {

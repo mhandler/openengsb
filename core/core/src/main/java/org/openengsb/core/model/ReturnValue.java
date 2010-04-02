@@ -19,19 +19,15 @@
 package org.openengsb.core.model;
 
 public class ReturnValue {
-    private final Object value;
-    private final Class<?> type;
 
-    public ReturnValue(Object value, Class<?> type) {
+    private final Value value;
+
+    public ReturnValue(Value value) {
         this.value = value;
-        this.type = type;
     }
 
-    public Object getValue() {
+    public Value getValue() {
         return value;
     }
 
-    public Class<?> getType() {
-        return type;
-    }
 }

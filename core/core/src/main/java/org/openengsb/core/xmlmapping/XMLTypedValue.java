@@ -8,6 +8,7 @@ package org.openengsb.core.xmlmapping;
  *   &lt;xs:sequence>
  *     &lt;xs:element type="xs:string" name="type"/>
  *     &lt;xs:element type="XMLMapable" name="value"/>
+ *     &lt;xs:element type="xs:string" name="conceptIRI"/>
  *   &lt;/xs:sequence>
  * &lt;/xs:complexType>
  * </pre>
@@ -16,6 +17,7 @@ public class XMLTypedValue
 {
     private String type;
     private XMLMapable value;
+    private String conceptIRI;
 
     /** 
      * Get the 'type' element value.
@@ -51,5 +53,23 @@ public class XMLTypedValue
      */
     public void setValue(XMLMapable value) {
         this.value = value;
+    }
+
+    /** 
+     * Get the 'conceptIRI' element value.
+     * 
+     * @return value
+     */
+    public String getConceptIRI() {
+        return conceptIRI;
+    }
+
+    /** 
+     * Set the 'conceptIRI' element value.
+     * 
+     * @param conceptIRI
+     */
+    public void setConceptIRI(String conceptIRI) {
+        this.conceptIRI = conceptIRI;
     }
 }
