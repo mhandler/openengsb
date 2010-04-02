@@ -8,6 +8,7 @@ import org.openengsb.core.model.Value;
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
+import org.semanticweb.owlapi.model.IRI;
 
 public abstract class MethodCallTransformation implements Transformation {
 
@@ -37,12 +38,24 @@ public abstract class MethodCallTransformation implements Transformation {
 
     protected abstract boolean dropArgument(int pos, MethodCall inCall);
 
-    private Value[] transformArguments(MethodCall inCall, TransformationMap map, Value[] args) {
+    private Value[] transformArguments(MethodCall inCall, TransformationMap map, Value[] args)
+            throws TransformationException {
         for (int i = 0; i < args.length; i++) {
             Value arg = args[i];
 
+            Object transformed = transform(map, arg.getConceptIRI(), arg.getValue());
+            // TODO create new argument object and find out target type and
+            // conceptIRI
         }
         return null;
+    }
+
+    private Object transform(TransformationMap map, String conceptIRI, Object value) throws TransformationException {
+        Transformation transformation = map.getTransformation(IRI.create(conceptIRI));
+        if (transformation == null) {
+            return value;
+        }
+        return transformation.transform(map, value);
     }
 
     private Value[] addNewArguments(MethodCall inCall, Value[] transformed) {
