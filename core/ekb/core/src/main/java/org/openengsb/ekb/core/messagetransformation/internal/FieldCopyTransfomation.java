@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
+import org.openengsb.ekb.core.messagetransformation.TransformationUtil;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * Copy the fields of a given object into the fields of another object. Per
@@ -22,8 +25,6 @@ public class FieldCopyTransfomation<T> implements Transformation {
 
     private Map<String, String> fieldNameMapping = new HashMap<String, String>();
 
-    private Map<String, Transformation> fieldTransformations = new HashMap<String, Transformation>();
-
     private Class<T> targetClass;
 
     public void setTargetClassToken(Class<T> targetClass) {
@@ -34,16 +35,11 @@ public class FieldCopyTransfomation<T> implements Transformation {
         this.fieldNameMapping = new HashMap<String, String>(fieldNameMapping);
     }
 
-    public void setFieldTransformators(Map<String, Transformation> fieldTransformations) {
-        this.fieldTransformations = fieldTransformations;
-    }
-
     @Override
-    public T transform(Object input) throws TransformationException {
+    public T transform(TransformationMap map, Object input) throws TransformationException {
         T target = createInstance();
-        copyFields(input, target);
+        copyFields(map, input, target);
         return target;
-
     }
 
     private T createInstance() throws TransformationException {
@@ -59,14 +55,14 @@ public class FieldCopyTransfomation<T> implements Transformation {
         }
     }
 
-    private void copyFields(Object input, Object target) throws TransformationException {
+    private void copyFields(TransformationMap map, Object input, Object target) throws TransformationException {
         Class<? extends Object> inputClass = input.getClass();
         for (Field f : inputClass.getDeclaredFields()) {
             String name = f.getName();
             if (fieldNameMapping.containsKey(name)) {
-                copyField(input, name, target, fieldNameMapping.get(name));
+                copyField(map, input, name, target, fieldNameMapping.get(name));
             } else if (getField(targetClass, name) != null) {
-                copyField(input, name, target, name);
+                copyField(map, input, name, target, name);
             } else {
                 throw new TransformationException("No mapping for field with name: " + name + " from class: "
                         + inputClass + ", which is not present in the target class: " + targetClass);
@@ -75,13 +71,14 @@ public class FieldCopyTransfomation<T> implements Transformation {
 
     }
 
-    private void copyField(Object source, String sourceFieldName, Object target, String targetFieldName)
-            throws TransformationException {
+    private void copyField(TransformationMap map, Object source, String sourceFieldName, Object target,
+            String targetFieldName) throws TransformationException {
         Field sourceField = getField(source.getClass(), sourceFieldName);
+        IRI iri = TransformationUtil.extractConceptIRI(sourceField);
         Field targetField = getField(targetClass, targetFieldName);
 
         Object value = getValue(source, sourceField);
-        value = transformValue(sourceFieldName, value);
+        value = transformValue(map, iri, value);
         setValue(target, targetField, value);
     }
 
@@ -106,10 +103,10 @@ public class FieldCopyTransfomation<T> implements Transformation {
         }
     }
 
-    private Object transformValue(String sourceFieldName, Object value) throws TransformationException {
-        Transformation t = fieldTransformations.get(sourceFieldName);
+    private Object transformValue(TransformationMap map, IRI iri, Object value) throws TransformationException {
+        Transformation t = map.getTransformation(iri);
         if (t != null) {
-            return t.transform(value);
+            return t.transform(map, value);
         }
         return value;
     }

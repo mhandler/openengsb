@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class Event extends Concept {
+@ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#Event")
+public class Event {
 
     private Map<String, Object> elements = new TreeMap<String, Object>(new EventKeyComparator());
 
@@ -35,19 +36,14 @@ public class Event extends Concept {
     private String toolConnector;
 
     public Event(String domain, String name) {
-        this();
         this.domain = domain;
         this.name = name;
     }
 
-    @Override
-    public String getConceptIRI() {
-        return "http://www.openengsb.org/ekb/event/" + domain + "/" + name;
-    }
-
+    @SuppressWarnings("unused")
     private Event() {
-        super("");
-        // used by segment transformation framework
+        // used by rpc framework
+        super();
     }
 
     public void setValue(String key, Object value) {

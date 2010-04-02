@@ -1,12 +1,12 @@
-package org.openengsb.ekb.core.transformations.internal;
+package org.openengsb.ekb.core.messagetransformation.transformationstore.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.openengsb.ekb.core.transformations.TransformationMap;
-import org.openengsb.ekb.core.transformations.TransformationStore;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationStore;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 public class InMemoryTransformationStore implements TransformationStore {

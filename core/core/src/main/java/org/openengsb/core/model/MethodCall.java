@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 import org.openengsb.core.InvocationFailedException;
 
-
+@ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#ServiceCall")
 public class MethodCall {
     private final String methodName;
     private final Object[] args;

@@ -1,10 +1,10 @@
-package org.openengsb.ekb.core.transformations.internal;
+package org.openengsb.ekb.core.messagetransformation.transformationstore.internal;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.openengsb.ekb.core.messagetransformation.Transformation;
-import org.openengsb.ekb.core.transformations.TransformationMap;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
 import org.semanticweb.owlapi.model.IRI;
 
 public class InMemoryTransformationMap implements TransformationMap {

@@ -1,4 +1,4 @@
-package org.openengsb.ekb.core.transformations;
+package org.openengsb.ekb.core.messagetransformation.transformationstore;
 
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.semanticweb.owlapi.model.IRI;

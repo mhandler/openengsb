@@ -7,22 +7,29 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openengsb.core.model.ConceptIRI;
 import org.openengsb.ekb.core.messagetransformation.internal.FieldCopyTransfomation;
 import org.openengsb.ekb.core.messagetransformation.internal.StringToIntTransformation;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.internal.InMemoryTransformationMap;
+import org.semanticweb.owlapi.model.IRI;
 
 public class FieldCopyTransformationTest {
 
     private TestBeanA testBeanA;
 
+    private TransformationMap map;
+
     @Before
     public void setUp() {
         testBeanA = new TestBeanA();
+        map = new InMemoryTransformationMap();
     }
 
     @Test
     public void testDirectCopy() throws TransformationException {
         FieldCopyTransfomation<TestBeanB> t = getTransformation(TestBeanB.class);
-        TestBeanB result = t.transform(testBeanA);
+        TestBeanB result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), result.getFoo());
     }
 
@@ -30,21 +37,21 @@ public class FieldCopyTransformationTest {
     public void testFieldNameMapping() throws TransformationException {
         FieldCopyTransfomation<TestBeanC> t = getTransformation(TestBeanC.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
-        TestBeanC result = t.transform(testBeanA);
+        TestBeanC result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), result.getBar());
     }
 
     @Test(expected = TransformationException.class)
     public void testFieldNameMappingFailure() throws TransformationException {
         FieldCopyTransfomation<TestBeanC> t = getTransformation(TestBeanC.class);
-        t.transform(testBeanA);
+        t.transform(map, testBeanA);
     }
 
     @Test
     public void testFieldTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanD> t = getTransformation(TestBeanD.class);
-        t.setFieldTransformators(createTransfomations("foo", new StringToIntTransformation()));
-        TestBeanD result = t.transform(testBeanA);
+        map.putTransformation(IRI.create("A_foo"), new StringToIntTransformation());
+        TestBeanD result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getFoo()));
     }
 
@@ -52,22 +59,15 @@ public class FieldCopyTransformationTest {
     public void testFieldNameMappingAndTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanE> t = getTransformation(TestBeanE.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
-        t.setFieldTransformators(createTransfomations("foo", new StringToIntTransformation()));
-        TestBeanE result = t.transform(testBeanA);
+        map.putTransformation(IRI.create("A_foo"), new StringToIntTransformation());
+        TestBeanE result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getBar()));
-
     }
 
     private <T> FieldCopyTransfomation<T> getTransformation(Class<T> clazzToken) {
         FieldCopyTransfomation<T> t = new FieldCopyTransfomation<T>();
         t.setTargetClassToken(clazzToken);
         return t;
-    }
-
-    private Map<String, Transformation> createTransfomations(String key, Transformation transformation) {
-        Map<String, Transformation> transformations = new HashMap<String, Transformation>();
-        transformations.put(key, transformation);
-        return transformations;
     }
 
     private Map<String, String> createFieldNameMapping(String key, String value) {
@@ -78,7 +78,10 @@ public class FieldCopyTransformationTest {
 
 }
 
+@ConceptIRI("A")
 class TestBeanA {
+
+    @ConceptIRI("A_foo")
     private String foo = "42";
 
     public String getFoo() {
@@ -86,8 +89,10 @@ class TestBeanA {
     }
 }
 
+@ConceptIRI("B")
 class TestBeanB {
 
+    @ConceptIRI("B_foo")
     private String foo;
 
     public String getFoo() {
@@ -95,7 +100,10 @@ class TestBeanB {
     }
 }
 
+@ConceptIRI("C")
 class TestBeanC {
+
+    @ConceptIRI("C_bar")
     private String bar;
 
     public String getBar() {
@@ -103,7 +111,10 @@ class TestBeanC {
     }
 }
 
+@ConceptIRI("D")
 class TestBeanD {
+
+    @ConceptIRI("D_foo")
     private int foo;
 
     public int getFoo() {
@@ -111,7 +122,10 @@ class TestBeanD {
     }
 }
 
+@ConceptIRI("E")
 class TestBeanE {
+
+    @ConceptIRI("E_bar")
     private int bar;
 
     public int getBar() {

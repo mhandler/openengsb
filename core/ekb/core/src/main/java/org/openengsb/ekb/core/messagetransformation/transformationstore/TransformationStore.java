@@ -1,4 +1,4 @@
-package org.openengsb.ekb.core.transformations;
+package org.openengsb.ekb.core.messagetransformation.transformationstore;
 
 import org.semanticweb.owlapi.model.OWLOntologyID;
 

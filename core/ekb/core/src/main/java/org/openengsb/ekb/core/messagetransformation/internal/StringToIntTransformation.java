@@ -2,6 +2,7 @@ package org.openengsb.ekb.core.messagetransformation.internal;
 
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
 
 public class StringToIntTransformation implements Transformation {
 
@@ -14,7 +15,7 @@ public class StringToIntTransformation implements Transformation {
     }
 
     @Override
-    public Integer transform(Object input) throws TransformationException {
+    public Integer transform(TransformationMap map, Object input) throws TransformationException {
         return transform(String.valueOf(input));
     }
 

@@ -3,8 +3,8 @@ package org.openengsb.ekb.core.messagetransformation;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationStore;
 import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
-import org.openengsb.ekb.core.transformations.TransformationStore;
 
 public interface MessageTransformator {
 
