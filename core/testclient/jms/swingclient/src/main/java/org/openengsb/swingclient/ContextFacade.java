@@ -80,7 +80,7 @@ public class ContextFacade {
             String xml = getMessage("getValue", new Object[] { pathAndKey }, String.class);
             String result = OpenEngSBClient.contextCall(xml);
             ReturnValue returnValue = Transformer.toReturnValue(result);
-            return (String) returnValue.getValue();
+            return (String) returnValue.getValue().getValue();
         } catch (SerializationException e) {
             throw new RuntimeException(e);
         } catch (JMSException e) {

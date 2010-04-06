@@ -37,6 +37,7 @@ import org.openengsb.core.xmlmapping.XMLMapable;
 import org.openengsb.core.xmlmapping.XMLMapableList;
 import org.openengsb.core.xmlmapping.XMLPrimitive;
 import org.openengsb.core.xmlmapping.XMLReference;
+import org.openengsb.core.xmlmapping.XMLStringKeyMapEntry;
 
 public class ToXmlTypesTransformer {
 
@@ -133,11 +134,11 @@ public class ToXmlTypesTransformer {
         xmlEvent.setName(event.getName());
         xmlEvent.setToolConnector(event.getToolConnector());
 
-        List<XMLMapEntry> elements = new ArrayList<XMLMapEntry>();
+        List<XMLStringKeyMapEntry> elements = new ArrayList<XMLStringKeyMapEntry>();
 
         for (String key : event.getKeys()) {
-            XMLMapEntry entry = new XMLMapEntry();
-            entry.setKey(toMapable(key));
+            XMLStringKeyMapEntry entry = new XMLStringKeyMapEntry();
+            entry.setKey(key);
             entry.setValue(toMapable(event.getValue(key)));
             elements.add(entry);
         }

@@ -33,6 +33,7 @@ import org.openengsb.core.xmlmapping.XMLField;
 import org.openengsb.core.xmlmapping.XMLMapEntry;
 import org.openengsb.core.xmlmapping.XMLMapable;
 import org.openengsb.core.xmlmapping.XMLPrimitive;
+import org.openengsb.core.xmlmapping.XMLStringKeyMapEntry;
 
 public class FromXmlTypesTransformer {
 
@@ -107,8 +108,8 @@ public class FromXmlTypesTransformer {
         }
         event.setToolConnector(xmlEvent.getToolConnector());
         references.put(id, event);
-        for (XMLMapEntry entry : xmlEvent.getElements()) {
-            event.setValue((String) toObject(entry.getKey()), toObject(entry.getValue()));
+        for (XMLStringKeyMapEntry entry : xmlEvent.getElements()) {
+            event.setValue(entry.getKey(), toObject(entry.getValue()));
         }
         return event;
     }

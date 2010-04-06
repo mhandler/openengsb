@@ -23,21 +23,27 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
+import org.openengsb.core.model.Value;
 
 public class MethodCallTest {
 
     @Test
     public void testCall() throws InvocationFailedException {
         Object[] args = new Object[] { "foo", 42, new Object() };
-        MethodCall methodCall = new MethodCall("set", args, new Class<?>[] { String.class, int.class, Object.class });
+
+        Value[] arguments = new Value[args.length];
+        for (int i = 0; i < arguments.length; i++) {
+            arguments[i] = new Value(args[i], args[i].getClass(), "testConcept" + i);
+        }
+        MethodCall methodCall = new MethodCall("set", arguments);
         Bean bean = new Bean();
         ReturnValue returnValue = methodCall.invoke(bean);
 
         Assert.assertEquals(args[0], bean.a);
         Assert.assertEquals(args[1], bean.b);
         Assert.assertEquals(args[2], bean.c);
-        Assert.assertEquals("success", returnValue.getValue());
-        Assert.assertEquals(String.class, returnValue.getType());
+        Assert.assertEquals("success", returnValue.getValue().getValue());
+        Assert.assertEquals(String.class, returnValue.getValue().getType());
     }
 
     public static class Bean {

@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.openengsb.core.ReturnValueTransformerTest.TestBeanArray;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.model.MethodCall;
+import org.openengsb.core.model.Value;
 import org.openengsb.core.transformation.Transformer;
 import org.openengsb.util.serialization.SerializationException;
 
@@ -35,7 +36,7 @@ public class MethodCallTransformerTest {
 
     @Test
     public void testNoArg() throws SerializationException {
-        MethodCall input = new MethodCall("getAllValues", new Object[] { "path" }, new Class<?>[] { String.class });
+        MethodCall input = getMethodCall("getAllValues", new Object[] { "path" }, new Class<?>[] { String.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);
@@ -43,9 +44,17 @@ public class MethodCallTransformerTest {
         check(input, output);
     }
 
+    private MethodCall getMethodCall(String methodName, Object[] args, Class<?>[] argTypes) {
+        Value[] arguments = new Value[args.length];
+        for (int i = 0; i < arguments.length; i++) {
+            arguments[i] = new Value(args[i], argTypes[i], "testConcept" + i);
+        }
+        return new MethodCall(methodName, arguments);
+    }
+
     @Test
     public void testPrimitive() throws SerializationException {
-        MethodCall input = new MethodCall("foo", new Object[] { 1, 42L, "hallo" }, new Class<?>[] { Integer.class,
+        MethodCall input = getMethodCall("foo", new Object[] { 1, 42L, "hallo" }, new Class<?>[] { Integer.class,
                 Long.class, String.class });
 
         String xml = Transformer.toXml(input);
@@ -64,14 +73,14 @@ public class MethodCallTransformerTest {
         stringList.add("42");
         stringList.add("43");
 
-        MethodCall input = new MethodCall("foo", new Object[] { intList, stringList }, new Class<?>[] { List.class,
+        MethodCall input = getMethodCall("foo", new Object[] { intList, stringList }, new Class<?>[] { List.class,
                 List.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);
 
-        Assert.assertEquals(intList, output.getArgs()[0]);
-        Assert.assertEquals(stringList, output.getArgs()[1]);
+        Assert.assertEquals(intList, output.getArguments()[0].getValue());
+        Assert.assertEquals(stringList, output.getArguments()[1].getValue());
     }
 
     @Test
@@ -80,7 +89,7 @@ public class MethodCallTransformerTest {
         TestBean beanB = new TestBean("testStringB", 3, beanA);
         beanA.setBean(beanB);
 
-        MethodCall input = new MethodCall("foo", new Object[] { 1, 42L, beanA }, new Class<?>[] { Integer.class,
+        MethodCall input = getMethodCall("foo", new Object[] { 1, 42L, beanA }, new Class<?>[] { Integer.class,
                 Long.class, TestBean.class });
 
         String xml = Transformer.toXml(input);
@@ -88,7 +97,7 @@ public class MethodCallTransformerTest {
 
         check(input, output);
 
-        TestBean tbA = (TestBean) output.getArgs()[2];
+        TestBean tbA = (TestBean) output.getArguments()[2].getValue();
         TestBean tbB = tbA.getBean();
 
         Assert.assertTrue(tbA == tbB.getBean());
@@ -99,7 +108,7 @@ public class MethodCallTransformerTest {
         TestBean beanA = new TestBean("bar", 42, null);
         beanA.setBean(beanA);
 
-        MethodCall input = new MethodCall("foo", new Object[] { 1, 42L, beanA }, new Class<?>[] { Integer.class,
+        MethodCall input = getMethodCall("foo", new Object[] { 1, 42L, beanA }, new Class<?>[] { Integer.class,
                 Long.class, TestBean.class });
 
         String xml = Transformer.toXml(input);
@@ -107,7 +116,7 @@ public class MethodCallTransformerTest {
 
         check(input, output);
 
-        TestBean tbA = (TestBean) output.getArgs()[2];
+        TestBean tbA = (TestBean) output.getArguments()[2].getValue();
         TestBean tbB = tbA.getBean();
 
         Assert.assertTrue(tbA == tbB.getBean());
@@ -118,13 +127,13 @@ public class MethodCallTransformerTest {
         TestBeanList testBean = new TestBeanList();
         testBean.addTestData();
 
-        MethodCall input = new MethodCall("foo", new Object[] { 1, 42L, testBean }, new Class<?>[] { Integer.class,
+        MethodCall input = getMethodCall("foo", new Object[] { 1, 42L, testBean }, new Class<?>[] { Integer.class,
                 Long.class, TestBeanList.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);
 
-        TestBeanList tbList = (TestBeanList) output.getArgs()[2];
+        TestBeanList tbList = (TestBeanList) output.getArguments()[2].getValue();
         TestBean tbA = tbList.getTestBeanList().get(0);
         TestBean tbB = tbList.getTestBeanList().get(1);
 
@@ -136,7 +145,7 @@ public class MethodCallTransformerTest {
         TestBeanList2 testBean = new TestBeanList2();
         testBean.addTestData();
 
-        MethodCall input = new MethodCall("foo", new Object[] { 1, 42L, testBean }, new Class<?>[] { Integer.class,
+        MethodCall input = getMethodCall("foo", new Object[] { 1, 42L, testBean }, new Class<?>[] { Integer.class,
                 Long.class, TestBeanList2.class });
 
         String xml = Transformer.toXml(input);
@@ -144,7 +153,7 @@ public class MethodCallTransformerTest {
 
         check(input, output);
 
-        TestBeanList2 tbArray = (TestBeanList2) output.getArgs()[2];
+        TestBeanList2 tbArray = (TestBeanList2) output.getArguments()[2].getValue();
         List<String> list = tbArray.getList();
         List<String> list2 = tbArray.getList2();
 
@@ -156,7 +165,7 @@ public class MethodCallTransformerTest {
         TestBeanArray testBean = new TestBeanArray();
         testBean.addTestData();
 
-        MethodCall input = new MethodCall("foo", new Object[] { new Integer(42), new Byte("42"), new Short((short) 42),
+        MethodCall input = getMethodCall("foo", new Object[] { new Integer(42), new Byte("42"), new Short((short) 42),
                 new Long(42L), new Float(42.42), new Double(42.42), new Boolean(true) }, new Class<?>[] {
                 Integer.class, Byte.class, Short.class, Long.class, Float.class, Double.class, Boolean.class });
 
@@ -170,7 +179,7 @@ public class MethodCallTransformerTest {
     public void testEvent() throws Exception {
         Event event = new Event("domain", "name");
 
-        MethodCall input = new MethodCall("foo", new Object[] { event }, new Class<?>[] { Event.class });
+        MethodCall input = getMethodCall("foo", new Object[] { event }, new Class<?>[] { Event.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);
@@ -183,24 +192,21 @@ public class MethodCallTransformerTest {
     public void testEventList() throws Exception {
         List<Event> events = Arrays.asList(new Event("domain", "name"));
 
-        MethodCall input = new MethodCall("foo", new Object[] { events }, new Class<?>[] { List.class });
+        MethodCall input = getMethodCall("foo", new Object[] { events }, new Class<?>[] { List.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);
 
-        List<Event> outEvents = (List<Event>) output.getArgs()[0];
+        List<Event> outEvents = (List<Event>) output.getArguments()[0].getValue();
         Assert.assertEquals(events, outEvents);
     }
 
     private void check(MethodCall expected, MethodCall actual) {
         Assert.assertEquals(expected.getMethodName(), actual.getMethodName());
-        Assert.assertEquals(expected.getArgs().length, actual.getArgs().length);
-        Assert.assertEquals(expected.getTypes().length, actual.getTypes().length);
-        Assert.assertEquals(actual.getArgs().length, actual.getTypes().length);
+        Assert.assertEquals(expected.getArguments().length, actual.getArguments().length);
 
-        for (int i = 0; i < expected.getArgs().length; i++) {
-            Assert.assertEquals(expected.getTypes()[i], actual.getTypes()[i]);
-            Assert.assertEquals(expected.getArgs()[i], actual.getArgs()[i]);
+        for (int i = 0; i < expected.getArguments().length; i++) {
+            Assert.assertEquals(expected.getArguments()[i], actual.getArguments()[i]);
         }
     }
 

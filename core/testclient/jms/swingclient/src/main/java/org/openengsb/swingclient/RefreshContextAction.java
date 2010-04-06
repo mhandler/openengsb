@@ -45,7 +45,7 @@ public class RefreshContextAction implements ActionListener {
         try {
             String result = OpenEngSBClient.contextCall(getMessage());
             ReturnValue returnValue = Transformer.toReturnValue(result);
-            Context context = (Context) returnValue.getValue();
+            Context context = (Context) returnValue.getValue().getValue();
             panel.tree.updateTree(context);
         } catch (JMSException e) {
             throw new RuntimeException(e);

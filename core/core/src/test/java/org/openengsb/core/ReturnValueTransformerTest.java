@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openengsb.core.model.ReturnValue;
+import org.openengsb.core.model.Value;
 import org.openengsb.core.transformation.Transformer;
 import org.openengsb.util.serialization.SerializationException;
 
@@ -32,7 +33,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testVoid() throws SerializationException {
-        ReturnValue input = new ReturnValue(null, void.class);
+        ReturnValue input = new ReturnValue(new Value(null, void.class, "testConcept"));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -42,7 +43,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testPrimitive() throws SerializationException {
-        ReturnValue input = new ReturnValue("success", String.class);
+        ReturnValue input = new ReturnValue(new Value("success", String.class, "testConcept"));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -53,7 +54,7 @@ public class ReturnValueTransformerTest {
     @Test
     public void testBean() throws SerializationException {
         TestBean testBean = new TestBean("foo", 42, null);
-        ReturnValue input = new ReturnValue(testBean, TestBean.class);
+        ReturnValue input = new ReturnValue(new Value(testBean, TestBean.class, "testConcept"));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -66,14 +67,14 @@ public class ReturnValueTransformerTest {
         TestBean testBeanA = new TestBean("foo", 42, null);
         TestBean testBeanB = new TestBean("bar", 44, testBeanA);
         testBeanA.setBean(testBeanB);
-        ReturnValue input = new ReturnValue(testBeanB, TestBean.class);
+        ReturnValue input = new ReturnValue(new Value(testBeanB, TestBean.class, "testConcept"));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
 
         check(input, output);
 
-        TestBean beanB = ((TestBean) output.getValue());
+        TestBean beanB = ((TestBean) output.getValue().getValue());
         TestBean beanA = beanB.getBean();
 
         Assert.assertTrue(beanB == beanA.getBean());
@@ -84,14 +85,14 @@ public class ReturnValueTransformerTest {
     public void testList() throws SerializationException {
         List<String> inList = Arrays.asList("1", "2", "3");
 
-        ReturnValue input = new ReturnValue(inList, inList.getClass());
+        ReturnValue input = new ReturnValue(new Value(inList, inList.getClass(), "testList"));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
 
-        List<String> outList = (List<String>) output.getValue();
+        List<String> outList = (List<String>) output.getValue().getValue();
 
-        Assert.assertEquals(input.getType(), output.getType());
+        Assert.assertEquals(input.getValue().getType(), output.getValue().getType());
         Assert.assertEquals(inList.size(), outList.size());
 
         for (int i = 0; i < inList.size(); i++) {
@@ -100,8 +101,8 @@ public class ReturnValueTransformerTest {
     }
 
     private void check(ReturnValue expected, ReturnValue actual) {
-        Assert.assertEquals(expected.getType(), actual.getType());
-        Assert.assertEquals(expected.getValue(), actual.getValue());
+        Assert.assertEquals(expected.getValue().getType(), actual.getValue().getType());
+        Assert.assertEquals(expected.getValue().getValue(), actual.getValue().getValue());
     }
 
     public static class TestBean {
