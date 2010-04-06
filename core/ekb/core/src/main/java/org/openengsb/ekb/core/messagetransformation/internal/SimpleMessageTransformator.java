@@ -33,8 +33,7 @@ public class SimpleMessageTransformator extends AbstractMessageTransformator {
             clazz = newValue.getClass();
         }
 
-        // TODO find out target conceptIRI
-        return new ReturnValue(new Value(newValue, clazz, null));
+        return new ReturnValue(new Value(newValue, clazz, getTargetIRI(value, getTransformationMap(), iri)));
     }
 
     private Object handleConcept(Object concept) throws TransformationException {
@@ -54,6 +53,16 @@ public class SimpleMessageTransformator extends AbstractMessageTransformator {
         }
 
         return transformation.transform(map, concept);
+    }
+
+    private String getTargetIRI(Object concept, TransformationMap map, IRI iri) throws TransformationException {
+        Transformation transformation = map.getTransformation(iri);
+
+        if (transformation == null) {
+            return iri.toString();
+        }
+
+        return transformation.getTargetConceptIRI(map, concept).toString();
     }
 
 }

@@ -82,4 +82,15 @@ public abstract class EventTransformation implements Transformation {
         this.elementKeyMapping = elementKeyMapping;
     }
 
+    @Override
+    public IRI getTargetConceptIRI(TransformationMap map, Object input) {
+        Class<?> clazz = getTargetEventClass((Event) input);
+        return TransformationUtil.extractConceptIRI(clazz);
+    }
+
+    @Override
+    public Class<?> getTargetType(TransformationMap map, Object input) {
+        return getTargetEventClass((Event) input);
+    }
+
 }

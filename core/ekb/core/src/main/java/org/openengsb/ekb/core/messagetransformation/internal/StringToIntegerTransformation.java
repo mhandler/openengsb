@@ -3,8 +3,11 @@ package org.openengsb.ekb.core.messagetransformation.internal;
 import org.openengsb.ekb.core.messagetransformation.Transformation;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
+import org.semanticweb.owlapi.model.IRI;
 
-public class StringToIntTransformation implements Transformation {
+public class StringToIntegerTransformation implements Transformation {
+
+    private IRI targetConceptIRI;
 
     public Integer transform(String input) throws TransformationException {
         try {
@@ -17,6 +20,20 @@ public class StringToIntTransformation implements Transformation {
     @Override
     public Integer transform(TransformationMap map, Object input) throws TransformationException {
         return transform(String.valueOf(input));
+    }
+
+    @Override
+    public IRI getTargetConceptIRI(TransformationMap map, Object input) {
+        return this.targetConceptIRI;
+    }
+
+    public void setTargetConceptIRI(IRI targetConceptIRI) {
+        this.targetConceptIRI = targetConceptIRI;
+    }
+
+    @Override
+    public Class<?> getTargetType(TransformationMap map, Object input) {
+        return Integer.class;
     }
 
 }

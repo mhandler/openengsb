@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.core.model.ConceptIRI;
 import org.openengsb.ekb.core.messagetransformation.internal.FieldCopyTransfomation;
-import org.openengsb.ekb.core.messagetransformation.internal.StringToIntTransformation;
+import org.openengsb.ekb.core.messagetransformation.internal.StringToIntegerTransformation;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationMap;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.internal.InMemoryTransformationMap;
 import org.semanticweb.owlapi.model.IRI;
@@ -50,7 +50,7 @@ public class FieldCopyTransformationTest {
     @Test
     public void testFieldTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanD> t = getTransformation(TestBeanD.class);
-        map.putTransformation(IRI.create("A_foo"), new StringToIntTransformation());
+        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation());
         TestBeanD result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getFoo()));
     }
@@ -59,7 +59,7 @@ public class FieldCopyTransformationTest {
     public void testFieldNameMappingAndTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanE> t = getTransformation(TestBeanE.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
-        map.putTransformation(IRI.create("A_foo"), new StringToIntTransformation());
+        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation());
         TestBeanE result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getBar()));
     }

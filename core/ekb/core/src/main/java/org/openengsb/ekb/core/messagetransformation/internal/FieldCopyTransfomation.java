@@ -27,6 +27,8 @@ public class FieldCopyTransfomation<T> implements Transformation {
 
     private Class<T> targetClass;
 
+    private IRI targetConceptIRI;
+
     public void setTargetClassToken(Class<T> targetClass) {
         this.targetClass = targetClass;
     }
@@ -122,4 +124,20 @@ public class FieldCopyTransfomation<T> implements Transformation {
         }
     }
 
+    @Override
+    public IRI getTargetConceptIRI(TransformationMap map, Object input) {
+        if (this.targetConceptIRI == null) {
+            return TransformationUtil.extractConceptIRI(targetClass);
+        }
+        return this.targetConceptIRI;
+    }
+
+    public void setTargetConceptIRI(IRI targetConceptIRI) {
+        this.targetConceptIRI = targetConceptIRI;
+    }
+
+    @Override
+    public Class<?> getTargetType(TransformationMap map, Object input) {
+        return targetClass;
+    }
 }

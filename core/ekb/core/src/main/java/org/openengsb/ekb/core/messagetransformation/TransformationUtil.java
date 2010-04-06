@@ -24,6 +24,10 @@ public class TransformationUtil {
 
     public static IRI extractConceptIRI(Object obj) {
         Class<? extends Object> clazz = obj.getClass();
+        return extractConceptIRI(clazz);
+    }
+
+    public static IRI extractConceptIRI(Class<?> clazz) {
         ConceptIRI iriAnnotation = clazz.getAnnotation(ConceptIRI.class);
         if (iriAnnotation == null) {
             throw new IllegalStateException("Missing ConceptIRI annotation on object of type: " + clazz);
