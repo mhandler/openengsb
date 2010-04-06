@@ -50,7 +50,7 @@ public class FieldCopyTransformationTest {
     @Test
     public void testFieldTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanD> t = getTransformation(TestBeanD.class);
-        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation());
+        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation(IRI.create("foo_Integer")));
         TestBeanD result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getFoo()));
     }
@@ -59,7 +59,7 @@ public class FieldCopyTransformationTest {
     public void testFieldNameMappingAndTransformation() throws TransformationException {
         FieldCopyTransfomation<TestBeanE> t = getTransformation(TestBeanE.class);
         t.setFieldNameMapping(createFieldNameMapping("foo", "bar"));
-        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation());
+        map.putTransformation(IRI.create("A_foo"), new StringToIntegerTransformation(IRI.create("foo_Integer")));
         TestBeanE result = t.transform(map, testBeanA);
         Assert.assertEquals(testBeanA.getFoo(), String.valueOf(result.getBar()));
     }

@@ -9,6 +9,10 @@ public class StringToIntegerTransformation implements Transformation {
 
     private IRI targetConceptIRI;
 
+    public StringToIntegerTransformation(IRI targetConceptIRI) {
+        this.targetConceptIRI = targetConceptIRI;
+    }
+
     public Integer transform(String input) throws TransformationException {
         try {
             return Integer.parseInt((String) input);
@@ -25,10 +29,6 @@ public class StringToIntegerTransformation implements Transformation {
     @Override
     public IRI getTargetConceptIRI(TransformationMap map, Object input) {
         return this.targetConceptIRI;
-    }
-
-    public void setTargetConceptIRI(IRI targetConceptIRI) {
-        this.targetConceptIRI = targetConceptIRI;
     }
 
     @Override
