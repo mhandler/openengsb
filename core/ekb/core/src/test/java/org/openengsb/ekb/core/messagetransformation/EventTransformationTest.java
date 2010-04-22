@@ -6,6 +6,7 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openengsb.core.model.ConceptIRI;
 import org.openengsb.core.model.Event;
@@ -70,6 +71,7 @@ public class EventTransformationTest {
         Assert.assertNotNull(result.getValue("bar"));
     }
 
+    @Ignore("Currently no exception is thrown due to compatibility with old un-annotated interfaces and events")
     @Test(expected = IllegalStateException.class)
     public void testEventWithPrimitivesWithoutGetter() throws TransformationException {
         testEventA.setValue("foo", "test");

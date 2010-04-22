@@ -7,8 +7,8 @@ package org.openengsb.core.xmlmapping;
  * &lt;xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="XMLTypedValue">
  *   &lt;xs:sequence>
  *     &lt;xs:element type="xs:string" name="type"/>
- *     &lt;xs:element type="XMLMapable" name="value"/>
  *     &lt;xs:element type="xs:string" name="conceptIRI"/>
+ *     &lt;xs:element type="XMLMappable" name="value"/>
  *   &lt;/xs:sequence>
  * &lt;/xs:complexType>
  * </pre>
@@ -16,8 +16,8 @@ package org.openengsb.core.xmlmapping;
 public class XMLTypedValue
 {
     private String type;
-    private XMLMapable value;
     private String conceptIRI;
+    private XMLMappable value;
 
     /** 
      * Get the 'type' element value.
@@ -38,24 +38,6 @@ public class XMLTypedValue
     }
 
     /** 
-     * Get the 'value' element value.
-     * 
-     * @return value
-     */
-    public XMLMapable getValue() {
-        return value;
-    }
-
-    /** 
-     * Set the 'value' element value.
-     * 
-     * @param value
-     */
-    public void setValue(XMLMapable value) {
-        this.value = value;
-    }
-
-    /** 
      * Get the 'conceptIRI' element value.
      * 
      * @return value
@@ -71,5 +53,23 @@ public class XMLTypedValue
      */
     public void setConceptIRI(String conceptIRI) {
         this.conceptIRI = conceptIRI;
+    }
+
+    /** 
+     * Get the 'value' element value.
+     * 
+     * @return value
+     */
+    public XMLMappable getValue() {
+        return value;
+    }
+
+    /** 
+     * Set the 'value' element value.
+     * 
+     * @param value
+     */
+    public void setValue(XMLMappable value) {
+        this.value = value;
     }
 }

@@ -16,24 +16,24 @@
    limitations under the License.
 
 -->
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>openengsb-parent</artifactId>
     <groupId>org.openengsb</groupId>
+    <artifactId>openengsb-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>openengsb-package-test</artifactId>
-  <name>openengsb-package-test</name>
+  <artifactId>openengsb-package-contextTestComponents</artifactId>
+    <name>openengsb-package-contextTestComponents</name>
   <packaging>jbi-service-assembly</packaging>
 
   <description>
-    OpenEngSB service assembly used to deploy the test component to the OpenEngSB.
+    The package contains some packages to test the correct
+    registration/unregistration of their contexts.
   </description>
 
   <build>
@@ -50,10 +50,16 @@
   </build>
 
   <dependencies>
+    <!-- Issues -->
     <dependency>
       <groupId>org.openengsb</groupId>
-      <artifactId>openengsb-test-jms-su</artifactId>
+      <artifactId>openengsb-domains-issues-implementation-su</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-domains-issues-trac-su</artifactId>
+    </dependency>
+    
   </dependencies>
 
 </project>

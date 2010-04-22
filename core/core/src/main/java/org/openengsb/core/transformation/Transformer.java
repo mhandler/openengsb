@@ -51,7 +51,7 @@ public class Transformer {
             Value argument = methodCall.getArguments()[i];
             Object o = argument.getValue();
             XMLTypedValue arg = new XMLTypedValue();
-            arg.setValue(transformer.toMapable(o));
+            arg.setValue(transformer.toMappable(o));
             arg.setType(argument.getType().getName());
             arg.setConceptIRI(argument.getConceptIRI());
             arguments.add(arg);
@@ -71,7 +71,7 @@ public class Transformer {
         XMLTypedValue typedValue = new XMLTypedValue();
         typedValue.setType(value.getType().getName());
         typedValue.setConceptIRI(value.getConceptIRI());
-        typedValue.setValue(transformer.toMapable(value));
+        typedValue.setValue(transformer.toMappable(value.getValue()));
 
         xrv.setValue(typedValue);
         return xml(xrv);

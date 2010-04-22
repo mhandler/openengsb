@@ -31,7 +31,7 @@ import org.openengsb.core.xmlmapping.XMLContext;
 import org.openengsb.core.xmlmapping.XMLEvent;
 import org.openengsb.core.xmlmapping.XMLField;
 import org.openengsb.core.xmlmapping.XMLMapEntry;
-import org.openengsb.core.xmlmapping.XMLMapable;
+import org.openengsb.core.xmlmapping.XMLMappable;
 import org.openengsb.core.xmlmapping.XMLPrimitive;
 import org.openengsb.core.xmlmapping.XMLStringKeyMapEntry;
 
@@ -39,23 +39,23 @@ public class FromXmlTypesTransformer {
 
     private Map<String, Object> references = new HashMap<String, Object>();
 
-    Object toObject(XMLMapable mapable) {
-        if (mapable.ifNull()) {
+    Object toObject(XMLMappable mappable) {
+        if (mappable.ifNull()) {
             return null;
-        } else if (mapable.ifPrimitive()) {
-            return toObject(mapable.getPrimitive(), mapable.getId());
-        } else if (mapable.ifList()) {
-            return toList(mapable.getList().getMapables(), mapable.getId());
-        } else if (mapable.ifMap()) {
-            return toMap(mapable.getMap().getMapEntries(), mapable.getId());
-        } else if (mapable.ifEvent()) {
-            return toEvent(mapable.getEvent(), mapable.getId());
-        } else if (mapable.ifContext()) {
-            return toContext(mapable.getContext(), mapable.getId());
-        } else if (mapable.ifBean()) {
-            return toBean(mapable.getBean(), mapable.getId());
-        } else if (mapable.ifReference()) {
-            return references.get(mapable.getReference().getId());
+        } else if (mappable.ifPrimitive()) {
+            return toObject(mappable.getPrimitive(), mappable.getId());
+        } else if (mappable.ifList()) {
+            return toList(mappable.getList().getMappables(), mappable.getId());
+        } else if (mappable.ifMap()) {
+            return toMap(mappable.getMap().getMapEntries(), mappable.getId());
+        } else if (mappable.ifEvent()) {
+            return toEvent(mappable.getEvent(), mappable.getId());
+        } else if (mappable.ifContext()) {
+            return toContext(mappable.getContext(), mappable.getId());
+        } else if (mappable.ifBean()) {
+            return toBean(mappable.getBean(), mappable.getId());
+        } else if (mappable.ifReference()) {
+            return references.get(mappable.getReference().getId());
         }
         throw new IllegalStateException();
     }
@@ -77,10 +77,10 @@ public class FromXmlTypesTransformer {
         return result;
     }
 
-    private Object toList(List<XMLMapable> list, String id) {
+    private Object toList(List<XMLMappable> list, String id) {
         List<Object> result = new ArrayList<Object>(list.size());
         references.put(id, result);
-        for (XMLMapable m : list) {
+        for (XMLMappable m : list) {
             result.add(toObject(m));
         }
         return result;
@@ -117,7 +117,7 @@ public class FromXmlTypesTransformer {
     private Object toObject(XMLPrimitive primitive, String string) {
         Object result = null;
         if (primitive.ifBoolean()) {
-            result = primitive.isBoolean();
+            result = primitive.getBoolean();
         } else if (primitive.ifByte()) {
             result = primitive.getByte();
         } else if (primitive.ifDouble()) {

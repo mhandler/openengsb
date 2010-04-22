@@ -21,8 +21,10 @@ package org.openengsb.core;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.openengsb.core.model.ConceptIRI;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
+import org.openengsb.core.model.ReturnValueConceptIRI;
 import org.openengsb.core.model.Value;
 
 public class MethodCallTest {
@@ -48,10 +50,12 @@ public class MethodCallTest {
 
     public static class Bean {
         private String a;
-        private int b;
+        private Integer b;
         private Object c;
 
-        public String set(String a, int b, Object c) {
+        @ReturnValueConceptIRI("testReturnValue")
+        public String set(@ConceptIRI("testArg1") String a, @ConceptIRI("testArg2") Integer b,
+                @ConceptIRI("testArg3") Object c) {
             this.a = a;
             this.b = b;
             this.c = c;

@@ -20,26 +20,26 @@
 
   <xs:complexType name="XMLPrimitive">
     <xs:choice>
-      <xs:element name="string" type="xs:string" />
-      <xs:element name="float" type="xs:float" />
-      <xs:element name="double" type="xs:double" />
-      <xs:element name="boolean" type="xs:boolean" />
-      <xs:element name="int" type="xs:int" />
-      <xs:element name="long" type="xs:long" />
-      <xs:element name="short" type="xs:short" />
-      <xs:element name="byte" type="xs:byte" />
-      <xs:element name="base64Binary" type="xs:base64Binary" />
+      <xs:element name="string" type="xs:string" nillable="true" />
+      <xs:element name="float" type="xs:float" nillable="true" />
+      <xs:element name="double" type="xs:double" nillable="true" />
+      <xs:element name="boolean" type="xs:boolean" nillable="true" />
+      <xs:element name="int" type="xs:int" nillable="true" />
+      <xs:element name="long" type="xs:long" nillable="true" />
+      <xs:element name="short" type="xs:short" nillable="true" />
+      <xs:element name="byte" type="xs:byte" nillable="true" />
+      <xs:element name="base64Binary" type="xs:base64Binary" nillable="true" />
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="XMLMapable">
+  <xs:complexType name="XMLMappable">
     <xs:sequence>
       <xs:choice>
         <xs:element name="null" type="xs:string" />
         <xs:element name="reference" type="XMLReference" />
         <xs:element name="primitive" type="XMLPrimitive" />
         <xs:element name="bean" type="XMLBean" />
-        <xs:element name="list" type="XMLMapableList" />
+        <xs:element name="list" type="XMLMappableList" />
         <xs:element name="event" type="XMLEvent" />
         <xs:element name="map" type="XMLMapEntryList" />
         <xs:element name="context" type="XMLContext" />
@@ -49,9 +49,9 @@
     <xs:attribute name="domainConcept" type="xs:string" />
   </xs:complexType>
 
-  <xs:complexType name="XMLMapableList">
+  <xs:complexType name="XMLMappableList">
     <xs:sequence>
-      <xs:element name="mapable" type="XMLMapable" maxOccurs="unbounded" />
+      <xs:element name="mappable" type="XMLMappable" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
 
@@ -83,21 +83,21 @@
   <xs:complexType name="XMLField">
     <xs:sequence>
       <xs:element name="fieldName" type="xs:string" />
-      <xs:element name="value" type="XMLMapable"/>
+      <xs:element name="value" type="XMLMappable"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="XMLStringKeyMapEntry">
     <xs:sequence>
       <xs:element name="key" type="xs:string" />
-      <xs:element name="value" type="XMLMapable" />
+      <xs:element name="value" type="XMLMappable" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="XMLMapEntry">
     <xs:sequence>
-      <xs:element name="key" type="XMLMapable" />
-      <xs:element name="value" type="XMLMapable" />
+      <xs:element name="key" type="XMLMappable" />
+      <xs:element name="value" type="XMLMappable" />
     </xs:sequence>
   </xs:complexType>
 
@@ -122,8 +122,8 @@
   <xs:complexType  name="XMLTypedValue">
     <xs:sequence>
       <xs:element name="type" type="xs:string" />
-      <xs:element name="value" type="XMLMapable" />
       <xs:element name="conceptIRI" type="xs:string" />
+      <xs:element name="value" type="XMLMappable" />
     </xs:sequence>
   </xs:complexType>
 

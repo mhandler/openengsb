@@ -30,7 +30,11 @@ public class TransformationUtil {
     public static IRI extractConceptIRI(Class<?> clazz) {
         ConceptIRI iriAnnotation = clazz.getAnnotation(ConceptIRI.class);
         if (iriAnnotation == null) {
-            throw new IllegalStateException("Missing ConceptIRI annotation on object of type: " + clazz);
+            // throw new
+            // IllegalStateException("Missing ConceptIRI annotation on object of type: "
+            // + clazz);
+            // TODO throw exception
+            return IRI.create("http://openengsb.org/null-concept");
         }
         String iri = iriAnnotation.value();
         return IRI.create(iri);
@@ -39,7 +43,11 @@ public class TransformationUtil {
     public static IRI extractConceptIRI(Field field) {
         ConceptIRI iriAnnotation = field.getAnnotation(ConceptIRI.class);
         if (iriAnnotation == null) {
-            throw new IllegalStateException("Missing ConceptIRI annotation on field of type: " + field);
+            // TODO throw exception
+            return IRI.create("http://openengsb.org/null-concept");
+            // throw new
+            // IllegalStateException("Missing ConceptIRI annotation on field of type: "
+            // + field);
         }
         String iri = iriAnnotation.value();
         return IRI.create(iri);

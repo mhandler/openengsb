@@ -4,14 +4,14 @@ package org.openengsb.core.xmlmapping;
 /** 
  * Schema fragment(s) for this class:
  * <pre>
- * &lt;xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="XMLMapable">
+ * &lt;xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="XMLMappable">
  *   &lt;xs:sequence>
  *     &lt;xs:choice>
  *       &lt;xs:element type="xs:string" name="null"/>
  *       &lt;xs:element type="XMLReference" name="reference"/>
  *       &lt;xs:element type="XMLPrimitive" name="primitive"/>
  *       &lt;xs:element type="XMLBean" name="bean"/>
- *       &lt;xs:element type="XMLMapableList" name="list"/>
+ *       &lt;xs:element type="XMLMappableList" name="list"/>
  *       &lt;xs:element type="XMLEvent" name="event"/>
  *       &lt;xs:element type="XMLMapEntryList" name="map"/>
  *       &lt;xs:element type="XMLContext" name="context"/>
@@ -22,7 +22,7 @@ package org.openengsb.core.xmlmapping;
  * &lt;/xs:complexType>
  * </pre>
  */
-public class XMLMapable
+public class XMLMappable
 {
     private int choiceSelect = -1;
     private static final int NULL_CHOICE = 0;
@@ -37,7 +37,7 @@ public class XMLMapable
     private XMLReference reference;
     private XMLPrimitive primitive;
     private XMLBean bean;
-    private XMLMapableList list;
+    private XMLMappableList list;
     private XMLEvent event;
     private XMLMapEntryList map;
     private XMLContext context;
@@ -186,7 +186,7 @@ public class XMLMapable
      * 
      * @return value
      */
-    public XMLMapableList getList() {
+    public XMLMappableList getList() {
         return list;
     }
 
@@ -195,7 +195,7 @@ public class XMLMapable
      * 
      * @param list
      */
-    public void setList(XMLMapableList list) {
+    public void setList(XMLMappableList list) {
         setChoiceSelect(LIST_CHOICE);
         this.list = list;
     }

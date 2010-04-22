@@ -30,12 +30,13 @@
     <jdk.version>1.6</jdk.version>
     <servicemix.tools.version>4.0</servicemix.tools.version>
     <servicemix.version>3.3.1</servicemix.version>
-    <servicemix.subprojects.version>2009.01</servicemix.subprojects.version>
+    <servicemix.subprojects.version>2010.01</servicemix.subprojects.version>
+    <servicemix-specs-version>1.3.0</servicemix-specs-version>
     <slf4j.version>1.5.8</slf4j.version>
     <svnkit.version>1.3.0</svnkit.version>
     <lucene.version>2.4.1</lucene.version>
     <activemq.version>5.2.0</activemq.version>
-    <jgit.version>0.5.0</jgit.version>
+    <jgit.version>0.7.1</jgit.version>
     <log4j.version>1.2.14</log4j.version>
     <cglib.version>2.2</cglib.version>
     <xbean.version>3.5</xbean.version>
@@ -61,8 +62,11 @@
     <jetty.version>6.1.20</jetty.version>
     <ode.version>1.3.4.preview1</ode.version>
     <exist.version>1.4.0</exist.version>
-    <twitter4j.version>[2.1,)</twitter4j.version>
     <owlapi.version>3.0.0</owlapi.version>
+    <smack.version>3.1.0</smack.version>
+    <twitter4j.version>2.1.0</twitter4j.version>
+
+    <!-- Servicemix Library Versions -->
     <axis.version>1.3</axis.version>
     <backport.util.concurrent.version>2.2</backport.util.concurrent.version>
     <classworlds.version>1.1</classworlds.version>
@@ -87,13 +91,14 @@
     <rome.version>0.5</rome.version>
     <woden.version>1.0.0M6</woden.version>
     <xml.apis.version>1.3.04</xml.apis.version>
+    <geronimo-spec-j2ee.version>1.4-rc4</geronimo-spec-j2ee.version>
 
     <!-- Plugin Version -->
     <docbkx.version>2.0.7</docbkx.version>
     <maven.plugin.release.version>2.0-beta-9</maven.plugin.release.version>
     <maven.plugin.surefire>2.4.3</maven.plugin.surefire>
     <maven.plugin.assembly.version>2.2-beta-5</maven.plugin.assembly.version>
-    <servicemix.jbi.maven.version>4.1</servicemix.jbi.maven.version>
+    <servicemix.jbi.maven.version>4.4-SNAPSHOT</servicemix.jbi.maven.version>
   </properties>
 
   <groupId>org.openengsb</groupId>
@@ -177,6 +182,7 @@
     <module>domains/scm/subversion/service-engine</module>
     <module>domains/notification/email/service-engine</module>
     <module>domains/notification/twitter/service-engine</module>
+    <module>domains/notification/xmpp/service-engine</module>
     <module>domains/report/plaintext/service-engine</module>
     <module>domains/issues/trac/service-engine</module>
     <module>domains/test/maven/service-engine</module>
@@ -191,6 +197,7 @@
     <module>domains/scm/subversion/jms/service-unit</module>
     <module>domains/notification/email/service-unit</module>
     <module>domains/notification/twitter/service-unit</module>
+    <module>domains/notification/xmpp/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
 
@@ -198,7 +205,6 @@
     <module>package/all</module>
     <module>package/essential</module>
     <module>package/assembly</module>
-    <module>package/test</module>
 
     <!-- Config -->
     <module>core/config/jbi</module>
@@ -481,6 +487,9 @@
         <artifactId>jbi-maven-plugin</artifactId>
 	<extensions>true</extensions>
 	<version>${servicemix.jbi.maven.version}</version>
+        <configuration>
+          <jndiPath>/karaf-root</jndiPath>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jibx</groupId>
@@ -815,7 +824,7 @@
         <artifactId>openengsb-domains-notification-implementation-su</artifactId>
         <version>${pom.version}</version>
       </dependency>
-
+      
       <!-- Report Domain -->
       <dependency>
         <groupId>org.openengsb</groupId>
@@ -941,6 +950,16 @@
       </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-notification-xmpp-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-notification-xmpp-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-report-plaintext-su</artifactId>
         <version>${pom.version}</version>
       </dependency>
@@ -1032,11 +1051,6 @@
         <artifactId>openengsb-package-embedded</artifactId>
         <version>${pom.version}</version>
       </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-package-test</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
 
 
       <!-- WebApp Modules -->
@@ -1062,6 +1076,13 @@
         <groupId>org.apache.servicemix</groupId>
         <artifactId>servicemix-core</artifactId>
         <version>${servicemix.version}</version>
+        <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.apache.servicemix.specs</groupId>
+        <artifactId>org.apache.servicemix.specs.jbi-api-1.0</artifactId>
+        <version>${servicemix-specs-version}</version>
         <scope>provided</scope>
       </dependency>
 
@@ -1191,8 +1212,8 @@
 
       <!-- JGit Version -->
       <dependency>
-        <groupId>org.spearce</groupId>
-        <artifactId>jgit</artifactId>
+        <groupId>org.eclipse.jgit</groupId>
+        <artifactId>org.eclipse.jgit</artifactId>
         <version>${jgit.version}</version>
       </dependency>
 
@@ -1413,6 +1434,8 @@
         <version>${jetty.version}</version>
         <type>zip</type>
       </dependency>
+     
+      <!-- Twitter -->
       <dependency>
         <groupId>org.twitter4j</groupId>
         <artifactId>twitter4j-core</artifactId>
@@ -1426,8 +1449,40 @@
         <version>${owlapi.version}</version>
       </dependency>
 
+      <!-- OpenFire XMPP -->
+      <dependency>
+        <groupId>jivesoftware</groupId>
+        <artifactId>smack</artifactId>
+        <version>${smack.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jivesoftware</groupId>
+        <artifactId>smackx</artifactId>
+        <version>${smack.version}</version>
+      </dependency>      
+
+      <dependency>
+        <groupId>geronimo-spec</groupId>
+        <artifactId>geronimo-spec-j2ee</artifactId>
+        <version>${geronimo-spec-j2ee.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots</id>
+      <name>apache snapshot repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+         <enabled>false</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
 
   <repositories>
     <repository>
@@ -1451,6 +1506,17 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </repository>
+    <repository>
+      <id>apache.snapshots</id>
+      <name>apache snapshot repository</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
 
