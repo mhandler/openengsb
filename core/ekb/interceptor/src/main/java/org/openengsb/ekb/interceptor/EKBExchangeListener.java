@@ -1,10 +1,10 @@
-package org.openengsb.ekb.core.messageinterceptor;
+package org.openengsb.ekb.interceptor;
 
 import org.apache.servicemix.nmr.api.Exchange;
 import org.apache.servicemix.nmr.api.event.ExchangeListener;
 import org.apache.servicemix.nmr.api.internal.InternalExchange;
 
-public class MessageInterceptor implements ExchangeListener {
+public class EKBExchangeListener implements ExchangeListener {
 
     @Override
     public void exchangeDelivered(Exchange exchange) {
@@ -22,11 +22,11 @@ public class MessageInterceptor implements ExchangeListener {
             InternalExchange iex = (InternalExchange) exchange;
             internalExchangeSent(iex);
         }
-        System.out.println("MessageInterceptor - Exchange sent - not an internal exchange");
+        System.out.println("EKBExchangeListener - Exchange sent - not an internal exchange");
     }
 
     private void internalExchangeSent(InternalExchange iex) {
-        System.out.println("MessageInterceptor - Exchange sent - destination id: " + iex.getDestination().getId());
+        System.out.println("EKBExchangeListener - Exchange sent - destination id: " + iex.getDestination().getId());
     }
 
 }

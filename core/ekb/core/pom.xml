@@ -28,8 +28,8 @@
     <relativePath>../../..</relativePath>
   </parent>
 
-  <artifactId>openengsb-core-ekb-core</artifactId>
-  <name>openengsb-core-ekb-core</name>
+  <artifactId>openengsb-ekb-core</artifactId>
+  <name>openengsb-ekb-core</name>
   <packaging>jar</packaging>
 
   <description>

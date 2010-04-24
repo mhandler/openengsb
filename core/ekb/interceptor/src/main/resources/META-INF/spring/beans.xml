@@ -30,11 +30,11 @@
        ">
 
   <!-- Custome Exchange Listener -->
-  <bean id="CustomExchangeListener" class="org.apache.servicemix.nmr.examples.interceptors.exchange.CustomExchangeListener">
+  <bean id="EKBExchangeListener" class="org.openengsb.ekb.interceptor.EKBExchangeListener">
   </bean>
 
   <!-- Exchange Listener -->
-  <osgi:service ref="CustomExchangeListener"> 
+  <osgi:service ref="EKBExchangeListener"> 
       <osgi:interfaces>
           <value>org.apache.servicemix.nmr.api.event.ExchangeListener</value>
           <value>org.apache.servicemix.nmr.api.event.Listener</value>
