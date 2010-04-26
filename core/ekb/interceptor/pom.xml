@@ -63,6 +63,7 @@
               org.apache.servicemix.nmr.api.event,
               org.apache.servicemix.nmr.api.internal,
               javax.xml.namespace,
+              javax.xml.transform,
               org.apache.servicemix.jbi.jaxp
             </Import-Package>
             <Private-Package>org.openengsb.ekb.interceptor</Private-Package>
