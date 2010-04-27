@@ -1,5 +1,10 @@
 package org.openengsb.ekb.interceptor;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.servicemix.nmr.api.Exchange;
 import org.apache.servicemix.nmr.api.Status;
 import org.apache.servicemix.nmr.api.event.ExchangeListener;
@@ -8,6 +13,14 @@ import org.apache.servicemix.nmr.api.internal.InternalExchange;
 public class EKBExchangeListener implements ExchangeListener {
 
     private TransformationConnector transformationConnector;
+
+    private Set<QName> blackList;
+
+    public EKBExchangeListener() {
+        transformationConnector = new TransformationConnector();
+        blackList = new HashSet<QName>();
+        blackList.add(transformationConnector.getEKBService());
+    }
 
     @Override
     public void exchangeDelivered(Exchange exchange) {
@@ -34,11 +47,19 @@ public class EKBExchangeListener implements ExchangeListener {
         if (iex.getStatus() != Status.Active) {
             return;
         }
+        if (isOnBlackList(iex)) {
+            return;
+        }
         if (transformationConnector.isInCall(iex)) {
             transformationConnector.handleInCall(iex);
         } else {
             transformationConnector.handleReturnCall(iex);
         }
+    }
+
+    private boolean isOnBlackList(InternalExchange iex) {
+        QName targetService = iex.getProperty("javax.jbi.ServiceName", QName.class);
+        return blackList.contains(targetService);
     }
 
 }

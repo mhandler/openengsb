@@ -86,7 +86,7 @@ public class TransformationConnector {
         return new MessageProperties(contextId, correlationId, workflowId, workflowInstanceId);
     }
 
-    private QName getEKBService() {
+    QName getEKBService() {
         return new QName("urn:openengsb:ekb", "ekbService");
     }
 

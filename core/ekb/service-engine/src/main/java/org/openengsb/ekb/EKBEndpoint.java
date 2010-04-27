@@ -17,19 +17,18 @@
  */
 package org.openengsb.ekb;
 
-import org.openengsb.core.MessageProperties;
 import org.openengsb.contextcommon.ContextHelper;
+import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.LinkingEndpoint;
-import org.openengsb.ekb.core.EKB;
+import org.openengsb.ekb.api.EKB;
 
 /**
- * @org.apache.xbean.XBean element="ekbEndpoint"
- *                         description="EKB Endpoint"
+ * @org.apache.xbean.XBean element="ekbEndpoint" description="EKB Endpoint"
  */
 public class EKBEndpoint extends LinkingEndpoint<EKB> {
 
     @Override
     protected EKB getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
-      return null;
+        return null;
     }
 }

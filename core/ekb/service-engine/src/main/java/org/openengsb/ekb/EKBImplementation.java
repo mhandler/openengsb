@@ -6,7 +6,7 @@ import org.openengsb.core.model.Event;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.core.transformation.Transformer;
-import org.openengsb.ekb.core.EKB;
+import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.core.messagetransformation.MessageTransformator;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.internal.SimpleMessageTransformator;
