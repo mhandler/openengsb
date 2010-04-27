@@ -38,6 +38,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-ekb-api</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.servicemix.nmr</groupId>
       <artifactId>org.apache.servicemix.nmr.api</artifactId>
       <version>1.0.0</version>
@@ -64,7 +74,13 @@
               org.apache.servicemix.nmr.api.internal,
               javax.xml.namespace,
               javax.xml.transform,
-              org.apache.servicemix.jbi.jaxp
+              org.apache.servicemix.jbi.jaxp,
+              javax.jbi.messaging,
+              org.openengsb.core,
+              org.openengsb.core.model,
+              org.openengsb.core.transformation,
+              org.openengsb.util.serialization,
+              org.openengsb.ekb.api
             </Import-Package>
             <Private-Package>org.openengsb.ekb.interceptor</Private-Package>
           </instructions>

@@ -141,6 +141,7 @@
     <module>core/ekb/interceptor</module>
     <module>core/ekb/service-engine</module>
     <module>core/ekb/service-unit</module>
+    <module>core/ekb/api</module>
 
     <!-- Enterprise Data Base -->
     <module>features/edb/core</module>
@@ -774,6 +775,11 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-ekb-core</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-ekb-api</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>

@@ -21,8 +21,10 @@ import java.lang.reflect.Method;
 
 import javax.jbi.messaging.ExchangeStatus;
 import javax.jbi.messaging.InOut;
+import javax.jbi.messaging.MessagingException;
 import javax.jbi.messaging.NormalizedMessage;
 import javax.xml.namespace.QName;
+import javax.xml.transform.TransformerException;
 
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
 import org.apache.servicemix.jbi.jaxp.StringSource;
@@ -30,6 +32,7 @@ import org.openengsb.core.endpoints.OpenEngSBEndpoint;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.core.transformation.Transformer;
+import org.openengsb.util.serialization.SerializationException;
 
 public class MethodCallHelper {
 
@@ -38,34 +41,40 @@ public class MethodCallHelper {
         Object[] arguments = checkArgs(args);
         try {
             InOut inout = endpoint.getExchangeFactory().createInOutExchange();
-            inout.setService(service);
-            inout.setOperation(new QName("methodcall"));
-
-            NormalizedMessage msg = inout.createMessage();
-            inout.setInMessage(msg);
-
-            msgProperties.applyToMessage(msg);
-            MethodCall call = new MethodCall(method, arguments);
-
-            String xml = Transformer.toXml(call);
-
-            msg.setContent(new StringSource(xml));
-
+            createInMessage(service, method, msgProperties, arguments, inout);
             endpoint.sendSync(inout);
-
             checkFailure(inout, method);
-
-            NormalizedMessage outMessage = inout.getOutMessage();
-            String outXml = new SourceTransformer().toString(outMessage.getContent());
-
-            ReturnValue returnValue = Transformer.toReturnValue(outXml);
-
-            return returnValue.getValue().getValue();
+            return handleOutMessage(inout);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Object handleOutMessage(InOut inout) throws TransformerException, SerializationException {
+        NormalizedMessage outMessage = inout.getOutMessage();
+        String outXml = new SourceTransformer().toString(outMessage.getContent());
+
+        ReturnValue returnValue = Transformer.toReturnValue(outXml);
+
+        return returnValue.getValue().getValue();
+    }
+
+    private static void createInMessage(QName service, Method method, MessageProperties msgProperties,
+            Object[] arguments, InOut inout) throws MessagingException, SerializationException {
+        inout.setService(service);
+        inout.setOperation(new QName("methodcall"));
+
+        NormalizedMessage msg = inout.createMessage();
+        inout.setInMessage(msg);
+
+        msgProperties.applyToMessage(msg);
+        MethodCall call = new MethodCall(method, arguments);
+
+        String xml = Transformer.toXml(call);
+
+        msg.setContent(new StringSource(xml));
     }
 
     private static void checkFailure(InOut inout, Method method) {

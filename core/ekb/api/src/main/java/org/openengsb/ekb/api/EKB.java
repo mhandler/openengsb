@@ -1,4 +1,4 @@
-package org.openengsb.ekb.core;
+package org.openengsb.ekb.api;
 
 import javax.xml.namespace.QName;
 
