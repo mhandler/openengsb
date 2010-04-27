@@ -139,6 +139,8 @@
     <!-- Engineering Knowledge Base -->
     <module>core/ekb/core</module>
     <module>core/ekb/interceptor</module>
+    <module>core/ekb/service-engine</module>
+    <module>core/ekb/service-unit</module>
 
     <!-- Enterprise Data Base -->
     <module>features/edb/core</module>
@@ -778,6 +780,16 @@
        <groupId>org.openengsb</groupId>
        <artifactId>openengsb-ekb-interceptor</artifactId>
        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-ekb-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-ekb-su</artifactId>
+        <version>${pom.version}</version>
       </dependency>
 
       <!-- Enterprise Data Base -->
