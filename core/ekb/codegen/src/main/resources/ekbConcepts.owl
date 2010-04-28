@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.openengsb.org/ekb/ekbConcepts.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.openengsb.org/ekb/ekbConcepts.owl"
+     versionIRI="http://www.openengsb.org/ekb/ekbConcepts/1.0">
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#CreateIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DeleteIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Event"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Issue"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IssueId"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IssueService"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MainConcept"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisCreateIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisDeleteIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisIssue"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisIssueId"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisIssueService"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MantisUpdateIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PrimitiveConceptWrapper"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Service"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#UpdateIssueServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasArgument"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasId"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasReturnValue"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasServiceCall"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasDomain"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasName"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasPrimitiveValue"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasServiceName"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasToolConnector"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#CreateIssueServiceCall"/>
+        <Class IRI="#ServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CreateIssueServiceCall"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasArgument"/>
+            <Class IRI="#Issue"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DeleteIssueServiceCall"/>
+        <Class IRI="#ServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Event"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Event"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasDomain"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Event"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasName"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Event"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasToolConnector"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Issue"/>
+        <Class IRI="#MainConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Issue"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasId"/>
+            <Class IRI="#IssueId"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IssueId"/>
+        <Class IRI="#PrimitiveConceptWrapper"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IssueService"/>
+        <Class IRI="#Service"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisCreateIssueServiceCall"/>
+        <Class IRI="#CreateIssueServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisDeleteIssueServiceCall"/>
+        <Class IRI="#DeleteIssueServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssue"/>
+        <Class IRI="#Issue"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssue"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasId"/>
+            <Class IRI="#MantisIssueId"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssueId"/>
+        <Class IRI="#IssueId"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssueService"/>
+        <Class IRI="#IssueService"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisUpdateIssueServiceCall"/>
+        <Class IRI="#UpdateIssueServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Service"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#ServiceCall"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ServiceCall"/>
+        <Class abbreviatedIRI=":Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ServiceCall"/>
+        <ObjectExactCardinality cardinality="1">
+            <ObjectProperty IRI="#hasReturnValue"/>
+        </ObjectExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ServiceCall"/>
+        <DataExactCardinality cardinality="1">
+            <DataProperty IRI="#hasServiceName"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataExactCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#UpdateIssueServiceCall"/>
+        <Class IRI="#ServiceCall"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#UpdateIssueServiceCall"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasArgument"/>
+            <Class IRI="#Issue"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasArgument"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasId"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasReturnValue"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasServiceCall"/>
+        <ObjectProperty abbreviatedIRI=":topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasArgument"/>
+        <Class IRI="#ServiceCall"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasReturnValue"/>
+        <Class IRI="#ServiceCall"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasServiceCall"/>
+        <Class IRI="#Service"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasServiceCall"/>
+        <Class IRI="#ServiceCall"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasDomain"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasName"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasPrimitiveValue"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasServiceName"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasToolConnector"/>
+        <DataProperty abbreviatedIRI=":topDataProperty"/>
+    </SubDataPropertyOf>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasDomain"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasName"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasServiceName"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasToolConnector"/>
+        <Datatype abbreviatedIRI="xsd:string"/>
+    </DataPropertyRange>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1413) http://owlapi.sourceforge.net -->
+

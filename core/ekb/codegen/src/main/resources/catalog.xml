@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog id="file:/C:/Users/Michi/Programme/cygwin/home/Michi/workspaces/openengsb/core/ekb/codegen/src/main/resources/" prefer="public" xml:base="file:/C:/Users/Michi/Programme/cygwin/home/Michi/workspaces/openengsb/core/ekb/codegen/src/main/resources/" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri name="http://www.openengsb.org/ekb/ekbConcepts.owl" uri="ekbConcepts.owl"/>
+    <uri id="Imports Wizard Entry" name="file:/C:/Users/Michi/Programme/cygwin/home/Michi/workspaces/openengsb/core/ekb/codegen/src/main/resources/issueDomain.owl" uri="file:/C:/Users/Michi/Programme/cygwin/home/Michi/workspaces/openengsb/core/ekb/codegen/src/main/resources/ekbConcepts.owl"/>
+</catalog>
