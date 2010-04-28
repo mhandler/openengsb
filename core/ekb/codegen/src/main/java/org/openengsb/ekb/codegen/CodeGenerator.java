@@ -1,6 +1,8 @@
 package org.openengsb.ekb.codegen;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Set;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -17,9 +19,14 @@ public class CodeGenerator {
 
     private static OWLOntology ontology;
 
+    private static StringWriter sw = new StringWriter();
+
+    private static PrintWriter out = new PrintWriter(sw);
+
     public static void main(String[] args) {
         File ontologyFile = new File("src/main/resources/ekbConcepts.owl");
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
         try {
             ontology = manager.loadOntologyFromOntologyDocument(ontologyFile);
 
@@ -28,6 +35,8 @@ public class CodeGenerator {
             OWLClass mainConcept = factory.getOWLClass(iri);
             Set<OWLClassExpression> subClasses = mainConcept.getSubClasses(ontology);
             generateMainConcepts(subClasses);
+
+            System.out.println(sw.toString());
 
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
@@ -41,18 +50,21 @@ public class CodeGenerator {
     }
 
     private static void generateMainConcept(OWLClass owlClass) {
-        System.out.println("package org.openengsb.codegen.test");
+        String extendsClause = "";
+
+        out.println("package org.openengsb.codegen.test;");
 
         OWLClass parent = getMainConceptParent(owlClass.getSuperClasses(ontology));
-        if (parent == null || isActualMainConcept(parent)) {
-            System.out.println("public class " + owlClass.getIRI().getFragment() + " {");
-        } else {
+        if (parent != null && !isActualMainConcept(parent)) {
             String superclassName = parent.getIRI().getFragment();
-            System.out.println("public class " + owlClass.getIRI().getFragment() + " extends " + superclassName + " {");
+            extendsClause = " extends " + superclassName;
         }
 
+        out.println("public class " + owlClass.getIRI().getFragment() + extendsClause + " {");
         generateFields(owlClass);
-        System.out.println("}");
+        out.println("}");
+        out.println();
+        // subclasses
         generateMainConcepts(owlClass.getSubClasses(ontology));
     }
 
@@ -84,9 +96,23 @@ public class CodeGenerator {
                 String fieldName = getFieldName(superClass);
                 OWLClass type = superClass.getClassesInSignature().iterator().next();
                 String fieldType = type.getIRI().getFragment();
-                System.out.println("    private " + fieldType + " " + fieldName + ";");
+                out.println("    private " + fieldType + " " + fieldName + ";");
+                out.println();
+                out.println("    public " + fieldType + " get" + firstCharToUpper(fieldName) + "() {");
+                out.println("        return " + fieldName + ";");
+                out.println("    }");
+                out.println();
+                out.println("    public void set" + firstCharToUpper(fieldName) + "(" + fieldType + " " + fieldName + ") {");
+                out.println("        this." + fieldName + " = " + fieldName + ";");
+                out.println("    }");
+                out.println();
+
             }
         }
+    }
+
+    private static String firstCharToUpper(String s) {
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
     private static String getFieldName(OWLClassExpression superClass) {
