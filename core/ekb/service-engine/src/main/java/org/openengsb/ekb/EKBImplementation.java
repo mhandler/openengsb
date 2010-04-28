@@ -11,12 +11,13 @@ import org.openengsb.ekb.core.messagetransformation.MessageTransformator;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.internal.SimpleMessageTransformator;
 import org.openengsb.ekb.core.messagetransformation.transformationstore.TransformationStore;
+import org.openengsb.ekb.core.messagetransformation.transformationstore.internal.InMemoryTransformationStore;
 import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
 import org.openengsb.util.serialization.SerializationException;
 
 public class EKBImplementation implements EKB {
 
-    private TransformationStore transformationStore;
+    private TransformationStore transformationStore = new InMemoryTransformationStore();
 
     @Override
     public String transformEvent(QName sender, QName receiver, String xml) {

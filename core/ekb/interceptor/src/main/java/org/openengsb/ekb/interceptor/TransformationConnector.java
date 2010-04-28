@@ -45,8 +45,10 @@ public class TransformationConnector {
 
             Object[] args = new Object[] { sourceService, targetService, inXml };
             MessageProperties msgProperties = getMessageProperties(iex);
+            System.out.println("Sending transformation method call...");
             String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
                     msgProperties);
+            System.out.println("Received answer - " + transformed.equals(inXml));
             iex.getIn().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -69,8 +71,10 @@ public class TransformationConnector {
             Object[] args = new Object[] { sourceService, targetService, outXml };
             MessageProperties msgProperties = getMessageProperties(iex);
 
+            System.out.println("Sending transformation method call for out message...");
             String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
                     msgProperties);
+            System.out.println("Received answer - " + transformed.equals(outXml));
 
             iex.getOut().setBody(new StringSource(transformed));
         } catch (Exception e) {
@@ -80,7 +84,9 @@ public class TransformationConnector {
 
     private MessageProperties getMessageProperties(InternalExchange iex) {
         String contextId = iex.getProperty("contextId", String.class);
+        System.out.println("contextID: " + contextId);
         String correlationId = iex.getProperty("correlationId", String.class);
+        System.out.println("correlationID: " + contextId);
         String workflowId = iex.getProperty("workflowId", String.class);
         String workflowInstanceId = iex.getProperty("workflowInstanceId", String.class);
         return new MessageProperties(contextId, correlationId, workflowId, workflowInstanceId);

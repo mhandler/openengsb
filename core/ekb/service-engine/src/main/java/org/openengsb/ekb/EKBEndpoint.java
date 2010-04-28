@@ -29,6 +29,6 @@ public class EKBEndpoint extends LinkingEndpoint<EKB> {
 
     @Override
     protected EKB getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
-        return null;
+        return new EKBImplementation();
     }
 }
