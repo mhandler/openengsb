@@ -27,8 +27,10 @@ import org.openengsb.ekb.api.EKB;
  */
 public class EKBEndpoint extends LinkingEndpoint<EKB> {
 
+    private EKB ekb = new EKBImplementation();
+
     @Override
     protected EKB getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
-        return new EKBImplementation();
+        return ekb;
     }
 }

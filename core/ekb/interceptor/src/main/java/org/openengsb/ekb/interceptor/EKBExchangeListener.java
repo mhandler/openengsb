@@ -51,6 +51,7 @@ public class EKBExchangeListener implements ExchangeListener {
             System.out.println("Ignored message exchange because it is blacklisted.");
             return;
         }
+        System.out.println("not on black list...");
         if (transformationConnector.isInCall(iex)) {
             transformationConnector.handleInCall(iex);
         } else {

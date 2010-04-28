@@ -14,6 +14,8 @@ import org.openengsb.ekb.core.messagetransformation.transformationstore.Transfor
 import org.openengsb.ekb.core.messagetransformation.transformationstore.internal.InMemoryTransformationStore;
 import org.openengsb.ekb.core.ontologystore.OntologyDescriptor;
 import org.openengsb.util.serialization.SerializationException;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 public class EKBImplementation implements EKB {
 
@@ -70,9 +72,12 @@ public class EKBImplementation implements EKB {
     }
 
     private OntologyDescriptor getOntology(QName endpoint) {
-        // TODO: endpoint - ontology mapping (with respect to ontology and
-        // enpoint lifecycle)
-        return null;
-    }
+        return new OntologyDescriptor(IRI.create("test-" + endpoint.getLocalPart()), IRI.create("1.0")) {
 
+            @Override
+            public OWLOntology getOntology() {
+                return null;
+            }
+        };
+    }
 }

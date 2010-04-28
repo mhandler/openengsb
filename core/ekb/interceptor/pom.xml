@@ -28,6 +28,7 @@
     <relativePath>../../..</relativePath>
   </parent>
 
+
   <artifactId>openengsb-ekb-interceptor</artifactId>
   <name>openengsb-ekb-interceptor</name>
   <packaging>bundle</packaging>
@@ -51,6 +52,7 @@
       <groupId>org.apache.servicemix.nmr</groupId>
       <artifactId>org.apache.servicemix.nmr.api</artifactId>
       <version>1.0.0</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -82,13 +84,16 @@
               javax.xml.transform,
               org.apache.servicemix.jbi.jaxp,
               javax.jbi.messaging,
-              org.openengsb.core,
-              org.openengsb.core.model,
-              org.openengsb.core.transformation,
-              org.openengsb.util.serialization,
-              org.openengsb.ekb.api
+              org.openengsb.ekb.api,
+              org.openengsb.core, 
+              org.openengsb.core.model, 
+              org.openengsb.core.transformation, 
+              org.openengsb.util.serialization
             </Import-Package>
             <Private-Package>org.openengsb.ekb.interceptor</Private-Package>
+            <Include-Resource>
+              {maven-resources}, {maven-dependencies}
+            </Include-Resource>
           </instructions>
         </configuration>
       </plugin>
