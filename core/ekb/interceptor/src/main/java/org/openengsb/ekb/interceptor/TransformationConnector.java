@@ -19,10 +19,8 @@ import org.apache.servicemix.nmr.api.Status;
 import org.apache.servicemix.nmr.api.internal.InternalExchange;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.MethodCall;
-import org.openengsb.core.model.ReturnValue;
-import org.openengsb.core.transformation.Transformer;
+import org.openengsb.core.model.Value;
 import org.openengsb.ekb.api.EKB;
-import org.openengsb.util.serialization.SerializationException;
 
 public class TransformationConnector {
 
@@ -34,8 +32,8 @@ public class TransformationConnector {
     void handleInCall(InternalExchange iex) {
         try {
             String source = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
-            QName sourceService = QName.valueOf(source);
             QName targetService = iex.getProperty("javax.jbi.ServiceName", QName.class);
+            String target = targetService.toString();
 
             String inXml = new SourceTransformer().toString(iex.getIn().getBody(Source.class));
             String operation = iex.getOperation().getLocalPart();
@@ -43,7 +41,7 @@ public class TransformationConnector {
             Channel channel = iex.getSource().getChannel().getNMR().createChannel();
             Method transformationMethod = getTransformationMethod(operation);
 
-            Object[] args = new Object[] { sourceService, targetService, inXml };
+            Object[] args = new Object[] { source, target, inXml };
             MessageProperties msgProperties = getMessageProperties(iex);
             System.out.println("Sending transformation method call...");
             String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
@@ -59,16 +57,14 @@ public class TransformationConnector {
         try {
             // for the return call source and destination are switched
             String source = (String) iex.getDestination().getMetaData().get(Endpoint.SERVICE_NAME);
-            QName sourceService = QName.valueOf(source);
             String target = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
-            QName targetService = QName.valueOf(target);
 
             String outXml = new SourceTransformer().toString(iex.getOut().getBody(Source.class));
 
             Channel channel = iex.getSource().getChannel().getNMR().createChannel();
             Method transformationMethod = getTransformationMethod("returnValue");
 
-            Object[] args = new Object[] { sourceService, targetService, outXml };
+            Object[] args = new Object[] { source, target, outXml };
             MessageProperties msgProperties = getMessageProperties(iex);
 
             System.out.println("Sending transformation method call for out message...");
@@ -99,11 +95,11 @@ public class TransformationConnector {
     private Method getTransformationMethod(String operation) {
         try {
             if (operation.equals("event")) {
-                return EKB.class.getMethod("transformEvent", QName.class, QName.class, String.class);
+                return EKB.class.getMethod("transformEvent", String.class, String.class, String.class);
             } else if (operation.equals("methodcall")) {
-                return EKB.class.getMethod("transformMethodCall", QName.class, QName.class, String.class);
+                return EKB.class.getMethod("transformMethodCall", String.class, String.class, String.class);
             } else {
-                return EKB.class.getMethod("transformReturnValue", QName.class, QName.class, String.class);
+                return EKB.class.getMethod("transformReturnValue", String.class, String.class, String.class);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -127,7 +123,7 @@ public class TransformationConnector {
     }
 
     private void createInMessage(QName service, Method method, MessageProperties msgProperties, Object[] arguments,
-            Exchange inout) throws MessagingException, SerializationException {
+            Exchange inout) throws MessagingException {
         inout.setProperty("javax.jbi.ServiceName", service);
         inout.setOperation(new QName("methodcall"));
 
@@ -136,9 +132,23 @@ public class TransformationConnector {
 
         MethodCall call = new MethodCall(method, arguments);
 
-        String xml = Transformer.toXml(call);
+        String xml = toXml(call);
 
         msg.setBody(new StringSource(xml));
+    }
+
+    private String toXml(MethodCall call) {
+        String methodCall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<XMLMethodCall><methodName>"
+                + call.getMethodName() + "</methodName>" + "<args>";
+        int id = 0;
+        for (Value arg : call.getArguments()) {
+            methodCall += "<args><type>java.lang.String</type><conceptIRI>" + arg.getConceptIRI()
+                    + "</conceptIRI><value><primitive><string>" + arg.getValue() + "</string></primitive><id>" + id
+                    + "</id></value></args>";
+            id++;
+        }
+        methodCall += "</XMLMethodCall>";
+        return methodCall;
     }
 
     private void applyPropertiesToMessage(Message msg, MessageProperties msgProperties) {
@@ -170,9 +180,16 @@ public class TransformationConnector {
         return new Object[0];
     }
 
-    private Object handleOutMessage(Exchange inout) throws TransformerException, SerializationException {
+    private Object handleOutMessage(Exchange inout) throws TransformerException {
         String outXml = new SourceTransformer().toString(inout.getOut().getBody(Source.class));
-        ReturnValue returnValue = Transformer.toReturnValue(outXml);
-        return returnValue.getValue().getValue();
+        return getResult(outXml);
+    }
+
+    private String getResult(String outXml) {
+        String startElement = "<value><primitive><string>";
+        String endElement = "</string></primitive>";
+        int startIndex = outXml.indexOf(startElement) + startElement.length();
+        int endIndex = outXml.lastIndexOf(endElement);
+        return outXml.substring(startIndex, endIndex);
     }
 }

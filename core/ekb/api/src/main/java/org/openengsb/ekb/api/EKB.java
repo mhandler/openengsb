@@ -1,13 +1,12 @@
 package org.openengsb.ekb.api;
 
-import javax.xml.namespace.QName;
 
 public interface EKB {
 
-    String transformMethodCall(QName sender, QName receiver, String xml);
+    String transformMethodCall(String senderQname, String receiverQName, String xml);
 
-    String transformReturnValue(QName sender, QName receiver, String xml);
+    String transformReturnValue(String senderQname, String receiverQName, String xml);
 
-    String transformEvent(QName sender, QName receiver, String xml);
+    String transformEvent(String senderQname, String receiverQName, String xml);
 
 }

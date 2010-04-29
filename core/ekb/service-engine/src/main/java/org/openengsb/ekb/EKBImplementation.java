@@ -22,8 +22,10 @@ public class EKBImplementation implements EKB {
     private TransformationStore transformationStore = new InMemoryTransformationStore();
 
     @Override
-    public String transformEvent(QName sender, QName receiver, String xml) {
+    public String transformEvent(String senderQName, String receiverQName, String xml) {
         try {
+            QName sender = toQName(senderQName);
+            QName receiver = toQName(receiverQName);
             MessageTransformator transformator = createTransformator(sender, receiver);
             Event event = Transformer.toEvent(xml);
             Event result = transformator.transformEvent(event);
@@ -36,8 +38,10 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    public String transformMethodCall(QName sender, QName receiver, String xml) {
+    public String transformMethodCall(String senderQName, String receiverQName, String xml) {
         try {
+            QName sender = toQName(senderQName);
+            QName receiver = toQName(receiverQName);
             MessageTransformator transformator = createTransformator(sender, receiver);
             MethodCall methodCall = Transformer.toMethodCall(xml);
             MethodCall result = transformator.transformMethodCall(methodCall);
@@ -50,8 +54,10 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    public String transformReturnValue(QName sender, QName receiver, String xml) {
+    public String transformReturnValue(String senderQName, String receiverQName, String xml) {
         try {
+            QName sender = toQName(senderQName);
+            QName receiver = toQName(receiverQName);
             MessageTransformator transformator = createTransformator(sender, receiver);
             ReturnValue returnValue = Transformer.toReturnValue(xml);
             ReturnValue result = transformator.transformReturnValue(returnValue);
@@ -61,6 +67,10 @@ public class EKBImplementation implements EKB {
         } catch (TransformationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public QName toQName(String qName) {
+        return QName.valueOf(qName);
     }
 
     private MessageTransformator createTransformator(QName sender, QName receiver) {
