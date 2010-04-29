@@ -15,7 +15,7 @@
    limitations under the License.
    
  */
-package org.openengsb.core;
+package org.openengsb.core.model;
 
 public class InvocationFailedException extends Exception {
 

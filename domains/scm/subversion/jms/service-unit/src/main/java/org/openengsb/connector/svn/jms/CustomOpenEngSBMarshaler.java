@@ -43,7 +43,7 @@ import org.apache.servicemix.jbi.jaxp.StringSource;
 import org.apache.servicemix.jms.endpoints.AbstractJmsMarshaler;
 import org.apache.servicemix.jms.endpoints.JmsConsumerMarshaler;
 import org.apache.servicemix.soap.core.MessageImpl;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.transformation.Transformer;
 import org.openengsb.drools.events.ScmCheckInEvent;
 

@@ -20,8 +20,8 @@ package org.openengsb.report;
 import java.util.Set;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.SimpleEventEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.Event;
 import org.openengsb.report.datastore.EventStorageType;
 import org.openengsb.report.datastore.EventStore;

@@ -28,7 +28,7 @@ import org.apache.servicemix.common.DefaultComponent;
 import org.apache.servicemix.common.ServiceUnit;
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.contextcommon.ContextHelperImpl;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 
 public abstract class EventEndpoint extends OpenEngSBEndpoint {
 

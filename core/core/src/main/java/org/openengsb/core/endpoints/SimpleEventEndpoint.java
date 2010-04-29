@@ -28,7 +28,7 @@ import org.apache.servicemix.common.DefaultComponent;
 import org.apache.servicemix.common.ServiceUnit;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.transformation.Transformer;
 import org.openengsb.util.serialization.SerializationException;

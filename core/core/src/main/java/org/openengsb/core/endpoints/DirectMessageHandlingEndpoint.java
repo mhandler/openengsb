@@ -23,7 +23,7 @@ import javax.xml.namespace.QName;
 import org.apache.servicemix.common.DefaultComponent;
 import org.apache.servicemix.common.ServiceUnit;
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 
 public abstract class DirectMessageHandlingEndpoint<T> extends RPCEndpoint<T> {
 

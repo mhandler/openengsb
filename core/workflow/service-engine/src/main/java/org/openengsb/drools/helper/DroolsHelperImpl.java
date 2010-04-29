@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.drools.StatefulSession;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.drools.DroolsEndpoint;
 import org.openengsb.drools.DroolsHelper;
 import org.openengsb.drools.DroolsSession;

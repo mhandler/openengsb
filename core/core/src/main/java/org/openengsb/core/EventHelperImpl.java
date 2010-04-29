@@ -26,6 +26,7 @@ import org.apache.servicemix.jbi.jaxp.StringSource;
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.contextcommon.ContextHelperImpl;
 import org.openengsb.core.endpoints.OpenEngSBEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.transformation.Transformer;
 import org.openengsb.util.serialization.SerializationException;

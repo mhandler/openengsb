@@ -42,7 +42,6 @@
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-ekb-api</artifactId>
@@ -60,10 +59,6 @@
       <artifactId>servicemix-shared</artifactId>
     </dependency>
     
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
     
   </dependencies>
 
@@ -76,24 +71,12 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-            <Import-Package>
-              org.apache.servicemix.nmr.api,
-              org.apache.servicemix.nmr.api.event,
-              org.apache.servicemix.nmr.api.internal,
-              javax.xml.namespace,
-              javax.xml.transform,
-              org.apache.servicemix.jbi.jaxp,
-              javax.jbi.messaging,
+            <Export-Package>
               org.openengsb.ekb.api,
-              org.openengsb.core, 
-              org.openengsb.core.model, 
-              org.openengsb.core.transformation, 
-              org.openengsb.util.serialization
-            </Import-Package>
+              org.openengsb.core.model,
+              org.openengsb.core.messaging
+              </Export-Package>
             <Private-Package>org.openengsb.ekb.interceptor</Private-Package>
-            <Include-Resource>
-              {maven-resources}, {maven-dependencies}
-            </Include-Resource>
           </instructions>
         </configuration>
       </plugin>

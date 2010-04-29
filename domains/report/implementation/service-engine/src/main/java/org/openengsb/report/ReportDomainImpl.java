@@ -26,8 +26,8 @@ import java.util.UUID;
 import javax.xml.namespace.QName;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.MethodCallHelper;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.Event;
 import org.openengsb.drools.ReportDomain;
 import org.openengsb.drools.model.Report;

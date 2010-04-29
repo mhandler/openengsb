@@ -15,7 +15,7 @@
    limitations under the License.
    
  */
-package org.openengsb.core;
+package org.openengsb.core.messaging;
 
 import javax.jbi.messaging.NormalizedMessage;
 

@@ -19,8 +19,8 @@ package org.openengsb.context;
 
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.contextcommon.ContextHelperExtended;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.LinkingEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 
 /**
  * @org.apache.xbean.XBean element="contextEndpoint"

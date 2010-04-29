@@ -23,7 +23,7 @@ import javax.jbi.messaging.NormalizedMessage;
 import javax.xml.namespace.QName;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 
 public class EventForwardEndpoint extends EventEndpoint {
 

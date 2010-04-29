@@ -19,8 +19,8 @@ package org.openengsb.connector.svn;
 
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.EventHelper;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.SimpleEventEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.Event;
 import org.openengsb.drools.events.ScmCheckInEvent;
 import org.openengsb.drools.model.MergeResult;

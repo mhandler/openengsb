@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import org.drools.StatefulSession;
 import org.drools.WorkingMemory;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 
 /**
  * Represents the execution context of the Drools rules.

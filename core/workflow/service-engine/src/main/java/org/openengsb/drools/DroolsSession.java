@@ -33,8 +33,8 @@ import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.contextcommon.ContextHelperImpl;
 import org.openengsb.core.EventHelper;
 import org.openengsb.core.EventHelperImpl;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.MethodCallHelper;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.drools.helper.DomainConfigurationImpl;
 import org.openengsb.drools.helper.DroolsHelperImpl;
 

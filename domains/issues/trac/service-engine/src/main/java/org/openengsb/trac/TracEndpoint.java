@@ -18,8 +18,8 @@
 package org.openengsb.trac;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.LinkingEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.drools.IssuesDomain;
 
 /**

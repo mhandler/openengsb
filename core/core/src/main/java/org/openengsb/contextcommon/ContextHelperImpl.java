@@ -23,9 +23,9 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.endpoints.OpenEngSBEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 
 public class ContextHelperImpl implements ContextHelperExtended {
 

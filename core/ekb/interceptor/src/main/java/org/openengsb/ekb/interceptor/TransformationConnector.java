@@ -17,7 +17,7 @@ import org.apache.servicemix.nmr.api.Pattern;
 import org.apache.servicemix.nmr.api.Role;
 import org.apache.servicemix.nmr.api.Status;
 import org.apache.servicemix.nmr.api.internal.InternalExchange;
-import org.openengsb.core.MessageProperties;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.core.transformation.Transformer;

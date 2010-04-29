@@ -20,8 +20,8 @@ package org.openengsb.report.plaintext;
 import java.io.File;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.MessageProperties;
 import org.openengsb.core.endpoints.LinkingEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.drools.ReportDomain;
 
 /**

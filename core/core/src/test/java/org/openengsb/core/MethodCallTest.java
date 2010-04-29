@@ -22,6 +22,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.openengsb.core.model.ConceptIRI;
+import org.openengsb.core.model.InvocationFailedException;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.core.model.ReturnValueConceptIRI;

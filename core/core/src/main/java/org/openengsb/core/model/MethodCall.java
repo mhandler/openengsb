@@ -23,7 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.openengsb.core.InvocationFailedException;
 
 @ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#ServiceCall")
 public class MethodCall {

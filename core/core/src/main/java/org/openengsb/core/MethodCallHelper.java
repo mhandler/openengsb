@@ -29,6 +29,7 @@ import javax.xml.transform.TransformerException;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
 import org.apache.servicemix.jbi.jaxp.StringSource;
 import org.openengsb.core.endpoints.OpenEngSBEndpoint;
+import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
 import org.openengsb.core.transformation.Transformer;
