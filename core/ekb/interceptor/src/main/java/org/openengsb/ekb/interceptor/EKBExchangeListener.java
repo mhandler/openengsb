@@ -12,14 +12,11 @@ import org.apache.servicemix.nmr.api.internal.InternalExchange;
 
 public class EKBExchangeListener implements ExchangeListener {
 
-    private TransformationConnector transformationConnector;
-
     private Set<QName> blackList;
 
     public EKBExchangeListener() {
-        transformationConnector = new TransformationConnector();
         blackList = new HashSet<QName>();
-        blackList.add(transformationConnector.getEKBService());
+        blackList.add(EKBInterceptorUtil.getEKBService());
     }
 
     @Override
@@ -50,10 +47,11 @@ public class EKBExchangeListener implements ExchangeListener {
         if (isOnBlackList(iex)) {
             return;
         }
-        if (transformationConnector.isInCall(iex)) {
-            transformationConnector.handleInCall(iex);
+        TransformationConnector transformationConnector = new TransformationConnector(iex);
+        if (transformationConnector.isInCall()) {
+            transformationConnector.handleInCall();
         } else {
-            transformationConnector.handleReturnCall(iex);
+            transformationConnector.handleReturnCall();
         }
     }
 

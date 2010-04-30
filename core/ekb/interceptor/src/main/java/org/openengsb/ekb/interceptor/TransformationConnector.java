@@ -3,7 +3,6 @@ package org.openengsb.ekb.interceptor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.namespace.QName;
@@ -28,61 +27,71 @@ import org.openengsb.ekb.api.EKB;
 
 public class TransformationConnector {
 
-    boolean isInCall(InternalExchange iex) {
-        String operation = iex.getOperation().getLocalPart();
+    private InternalExchange iex;
+
+    private String operation;
+
+    private Channel channel;
+
+    public TransformationConnector(InternalExchange iex) {
+        this.iex = iex;
+        init();
+    }
+
+    private void init() {
+        if (iex.getOperation() != null) {
+            operation = iex.getOperation().getLocalPart();
+        }
+        channel = iex.getSource().getChannel().getNMR().createChannel();
+    }
+
+    boolean isInCall() {
         return (iex.getRole() == Role.Consumer && operation.equals("methodcall")) || operation.equals("event");
     }
 
-    void handleInCall(InternalExchange iex) {
+    void handleInCall() {
         try {
             String source = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
             QName targetService = iex.getProperty("javax.jbi.ServiceName", QName.class);
             String target = targetService.toString();
 
             String inXml = new SourceTransformer().toString(iex.getIn().getBody(Source.class));
-            String operation = iex.getOperation().getLocalPart();
 
-            Channel channel = iex.getSource().getChannel().getNMR().createChannel();
             Method transformationMethod = getTransformationMethod(operation);
 
             Object[] args = new Object[] { source, target, inXml };
-            MessageProperties msgProperties = getMessageProperties(iex);
-            String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
-                    msgProperties);
+            MessageProperties msgProperties = getMessageProperties(iex.getIn());
+            String transformed = (String) sendMethodCall(transformationMethod, args, msgProperties);
             iex.getIn().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    void handleReturnCall(InternalExchange iex) {
+    void handleReturnCall() {
         try {
             // for the return call source and destination are switched
             String source = (String) iex.getDestination().getMetaData().get(Endpoint.SERVICE_NAME);
             String target = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
-
             String outXml = new SourceTransformer().toString(iex.getOut().getBody(Source.class));
 
-            Channel channel = iex.getSource().getChannel().getNMR().createChannel();
             Method transformationMethod = getTransformationMethod("returnValue");
-
             Object[] args = new Object[] { source, target, outXml };
-            MessageProperties msgProperties = getMessageProperties(iex);
+            MessageProperties msgProperties = getMessageProperties(iex.getOut());
 
-            String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
-                    msgProperties);
+            String transformed = (String) sendMethodCall(transformationMethod, args, msgProperties);
             iex.getOut().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private MessageProperties getMessageProperties(InternalExchange iex) {
-        return new MessageProperties("", UUID.randomUUID().toString());
-    }
-
-    QName getEKBService() {
-        return new QName("urn:openengsb:ekb", "ekbService");
+    private MessageProperties getMessageProperties(Message message) {
+        String contextId = message.getHeader("contextId", String.class);
+        String correlationId = message.getHeader("correlationId", String.class);
+        String workflowId = message.getHeader("workflowId", String.class);
+        String workflowInstanceId = message.getHeader("workflowInstanceId", String.class);
+        return new MessageProperties(contextId, correlationId, workflowId, workflowInstanceId);
     }
 
     private Method getTransformationMethod(String operation) {
@@ -99,11 +108,12 @@ public class TransformationConnector {
         }
     }
 
-    private Object sendMethodCall(Channel channel, QName service, Method method, Object[] args,
-            MessageProperties msgProperties) {
+    private Object sendMethodCall(Method method, Object[] args, MessageProperties msgProperties) {
         Object[] arguments = checkArgs(args);
         try {
             Exchange inout = channel.createExchange(Pattern.InOut);
+            QName service = EKBInterceptorUtil.getEKBService();
+            setExchangeProperties(service, inout);
             createInMessage(service, method, msgProperties, arguments, inout);
             channel.sendSync(inout);
             checkFailure(inout, method);
@@ -115,39 +125,44 @@ public class TransformationConnector {
         }
     }
 
-    private void createInMessage(QName service, Method method, MessageProperties msgProperties, Object[] arguments,
-            Exchange inout) throws MessagingException {
+    private void setExchangeProperties(QName service, Exchange inout) {
         inout.setProperty("javax.jbi.ServiceName", service);
         inout.setOperation(new QName("methodcall"));
         Map<String, Object> properties = new HashMap<String, Object>();
         properties.put("ENDPOINT_NAME", "ekbEndpoint");
-        properties.put("SERVICE_NAME", getEKBService().toString());
+        properties.put("SERVICE_NAME", EKBInterceptorUtil.getEKBService().toString());
         inout.setTarget(new PropertyMatchingReference(properties));
+    }
 
+    private void createInMessage(QName service, Method method, MessageProperties msgProperties, Object[] arguments,
+            Exchange inout) throws MessagingException {
         Message msg = inout.getIn();
         applyPropertiesToMessage(msg, msgProperties);
 
         MethodCall call = new MethodCall(method, arguments);
-
         String xml = toXml(call);
-
         msg.setBody(new StringSource(xml));
     }
 
     private String toXml(MethodCall call) {
-        String methodCall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<XMLMethodCall><methodName>"
-                + call.getMethodName() + "</methodName>";
+        StringBuilder methodCall = new StringBuilder();
+        methodCall.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><XMLMethodCall><methodName>");
+        methodCall.append(call.getMethodName());
+        methodCall.append("</methodName>");
         int id = 0;
         for (Value arg : call.getArguments()) {
             String argText = arg.getValue().toString();
             argText = encode(argText);
-            methodCall += "<args><type>java.lang.String</type><conceptIRI>" + arg.getConceptIRI()
-                    + "</conceptIRI><value><primitive><string>" + argText + "</string></primitive><id>" + id
-                    + "</id></value></args>";
-            id++;
+            methodCall.append("<args><type>java.lang.String</type><conceptIRI>");
+            methodCall.append(arg.getConceptIRI());
+            methodCall.append("</conceptIRI><value><primitive><string>");
+            methodCall.append(argText);
+            methodCall.append("</string></primitive><id>");
+            methodCall.append(id++);
+            methodCall.append("</id></value></args>");
         }
-        methodCall += "</XMLMethodCall>";
-        return methodCall;
+        methodCall.append("</XMLMethodCall>");
+        return methodCall.toString();
     }
 
     private void applyPropertiesToMessage(Message msg, MessageProperties msgProperties) {
