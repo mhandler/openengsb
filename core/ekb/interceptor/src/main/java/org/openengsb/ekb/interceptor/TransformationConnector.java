@@ -1,6 +1,9 @@
 package org.openengsb.ekb.interceptor;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.jbi.messaging.MessagingException;
 import javax.xml.namespace.QName;
@@ -17,6 +20,7 @@ import org.apache.servicemix.nmr.api.Pattern;
 import org.apache.servicemix.nmr.api.Role;
 import org.apache.servicemix.nmr.api.Status;
 import org.apache.servicemix.nmr.api.internal.InternalExchange;
+import org.apache.servicemix.nmr.core.PropertyMatchingReference;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.Value;
@@ -43,10 +47,8 @@ public class TransformationConnector {
 
             Object[] args = new Object[] { source, target, inXml };
             MessageProperties msgProperties = getMessageProperties(iex);
-            System.out.println("Sending transformation method call...");
             String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
                     msgProperties);
-            System.out.println("Received answer - " + transformed.equals(inXml));
             iex.getIn().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -67,11 +69,8 @@ public class TransformationConnector {
             Object[] args = new Object[] { source, target, outXml };
             MessageProperties msgProperties = getMessageProperties(iex);
 
-            System.out.println("Sending transformation method call for out message...");
             String transformed = (String) sendMethodCall(channel, getEKBService(), transformationMethod, args,
                     msgProperties);
-            System.out.println("Received answer - " + transformed.equals(outXml));
-
             iex.getOut().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -79,13 +78,7 @@ public class TransformationConnector {
     }
 
     private MessageProperties getMessageProperties(InternalExchange iex) {
-        String contextId = iex.getProperty("contextId", String.class);
-        System.out.println("contextID: " + contextId);
-        String correlationId = iex.getProperty("correlationId", String.class);
-        System.out.println("correlationID: " + contextId);
-        String workflowId = iex.getProperty("workflowId", String.class);
-        String workflowInstanceId = iex.getProperty("workflowInstanceId", String.class);
-        return new MessageProperties(contextId, correlationId, workflowId, workflowInstanceId);
+        return new MessageProperties("", UUID.randomUUID().toString());
     }
 
     QName getEKBService() {
@@ -126,6 +119,10 @@ public class TransformationConnector {
             Exchange inout) throws MessagingException {
         inout.setProperty("javax.jbi.ServiceName", service);
         inout.setOperation(new QName("methodcall"));
+        Map<String, Object> properties = new HashMap<String, Object>();
+        properties.put("ENDPOINT_NAME", "ekbEndpoint");
+        properties.put("SERVICE_NAME", getEKBService().toString());
+        inout.setTarget(new PropertyMatchingReference(properties));
 
         Message msg = inout.getIn();
         applyPropertiesToMessage(msg, msgProperties);
@@ -139,11 +136,13 @@ public class TransformationConnector {
 
     private String toXml(MethodCall call) {
         String methodCall = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<XMLMethodCall><methodName>"
-                + call.getMethodName() + "</methodName>" + "<args>";
+                + call.getMethodName() + "</methodName>";
         int id = 0;
         for (Value arg : call.getArguments()) {
+            String argText = arg.getValue().toString();
+            argText = encode(argText);
             methodCall += "<args><type>java.lang.String</type><conceptIRI>" + arg.getConceptIRI()
-                    + "</conceptIRI><value><primitive><string>" + arg.getValue() + "</string></primitive><id>" + id
+                    + "</conceptIRI><value><primitive><string>" + argText + "</string></primitive><id>" + id
                     + "</id></value></args>";
             id++;
         }
@@ -190,6 +189,16 @@ public class TransformationConnector {
         String endElement = "</string></primitive>";
         int startIndex = outXml.indexOf(startElement) + startElement.length();
         int endIndex = outXml.lastIndexOf(endElement);
-        return outXml.substring(startIndex, endIndex);
+        return decode(outXml.substring(startIndex, endIndex));
+    }
+
+    private String encode(String xml) {
+        return xml.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("'", "&apos;")
+                .replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    }
+
+    private String decode(String xml) {
+        return xml.replaceAll("&amp;", "&").replaceAll("&quot;", "\"").replaceAll("&apos;", "'")
+                .replaceAll("&lt;", "<").replaceAll("&gt;", ">");
     }
 }

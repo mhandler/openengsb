@@ -38,14 +38,15 @@ public class SimpleMessageTransformator extends AbstractMessageTransformator {
 
     private Object handleConcept(Object concept) throws TransformationException {
         TransformationMap map = getTransformationMap();
-        if (map == null) {
-            return concept;
-        }
         IRI iri = TransformationUtil.extractConceptIRI(concept);
         return transform(concept, map, iri);
     }
 
     private Object transform(Object concept, TransformationMap map, IRI iri) throws TransformationException {
+        if (map == null) {
+            return concept;
+        }
+
         Transformation transformation = map.getTransformation(iri);
 
         if (transformation == null) {
@@ -56,6 +57,10 @@ public class SimpleMessageTransformator extends AbstractMessageTransformator {
     }
 
     private String getTargetIRI(Object concept, TransformationMap map, IRI iri) throws TransformationException {
+        if (map == null) {
+            return iri.toString();
+        }
+
         Transformation transformation = map.getTransformation(iri);
 
         if (transformation == null) {
