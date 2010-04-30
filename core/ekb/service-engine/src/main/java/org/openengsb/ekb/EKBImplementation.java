@@ -24,9 +24,7 @@ public class EKBImplementation implements EKB {
     @Override
     public String transformEvent(String senderQName, String receiverQName, String xml) {
         try {
-            QName sender = toQName(senderQName);
-            QName receiver = toQName(receiverQName);
-            MessageTransformator transformator = createTransformator(sender, receiver);
+            MessageTransformator transformator = createTransformator(senderQName, receiverQName);
             Event event = Transformer.toEvent(xml);
             Event result = transformator.transformEvent(event);
             return Transformer.toXml(result);
@@ -40,9 +38,7 @@ public class EKBImplementation implements EKB {
     @Override
     public String transformMethodCall(String senderQName, String receiverQName, String xml) {
         try {
-            QName sender = toQName(senderQName);
-            QName receiver = toQName(receiverQName);
-            MessageTransformator transformator = createTransformator(sender, receiver);
+            MessageTransformator transformator = createTransformator(senderQName, receiverQName);
             MethodCall methodCall = Transformer.toMethodCall(xml);
             MethodCall result = transformator.transformMethodCall(methodCall);
             return Transformer.toXml(result);
@@ -56,9 +52,7 @@ public class EKBImplementation implements EKB {
     @Override
     public String transformReturnValue(String senderQName, String receiverQName, String xml) {
         try {
-            QName sender = toQName(senderQName);
-            QName receiver = toQName(receiverQName);
-            MessageTransformator transformator = createTransformator(sender, receiver);
+            MessageTransformator transformator = createTransformator(senderQName, receiverQName);
             ReturnValue returnValue = Transformer.toReturnValue(xml);
             ReturnValue result = transformator.transformReturnValue(returnValue);
             return Transformer.toXml(result);
@@ -73,7 +67,9 @@ public class EKBImplementation implements EKB {
         return QName.valueOf(qName);
     }
 
-    private MessageTransformator createTransformator(QName sender, QName receiver) {
+    private MessageTransformator createTransformator(String senderQName, String receiverQName) {
+        QName sender = toQName(senderQName);
+        QName receiver = toQName(receiverQName);
         MessageTransformator transformator = new SimpleMessageTransformator();
         transformator.setSourceOntology(getOntology(sender));
         transformator.setTargetOntology(getOntology(receiver));
@@ -82,6 +78,7 @@ public class EKBImplementation implements EKB {
     }
 
     private OntologyDescriptor getOntology(QName endpoint) {
+        // TODO replace dummy implementation
         return new OntologyDescriptor(IRI.create("test-" + endpoint.getLocalPart()), IRI.create("1.0")) {
 
             @Override
