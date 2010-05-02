@@ -27,42 +27,42 @@ import org.openengsb.ekb.api.EKB;
 
 public class TransformationConnector {
 
-    private InternalExchange iex;
+    private InternalExchange internalExchange;
 
     private String operation;
 
     private Channel channel;
 
-    public TransformationConnector(InternalExchange iex) {
-        this.iex = iex;
+    public TransformationConnector(InternalExchange internalExchange) {
+        this.internalExchange = internalExchange;
         init();
     }
 
     private void init() {
-        if (iex.getOperation() != null) {
-            operation = iex.getOperation().getLocalPart();
+        if (internalExchange.getOperation() != null) {
+            operation = internalExchange.getOperation().getLocalPart();
         }
-        channel = iex.getSource().getChannel().getNMR().createChannel();
+        channel = internalExchange.getSource().getChannel().getNMR().createChannel();
     }
 
     boolean isInCall() {
-        return (iex.getRole() == Role.Consumer && operation.equals("methodcall")) || operation.equals("event");
+        return (internalExchange.getRole() == Role.Consumer && operation.equals("methodcall")) || operation.equals("event");
     }
 
     void handleInCall() {
         try {
-            String source = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
-            QName targetService = iex.getProperty("javax.jbi.ServiceName", QName.class);
+            String source = (String) internalExchange.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
+            QName targetService = internalExchange.getProperty("javax.jbi.ServiceName", QName.class);
             String target = targetService.toString();
 
-            String inXml = new SourceTransformer().toString(iex.getIn().getBody(Source.class));
+            String inXml = new SourceTransformer().toString(internalExchange.getIn().getBody(Source.class));
 
             Method transformationMethod = getTransformationMethod(operation);
 
             Object[] args = new Object[] { source, target, inXml };
-            MessageProperties msgProperties = getMessageProperties(iex.getIn());
+            MessageProperties msgProperties = getMessageProperties(internalExchange.getIn());
             String transformed = (String) sendMethodCall(transformationMethod, args, msgProperties);
-            iex.getIn().setBody(new StringSource(transformed));
+            internalExchange.getIn().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -71,16 +71,16 @@ public class TransformationConnector {
     void handleReturnCall() {
         try {
             // for the return call source and destination are switched
-            String source = (String) iex.getDestination().getMetaData().get(Endpoint.SERVICE_NAME);
-            String target = (String) iex.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
-            String outXml = new SourceTransformer().toString(iex.getOut().getBody(Source.class));
+            String source = (String) internalExchange.getDestination().getMetaData().get(Endpoint.SERVICE_NAME);
+            String target = (String) internalExchange.getSource().getMetaData().get(Endpoint.SERVICE_NAME);
+            String outXml = new SourceTransformer().toString(internalExchange.getOut().getBody(Source.class));
 
             Method transformationMethod = getTransformationMethod("returnValue");
             Object[] args = new Object[] { source, target, outXml };
-            MessageProperties msgProperties = getMessageProperties(iex.getOut());
+            MessageProperties msgProperties = getMessageProperties(internalExchange.getOut());
 
             String transformed = (String) sendMethodCall(transformationMethod, args, msgProperties);
-            iex.getOut().setBody(new StringSource(transformed));
+            internalExchange.getOut().setBody(new StringSource(transformed));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
