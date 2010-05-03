@@ -31,15 +31,61 @@ public class CodeGenerator {
             ontology = manager.loadOntologyFromOntologyDocument(ontologyFile);
 
             OWLDataFactory factory = manager.getOWLDataFactory();
-            IRI iri = IRI.create("http://www.openengsb.org/ekb/ekbConcepts.owl#MainConcept");
-            OWLClass mainConcept = factory.getOWLClass(iri);
-            Set<OWLClassExpression> subClasses = mainConcept.getSubClasses(ontology);
-            generateMainConcepts(subClasses);
+            IRI mainConceptIri = IRI.create("http://www.openengsb.org/ekb/ekbConcepts.owl#MainConcept");
+            OWLClass mainConcept = factory.getOWLClass(mainConceptIri);
+            Set<OWLClassExpression> mainConcepts = mainConcept.getSubClasses(ontology);
+            generateMainConcepts(mainConcepts);
+
+            IRI serviceIri = IRI.create("http://www.openengsb.org/ekb/ekbConcepts.owl#Service");
+            OWLClass service = factory.getOWLClass(serviceIri);
+            Set<OWLClassExpression> services = service.getSubClasses(ontology);
+
+            generateServices(services);
 
             System.out.println(sw.toString());
 
         } catch (OWLOntologyCreationException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void generateServices(Set<OWLClassExpression> services) {
+        for (OWLClassExpression service : services) {
+            generateService(service.asOWLClass());
+        }
+    }
+
+    private static void generateService(OWLClass serviceClass) {
+        out.println("package org.openengsb.codegen.test;");
+
+        out.println("public interface " + serviceClass.getIRI().getFragment() + " {");
+        generateServiceMethods(serviceClass);
+        out.println("}");
+        out.println();
+        // subclasses
+        generateServices(serviceClass.getSubClasses(ontology));
+    }
+
+    private static void generateServiceMethods(OWLClass serviceClass) {
+        Set<OWLClassExpression> superClasses = serviceClass.getSuperClasses(ontology);
+        for (OWLClassExpression superClass : superClasses) {
+            if (!superClass.isClassExpressionLiteral()) {
+                String methodName = getFieldName(superClass);
+                OWLClass type = superClass.getClassesInSignature().iterator().next();
+                String fieldType = type.getIRI().getFragment();
+                out.println("    private " + fieldType + " " + methodName + ";");
+                out.println();
+                out.println("    public " + fieldType + " get" + firstCharToUpper(methodName) + "() {");
+                out.println("        return " + methodName + ";");
+                out.println("    }");
+                out.println();
+                out.println("    public void set" + firstCharToUpper(methodName) + "(" + fieldType + " " + methodName
+                        + ") {");
+                out.println("        this." + methodName + " = " + methodName + ";");
+                out.println("    }");
+                out.println();
+
+            }
         }
     }
 
@@ -102,7 +148,8 @@ public class CodeGenerator {
                 out.println("        return " + fieldName + ";");
                 out.println("    }");
                 out.println();
-                out.println("    public void set" + firstCharToUpper(fieldName) + "(" + fieldType + " " + fieldName + ") {");
+                out.println("    public void set" + firstCharToUpper(fieldName) + "(" + fieldType + " " + fieldName
+                        + ") {");
                 out.println("        this." + fieldName + " = " + fieldName + ";");
                 out.println("    }");
                 out.println();

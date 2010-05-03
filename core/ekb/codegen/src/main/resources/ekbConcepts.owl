@@ -160,6 +160,27 @@
         <Class IRI="#Service"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="#IssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#CreateIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#DeleteIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#UpdateIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="#MantisCreateIssueServiceCall"/>
         <Class IRI="#CreateIssueServiceCall"/>
     </SubClassOf>
@@ -185,6 +206,27 @@
     <SubClassOf>
         <Class IRI="#MantisIssueService"/>
         <Class IRI="#IssueService"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#MantisCreateIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#MantisDeleteIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MantisIssueService"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasServiceCall"/>
+            <Class IRI="#MantisUpdateIssueServiceCall"/>
+        </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#MantisUpdateIssueServiceCall"/>
