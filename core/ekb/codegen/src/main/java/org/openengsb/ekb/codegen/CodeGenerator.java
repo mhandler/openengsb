@@ -70,9 +70,37 @@ public class CodeGenerator {
         Set<OWLClassExpression> superClasses = serviceClass.getSuperClasses(ontology);
         for (OWLClassExpression superClass : superClasses) {
             if (!superClass.isClassExpressionLiteral()) {
+                OWLClass serviceCallClass = superClass.getClassesInSignature().iterator().next();
 
+                String methodName = toServiceCallName(serviceCallClass);
+
+                String returnType = "void";
+
+                for (OWLClassExpression oce : serviceCallClass.getSuperClasses(ontology)) {
+                    Set<OWLObjectProperty> properties = oce.getObjectPropertiesInSignature();
+                    for (OWLObjectProperty p : properties) {
+                        if (p.getIRI().getFragment().equals("hasReturnValue")) {
+                            OWLClass returnTypeClass = oce.getClassesInSignature().iterator().next();
+                            returnType = returnTypeClass.getIRI().getFragment();
+                        }
+                    }
+                }
+
+                out.println("    " + returnType + " " + methodName + "();");
             }
         }
+    }
+
+    private static String toServiceCallName(OWLClass serviceCallClass) {
+        String serviceCallName = serviceCallClass.getIRI().getFragment();
+
+        if (serviceCallName.endsWith("ServiceCall")) {
+            serviceCallName = serviceCallName.substring(0, serviceCallName.length() - "ServiceCall".length());
+        } else {
+            System.err.println("WARNING: ServiceCall does not end with 'ServiceCall':" + serviceCallName);
+        }
+
+        return firstCharToLower(serviceCallName);
     }
 
     private static void generateMainConcepts(Set<OWLClassExpression> subClasses) {
@@ -158,7 +186,12 @@ public class CodeGenerator {
 
     private static String transformToFieldName(String propertyName) {
         String fieldName = propertyName.replaceFirst("has", "");
-        return fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
+        return firstCharToLower(fieldName);
+    }
+
+    private static String firstCharToLower(String s) {
+        return s.substring(0, 1).toLowerCase() + s.substring(1);
+
     }
 
 }
