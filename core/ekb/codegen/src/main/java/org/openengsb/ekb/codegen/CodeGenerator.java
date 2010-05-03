@@ -70,20 +70,6 @@ public class CodeGenerator {
         Set<OWLClassExpression> superClasses = serviceClass.getSuperClasses(ontology);
         for (OWLClassExpression superClass : superClasses) {
             if (!superClass.isClassExpressionLiteral()) {
-                String methodName = getFieldName(superClass);
-                OWLClass type = superClass.getClassesInSignature().iterator().next();
-                String fieldType = type.getIRI().getFragment();
-                out.println("    private " + fieldType + " " + methodName + ";");
-                out.println();
-                out.println("    public " + fieldType + " get" + firstCharToUpper(methodName) + "() {");
-                out.println("        return " + methodName + ";");
-                out.println("    }");
-                out.println();
-                out.println("    public void set" + firstCharToUpper(methodName) + "(" + fieldType + " " + methodName
-                        + ") {");
-                out.println("        this." + methodName + " = " + methodName + ";");
-                out.println("    }");
-                out.println();
 
             }
         }

@@ -250,13 +250,6 @@
         </ObjectExactCardinality>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#ServiceCall"/>
-        <DataExactCardinality cardinality="1">
-            <DataProperty IRI="#hasServiceName"/>
-            <Datatype abbreviatedIRI="xsd:string"/>
-        </DataExactCardinality>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#UpdateIssueServiceCall"/>
         <Class IRI="#ServiceCall"/>
     </SubClassOf>
