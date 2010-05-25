@@ -33,7 +33,7 @@
   <packaging>jar</packaging>
 
   <description>
-    This component provides ontology storage functionality as well as ontology versioning and lifecycle support.
+    This component provides knowledge management functionality as well as transformation support.
   </description>
 
   <build>
@@ -49,36 +49,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.openengsb</groupId>
-      <artifactId>openengsb-core</artifactId>
-    </dependency>
-   
-    <dependency>
-      <groupId>org.owlapi</groupId>
-      <artifactId>owlapi</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>jaxen</groupId>
-      <artifactId>jaxen</artifactId>
-    </dependency>
-    
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xmlunit</groupId>
-      <artifactId>xmlunit</artifactId>
     </dependency>
   </dependencies>
 
