@@ -17,12 +17,20 @@
  */
 package org.openengsb.ekb.api;
 
+import java.util.List;
+
 public interface EKB {
 
-    String transformMethodCall(String sender, String receiver, String xml);
+    Concept<?> getConcept(String id);
 
-    String transformReturnValue(String sender, String receiver, String xml);
+    <T> Concept<T> getConcept(String id, Class<T> conceptClass);
 
-    String transformEvent(String sender, String receiver, String xml);
+    <T> List<ConceptSource> getSources(Concept<T> concept);
+
+    <T> List<T> getData(ConceptSource source, Concept<T> concept);
+
+    <T> List<Concept<?>> getSubConcepts(Concept<T> superConcept);
+
+    <T> List<Concept<?>> getSoftReferences(Concept<T> concept);
 
 }
