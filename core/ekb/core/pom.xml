@@ -48,6 +48,11 @@
   </build>
 
   <dependencies>
+  
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-ekb-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

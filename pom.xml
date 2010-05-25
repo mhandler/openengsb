@@ -64,7 +64,6 @@
     <jetty.version>6.1.20</jetty.version>
     <ode.version>1.3.4.preview1</ode.version>
     <exist.version>1.4.0</exist.version>
-    <owlapi.version>3.0.0</owlapi.version>
     <smack.version>3.1.0</smack.version>
     <twitter4j.version>2.1.0</twitter4j.version>
     <servicemix.specs.version>1.1.0</servicemix.specs.version>
@@ -144,11 +143,9 @@
 
     <!-- Engineering Knowledge Base -->
     <module>core/ekb/core</module>
-    <module>core/ekb/interceptor</module>
     <module>core/ekb/service-engine</module>
     <module>core/ekb/service-unit</module>
     <module>core/ekb/api</module>
-    <module>core/ekb/codegen</module>
 
     <!-- Enterprise Data Base -->
     <module>features/edb/core</module>
@@ -802,18 +799,8 @@
       </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-ekb-codegen</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
         <artifactId>openengsb-ekb-api</artifactId>
         <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-       <groupId>org.openengsb</groupId>
-       <artifactId>openengsb-ekb-interceptor</artifactId>
-       <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
@@ -1492,13 +1479,6 @@
         <groupId>org.twitter4j</groupId>
         <artifactId>twitter4j-core</artifactId>
         <version>${twitter4j.version}</version>
-      </dependency>
-
-      <!-- Engineering Knowledge Base Dependencies -->
-      <dependency>
-        <groupId>org.owlapi</groupId>
-        <artifactId>owlapi</artifactId>
-        <version>${owlapi.version}</version>
       </dependency>
 
       <!-- OpenFire XMPP -->
