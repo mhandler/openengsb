@@ -23,14 +23,18 @@ public interface EKB {
 
     Concept<?> getConcept(String id);
 
+    List<Concept<?>> getAllConcepts();
+
     <T> Concept<T> getConcept(String id, Class<T> conceptClass);
 
-    <T> List<ConceptSource> getSources(Concept<T> concept);
+    List<ConceptSource> getSources(Concept<?> concept);
 
     <T> List<T> getData(ConceptSource source, Concept<T> concept);
 
-    <T> List<Concept<?>> getSubConcepts(Concept<T> superConcept);
+    List<Concept<?>> getSubConcepts(Concept<?> superConcept);
 
-    <T> List<Concept<?>> getSoftReferences(Concept<T> concept);
+    List<Concept<?>> getSoftReferences(Concept<?> concept);
+
+    <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept);
 
 }

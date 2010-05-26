@@ -9,6 +9,12 @@ import org.openengsb.ekb.api.EKB;
 public class EKBImplementation implements EKB {
 
     @Override
+    public List<Concept<?>> getAllConcepts() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public Concept<?> getConcept(String id) {
         // TODO Auto-generated method stub
         return null;
@@ -27,20 +33,27 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    public <T> List<ConceptSource> getSources(Concept<T> concept) {
+    public List<Concept<?>> getSoftReferences(Concept<?> concept) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> List<Concept<?>> getSubConcepts(Concept<T> superConcept) {
+    public List<ConceptSource> getSources(Concept<?> concept) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public <T> List<Concept<?>> getSoftReferences(Concept<T> concept) {
+    public List<Concept<?>> getSubConcepts(Concept<?> superConcept) {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
