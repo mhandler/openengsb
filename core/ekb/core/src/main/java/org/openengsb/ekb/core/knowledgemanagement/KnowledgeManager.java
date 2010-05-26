@@ -8,11 +8,13 @@ public interface KnowledgeManager {
 
     public List<Concept<?>> getActiveConcepts();
 
-    public List<Concept<?>> getActiveConcepts(String domain);
+    public Concept<?> getConcept(String id);
+
+    public List<Concept<?>> getActiveConcepts(String modelPartId);
 
     public List<Concept<?>> getInactiveConcepts();
 
-    public List<Concept<?>> getInactiveConcepts(String domain);
+    public List<Concept<?>> getInactiveConcepts(String modelPartId);
 
     public void storeConcepts(List<Concept<?>> concepts);
 

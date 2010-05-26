@@ -31,10 +31,6 @@ public interface EKB {
 
     <T> List<T> getData(ConceptSource source, Concept<T> concept);
 
-    List<Concept<?>> getSubConcepts(Concept<?> superConcept);
-
-    List<Concept<?>> getSoftReferences(Concept<?> concept);
-
     <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept);
 
 }

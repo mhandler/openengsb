@@ -1,23 +1,22 @@
 package org.openengsb.ekb.api;
 
-public class Concept<T> {
+import java.util.List;
 
-    private String id;
+public interface Concept<T> {
 
-    private String domain;
+    public String getId();
 
-    private Class<T> conceptClass;
+    public Class<T> getConceptClass();
 
-    public String getId() {
-        return id;
-    }
+    public String getModelPartId();
 
-    public Class<T> getConceptClass() {
-        return conceptClass;
-    }
+    public List<Concept<?>> getSoftReferences();
 
-    public String getDomain() {
-        return domain;
-    }
+    public List<Concept<?>> getSubConcepts();
+
+    public Concept<?> getSuperConcept();
+
+    @Override
+    public String toString();
 
 }
