@@ -16,6 +16,7 @@ import org.openengsb.ekb.core.endpointmanagement.EndpointManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.Transformer;
+import org.openengsb.ekb.core.softreferences.DeReferencer;
 
 public class EKBImplementation implements EKB {
 
@@ -28,6 +29,8 @@ public class EKBImplementation implements EKB {
     private EndpointManager endpointManager;
 
     private Transformer transformer;
+
+    private DeReferencer deReferencer;
 
     @Override
     public List<Concept<?>> getAllConcepts() {
@@ -106,8 +109,7 @@ public class EKBImplementation implements EKB {
 
     @Override
     public <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept) {
-        // TODO Auto-generated method stub
-        return null;
+        return deReferencer.deref(sourceConcept, source, targetConcept);
     }
 
 }
