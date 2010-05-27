@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.api.Concept;
@@ -52,10 +50,10 @@ public class EKBImplementation implements EKB {
         checkProvided(source, concept);
 
         if (source.getId().equals(concept.getModelPartId())) {
-            QName service = new QName(source.getUrn(), source.getService());
             Method method = getQueryMethodGetAll();
             Object[] args = new Object[] { concept.getConceptClass() };
-            return (List<T>) MethodCallHelper.sendMethodCall(endpoint, service, method, args, messageProperties);
+            return (List<T>) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args,
+                    messageProperties);
         }
 
         for (Concept<?> subConcept : concept.getSubConcepts()) {
@@ -73,10 +71,9 @@ public class EKBImplementation implements EKB {
         checkProvided(source, concept);
 
         if (source.getId().equals(concept.getModelPartId())) {
-            QName service = new QName(source.getUrn(), source.getService());
             Method method = getQueryMethodGetByKey();
             Object[] args = new Object[] { concept.getConceptClass(), key };
-            return (T) MethodCallHelper.sendMethodCall(endpoint, service, method, args, messageProperties);
+            return (T) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args, messageProperties);
         }
 
         for (Concept<?> subConcept : concept.getSubConcepts()) {

@@ -1,6 +1,8 @@
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.core;
 
 import java.util.List;
+
+import org.openengsb.ekb.api.DomainQueryInterface;
 
 public class DomainQueryTranslator<T> implements DomainQueryInterface {
 
@@ -11,20 +13,18 @@ public class DomainQueryTranslator<T> implements DomainQueryInterface {
     @Override
     @SuppressWarnings("unchecked")
     public <U> List<U> getAll(Class<U> type) {
-        try {
-            return (List<U>) interfaceClass.getMethod("getAll" + type.getName()).invoke(interfaceImplementation);
-        } catch (RuntimeException re) {
-            throw re;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return (List<U>) invokeMethod("getAll" + type.getName());
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <U> U getByKey(Class<U> type, String key) {
+        return (U) invokeMethod("getByKey" + type.getName(), String.class);
+    }
+
+    private Object invokeMethod(String name, Class<?>... argTypes) {
         try {
-            return (U) interfaceClass.getMethod("getByKey" + type.getName()).invoke(interfaceImplementation);
+            return interfaceClass.getMethod(name, argTypes).invoke(interfaceImplementation);
         } catch (RuntimeException re) {
             throw re;
         } catch (Exception e) {

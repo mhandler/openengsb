@@ -6,9 +6,9 @@ import org.openengsb.ekb.api.ConceptSource;
 
 public interface EndpointManager {
 
-    void activated(ConceptSource source);
+    void activate(ConceptSource source);
 
-    void deActivated(ConceptSource source);
+    void deactivate(ConceptSource source);
 
     List<ConceptSource> getActiveConceptSources();
 

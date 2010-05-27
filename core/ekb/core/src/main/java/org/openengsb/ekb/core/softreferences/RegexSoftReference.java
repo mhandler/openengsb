@@ -24,32 +24,41 @@ public class RegexSoftReference<U, T> implements SoftReference<U, T> {
     public List<T> follow(EKB ekb, U sourceObject) {
         try {
             Class<U> sourceClass = sourceConcept.getConceptClass();
-            Field sourceField = sourceClass.getDeclaredField(referenceField);
-            boolean accessible = sourceField.isAccessible();
-            sourceField.setAccessible(true);
-            Object sourceFieldValue = sourceField.get(sourceObject);
-            sourceField.setAccessible(accessible);
-
+            Object sourceFieldValue = getReferenceFieldValue(sourceObject, sourceClass);
             String sourceFieldText = String.valueOf(sourceFieldValue);
-            Matcher matcher = Pattern.compile(targetConcept.getReferenceRegex()).matcher(sourceFieldText);
-
-            List<T> result = new ArrayList<T>();
-            while (matcher.find()) {
-                String matchingPart = matcher.group();
-
-                String key = targetConcept.extractKey(matchingPart);
-                if (key != null) {
-                    T element = getTargetElementByKey(ekb, key);
-                    if (element != null) {
-                        result.add(element);
-                    }
-                }
-
-            }
-            return result;
+            return findAndFollow(ekb, sourceFieldText);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Object getReferenceFieldValue(U sourceObject, Class<U> sourceClass) throws NoSuchFieldException,
+            IllegalAccessException {
+        Field sourceField = sourceClass.getDeclaredField(referenceField);
+        boolean accessible = sourceField.isAccessible();
+        sourceField.setAccessible(true);
+        Object sourceFieldValue = sourceField.get(sourceObject);
+        sourceField.setAccessible(accessible);
+        return sourceFieldValue;
+    }
+
+    private List<T> findAndFollow(EKB ekb, String sourceFieldText) {
+        Matcher matcher = Pattern.compile(targetConcept.getReferenceRegex()).matcher(sourceFieldText);
+
+        List<T> result = new ArrayList<T>();
+        while (matcher.find()) {
+            String matchingPart = matcher.group();
+
+            String key = targetConcept.extractKey(matchingPart);
+            if (key != null) {
+                T element = getTargetElementByKey(ekb, key);
+                if (element != null) {
+                    result.add(element);
+                }
+            }
+
+        }
+        return result;
     }
 
     private T getTargetElementByKey(EKB ekb, String key) {

@@ -1,40 +1,15 @@
 package org.openengsb.ekb.api;
 
-public class ConceptSource {
+import javax.xml.namespace.QName;
 
-    private String id;
+public interface ConceptSource {
 
-    private String service;
+    String getId();
 
-    private String urn;
+    QName getService();
 
-    public String getId() {
-        return id;
-    }
-
-    public String getService() {
-        return service;
-    }
-
-    public String getUrn() {
-        return urn;
-    }
-
-    public boolean canProvide(Concept<?> concept) {
-        if (concept.getModelPartId().equals(id)) {
-            return true;
-        }
-        for (Concept<?> subConcept : concept.getSubConcepts()) {
-            if (canProvide(subConcept)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    boolean canProvide(Concept<?> concept);
 
     @Override
-    public String toString() {
-        return id;
-    }
-
+    String toString();
 }
