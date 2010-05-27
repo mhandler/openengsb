@@ -4,19 +4,21 @@ import java.util.List;
 
 public interface Concept<T> {
 
-    public String getId();
+    String getId();
 
-    public Class<T> getConceptClass();
+    Class<T> getConceptClass();
 
-    public String getModelPartId();
+    String getModelPartId();
 
-    public List<Concept<?>> getSoftReferences();
+    List<SoftReference<T, ?>> getSoftReferences();
 
-    public List<Concept<?>> getSubConcepts();
+    <U> List<SoftReference<T, U>> getSoftReferences(Concept<U> targetConcept);
 
-    public Concept<?> getSuperConcept();
+    List<Concept<?>> getSubConcepts();
+
+    Concept<?> getSuperConcept();
 
     @Override
-    public String toString();
+    String toString();
 
 }

@@ -2,6 +2,7 @@ package org.openengsb.ekb;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -16,7 +17,6 @@ import org.openengsb.ekb.core.endpointmanagement.EndpointManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.Transformer;
-import org.openengsb.ekb.core.softreferences.DeReferencer;
 
 public class EKBImplementation implements EKB {
 
@@ -29,8 +29,6 @@ public class EKBImplementation implements EKB {
     private EndpointManager endpointManager;
 
     private Transformer transformer;
-
-    private DeReferencer deReferencer;
 
     @Override
     public List<Concept<?>> getAllConcepts() {
@@ -55,7 +53,7 @@ public class EKBImplementation implements EKB {
 
         if (source.getId().equals(concept.getModelPartId())) {
             QName service = new QName(source.getUrn(), source.getService());
-            Method method = getQueryMethod();
+            Method method = getQueryMethodGetAll();
             Object[] args = new Object[] { concept.getConceptClass() };
             return (List<T>) MethodCallHelper.sendMethodCall(endpoint, service, method, args, messageProperties);
         }
@@ -67,6 +65,27 @@ public class EKBImplementation implements EKB {
             }
         }
         return new ArrayList<T>();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getDataElement(ConceptSource source, Concept<T> concept, String key) {
+        checkProvided(source, concept);
+
+        if (source.getId().equals(concept.getModelPartId())) {
+            QName service = new QName(source.getUrn(), source.getService());
+            Method method = getQueryMethodGetByKey();
+            Object[] args = new Object[] { concept.getConceptClass(), key };
+            return (T) MethodCallHelper.sendMethodCall(endpoint, service, method, args, messageProperties);
+        }
+
+        for (Concept<?> subConcept : concept.getSubConcepts()) {
+            Object data = getDataElement(source, subConcept, key);
+            if (data != null) {
+                return transform(Collections.singletonList(data), concept).get(0);
+            }
+        }
+        return null;
     }
 
     private <T> List<T> transform(List<?> data, Concept<T> concept) {
@@ -87,9 +106,17 @@ public class EKBImplementation implements EKB {
         }
     }
 
-    private Method getQueryMethod() {
+    private Method getQueryMethodGetAll() {
         try {
             return DomainQueryInterface.class.getMethod("getAll", Class.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Method getQueryMethodGetByKey() {
+        try {
+            return DomainQueryInterface.class.getMethod("getByKey", Class.class, String.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -105,11 +132,6 @@ public class EKBImplementation implements EKB {
             }
         }
         return sources;
-    }
-
-    @Override
-    public <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept) {
-        return deReferencer.deref(sourceConcept, source, targetConcept);
     }
 
 }

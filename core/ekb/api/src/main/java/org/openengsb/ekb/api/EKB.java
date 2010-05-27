@@ -31,6 +31,6 @@ public interface EKB {
 
     <T> List<T> getData(ConceptSource source, Concept<T> concept);
 
-    <T, U> List<T> followSoftReference(Concept<U> sourceConcept, U source, Concept<T> targetConcept);
+    <T> T getDataElement(ConceptSource source, Concept<T> concept, String key);
 
 }

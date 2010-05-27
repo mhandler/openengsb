@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.EKB;
+import org.openengsb.ekb.api.SoftReference;
 
 public class UC2 {
 
@@ -15,7 +16,8 @@ public class UC2 {
 
         Requirement req = null;
 
-        List<Issue> issues = ekb.followSoftReference(reqConcept, req, issueConcept);
+        List<SoftReference<Requirement, Issue>> refs = reqConcept.getSoftReferences(issueConcept);
+        List<Issue> issues = refs.get(0).follow(ekb, req);
 
         for (Issue issue : issues) {
             handleIssue(issueConcept, issue);
@@ -25,7 +27,8 @@ public class UC2 {
 
     private static void handleIssue(Concept<Issue> issueConcept, Issue issue) {
         Concept<Developer> devConcept = ekb.getConcept("Developer", Developer.class);
-        List<Developer> developers = ekb.followSoftReference(issueConcept, issue, devConcept);
+        List<SoftReference<Issue, Developer>> refs = issueConcept.getSoftReferences(devConcept);
+        List<Developer> developers = refs.get(0).follow(ekb, issue);
         for (Developer dev : developers) {
             notify(dev);
         }
