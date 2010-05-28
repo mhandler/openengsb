@@ -33,6 +33,8 @@ public interface Concept<TYPE> {
 
     Concept<?> getSuperConcept();
 
+    List<FieldMapping> getFieldMappings(Concept<?> targetConcept);
+
     @Override
     String toString();
 
