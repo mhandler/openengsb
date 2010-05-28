@@ -21,8 +21,8 @@ import java.util.List;
 
 public interface DomainQueryInterface {
 
-    <T> List<T> getAll(Class<T> type);
+    <TYPE> List<TYPE> getAll(Class<TYPE> type);
 
-    <T> T getByKey(Class<T> type, String key);
+    <TYPE> TYPE getByKey(Class<TYPE> type, String key);
 
 }

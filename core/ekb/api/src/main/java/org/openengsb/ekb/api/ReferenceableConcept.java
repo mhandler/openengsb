@@ -17,7 +17,7 @@
  */
 package org.openengsb.ekb.api;
 
-public interface ReferenceableConcept<T> extends Concept<T> {
+public interface ReferenceableConcept<TYPE> extends Concept<TYPE> {
 
     String getReferenceRegex();
 

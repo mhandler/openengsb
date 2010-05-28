@@ -19,17 +19,17 @@ package org.openengsb.ekb.api;
 
 import java.util.List;
 
-public interface Concept<T> {
+public interface Concept<TYPE> {
 
     String getId();
 
-    Class<T> getConceptClass();
+    Class<TYPE> getConceptClass();
 
     String getModelPartId();
 
-    List<SoftReference<T, ?>> getSoftReferences();
+    List<SoftReference<TYPE, ?>> getSoftReferences();
 
-    <U> List<SoftReference<T, U>> getSoftReferences(Concept<U> targetConcept);
+    <TARGET> List<SoftReference<TYPE, TARGET>> getSoftReferences(Concept<TARGET> targetConcept);
 
     List<Concept<?>> getSubConcepts();
 

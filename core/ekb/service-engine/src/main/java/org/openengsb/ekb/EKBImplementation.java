@@ -76,7 +76,7 @@ public class EKBImplementation implements EKB {
         for (Concept<?> subConcept : concept.getSubConcepts()) {
             List data = getData(source, subConcept);
             if (!data.isEmpty()) {
-                return transform(data, concept);
+                return transform(data, subConcept, concept);
             }
         }
         return new ArrayList<T>();
@@ -96,17 +96,17 @@ public class EKBImplementation implements EKB {
         for (Concept<?> subConcept : concept.getSubConcepts()) {
             Object data = getDataElement(source, subConcept, key);
             if (data != null) {
-                return transform(Collections.singletonList(data), concept).get(0);
+                return transform(Collections.singletonList(data), subConcept, concept).get(0);
             }
         }
         return null;
     }
 
-    private <T> List<T> transform(List<?> data, Concept<T> concept) {
+    private <T> List<T> transform(List<?> data, Concept<?> sourceConcept, Concept<T> targetConcept) {
         try {
             List<T> result = new ArrayList<T>();
             for (Object element : data) {
-                result.add(transformer.transform(concept, element));
+                result.add(transformer.transform(sourceConcept, targetConcept, element));
             }
             return result;
         } catch (TransformationException e) {

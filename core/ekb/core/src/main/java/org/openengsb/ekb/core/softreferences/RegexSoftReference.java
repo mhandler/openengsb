@@ -31,18 +31,18 @@ import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.ReferenceableConcept;
 import org.openengsb.ekb.api.SoftReference;
 
-public class RegexSoftReference<U, T> implements SoftReference<U, T> {
+public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference<SOURCETYPE, TARGETTYPE> {
 
-    private Concept<U> sourceConcept;
+    private Concept<SOURCETYPE> sourceConcept;
 
-    private ReferenceableConcept<T> targetConcept;
+    private ReferenceableConcept<TARGETTYPE> targetConcept;
 
     private String referenceField;
 
     @Override
-    public List<T> follow(EKB ekb, U sourceObject) {
+    public List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject) {
         try {
-            Class<U> sourceClass = sourceConcept.getConceptClass();
+            Class<SOURCETYPE> sourceClass = sourceConcept.getConceptClass();
             Object sourceFieldValue = getReferenceFieldValue(sourceObject, sourceClass);
             String sourceFieldText = String.valueOf(sourceFieldValue);
             return findAndFollow(ekb, sourceFieldText);
@@ -51,8 +51,8 @@ public class RegexSoftReference<U, T> implements SoftReference<U, T> {
         }
     }
 
-    private Object getReferenceFieldValue(U sourceObject, Class<U> sourceClass) throws NoSuchFieldException,
-            IllegalAccessException {
+    private Object getReferenceFieldValue(SOURCETYPE sourceObject, Class<SOURCETYPE> sourceClass)
+            throws NoSuchFieldException, IllegalAccessException {
         Field sourceField = sourceClass.getDeclaredField(referenceField);
         boolean accessible = sourceField.isAccessible();
         sourceField.setAccessible(true);
@@ -61,16 +61,16 @@ public class RegexSoftReference<U, T> implements SoftReference<U, T> {
         return sourceFieldValue;
     }
 
-    private List<T> findAndFollow(EKB ekb, String sourceFieldText) {
+    private List<TARGETTYPE> findAndFollow(EKB ekb, String sourceFieldText) {
         Matcher matcher = Pattern.compile(targetConcept.getReferenceRegex()).matcher(sourceFieldText);
 
-        List<T> result = new ArrayList<T>();
+        List<TARGETTYPE> result = new ArrayList<TARGETTYPE>();
         while (matcher.find()) {
             String matchingPart = matcher.group();
 
             String key = targetConcept.extractKey(matchingPart);
             if (key != null) {
-                T element = getTargetElementByKey(ekb, key);
+                TARGETTYPE element = getTargetElementByKey(ekb, key);
                 if (element != null) {
                     result.add(element);
                 }
@@ -80,10 +80,10 @@ public class RegexSoftReference<U, T> implements SoftReference<U, T> {
         return result;
     }
 
-    private T getTargetElementByKey(EKB ekb, String key) {
+    private TARGETTYPE getTargetElementByKey(EKB ekb, String key) {
         List<ConceptSource> sources = ekb.getSources(targetConcept);
         for (ConceptSource source : sources) {
-            T result = ekb.getDataElement(source, targetConcept, key);
+            TARGETTYPE result = ekb.getDataElement(source, targetConcept, key);
             if (result != null) {
                 return result;
             }
@@ -92,12 +92,12 @@ public class RegexSoftReference<U, T> implements SoftReference<U, T> {
     }
 
     @Override
-    public Concept<U> getSourceConcept() {
+    public Concept<SOURCETYPE> getSourceConcept() {
         return sourceConcept;
     }
 
     @Override
-    public Concept<T> getTargetConcept() {
+    public Concept<TARGETTYPE> getTargetConcept() {
         return targetConcept;
     }
 

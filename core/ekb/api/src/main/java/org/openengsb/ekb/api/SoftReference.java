@@ -19,12 +19,12 @@ package org.openengsb.ekb.api;
 
 import java.util.List;
 
-public interface SoftReference<U, T> {
+public interface SoftReference<SOURCETYPE, TARGETTYPE> {
 
-    List<T> follow(EKB ekb, U sourceObject);
+    List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject);
 
-    Concept<U> getSourceConcept();
+    Concept<SOURCETYPE> getSourceConcept();
 
-    Concept<T> getTargetConcept();
+    Concept<TARGETTYPE> getTargetConcept();
 
 }

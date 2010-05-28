@@ -25,12 +25,12 @@ public interface EKB {
 
     List<Concept<?>> getAllConcepts();
 
-    <T> Concept<T> getConcept(String id, Class<T> conceptClass);
+    <TYPE> Concept<TYPE> getConcept(String id, Class<TYPE> conceptClass);
 
     List<ConceptSource> getSources(Concept<?> concept);
 
-    <T> List<T> getData(ConceptSource source, Concept<T> concept);
+    <TYPE> List<TYPE> getData(ConceptSource source, Concept<TYPE> concept);
 
-    <T> T getDataElement(ConceptSource source, Concept<T> concept, String key);
+    <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, String key);
 
 }

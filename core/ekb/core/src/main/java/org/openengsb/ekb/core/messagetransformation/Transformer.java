@@ -20,6 +20,7 @@ import org.openengsb.ekb.api.Concept;
 
 public interface Transformer {
 
-    <T> T transform(Concept<T> target, Object input) throws TransformationException;
+    <TARGETTYPE> TARGETTYPE transform(Concept<?> source, Concept<TARGETTYPE> target, Object input)
+            throws TransformationException;
 
 }
