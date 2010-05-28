@@ -19,6 +19,11 @@ package org.openengsb.ekb.analyzer;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.ReferenceId;
@@ -33,6 +38,9 @@ public class ConceptParser {
 
     private ConceptCache cache = new ConceptCache();
 
+    private Executor executor = new ThreadPoolExecutor(1, 10, 1000, TimeUnit.MILLISECONDS,
+            new LinkedBlockingDeque<Runnable>());
+
     public <TYPE> Concept<TYPE> parseConcept(Class<TYPE> clazz) throws AnnotationMissingException {
         ConceptImpl<TYPE> concept = new ConceptImpl<TYPE>();
         concept.setConceptClass(clazz);
@@ -43,7 +51,7 @@ public class ConceptParser {
         setFieldMappings(clazz, concept);
         setSoftReferences(clazz, concept);
 
-        return null;
+        return concept;
     }
 
     private <TYPE> void setId(Class<TYPE> clazz, ConceptImpl<TYPE> concept) throws AnnotationMissingException {
@@ -55,8 +63,13 @@ public class ConceptParser {
         if (isAnnotationPresent(clazz, SuperConcept.class)) {
             String superConceptId = clazz.getAnnotation(SuperConcept.class).value();
             ConceptImpl<?> superConcept = cache.getConcept(superConceptId);
-            // TODO Handle case that concept is not already in cache...
-            concept.setSuperConcept(superConcept);
+            if (superConcept != null) {
+                concept.setSuperConcept(superConcept);
+            } else {
+                SetSuperConceptTask<TYPE> task = new SetSuperConceptTask<TYPE>(concept, superConceptId);
+                cache.addListener(task);
+                executor.execute(task);
+            }
         }
     }
 
@@ -79,10 +92,16 @@ public class ConceptParser {
             if (isAnnotationPresent(field, ReferenceId.class)) {
                 ReferenceId referenceId = field.getAnnotation(ReferenceId.class);
                 String targetConceptId = referenceId.targetConcept();
-                Concept<?> targetConcept = cache.getConcept(targetConceptId);
-                // TODO handle case that concept is not already cached
                 String regexp = referenceId.regexp();
-                concept.addSoftReference(createSoftRef(concept, targetConcept, field.getName(), regexp));
+                Concept<?> targetConcept = cache.getConcept(targetConceptId);
+                if (targetConcept != null) {
+                    concept.addSoftReference(createSoftRef(concept, targetConcept, field.getName(), regexp));
+                } else {
+                    AddSoftReferenceTask<TYPE> task = new AddSoftReferenceTask<TYPE>(concept, targetConceptId, field
+                            .getName(), regexp);
+                    cache.addListener(task);
+                    executor.execute(task);
+                }
             }
         }
     }
@@ -112,6 +131,75 @@ public class ConceptParser {
     private boolean isAnnotationPresent(Field field, Class<? extends Annotation> annotationClass) {
         Annotation annotation = field.getAnnotation(annotationClass);
         return annotation != null;
+    }
+
+    private abstract class CacheWaiterTask<T> implements Runnable, ConceptCacheListener {
+
+        protected ConceptImpl<T> concept;
+
+        protected String idToWaitFor;
+
+        private Semaphore semaphore = new Semaphore(0);
+
+        public CacheWaiterTask(ConceptImpl<T> concept, String idToWaitFor) {
+            this.concept = concept;
+            this.idToWaitFor = idToWaitFor;
+        }
+
+        @Override
+        public void run() {
+            try {
+                semaphore.acquire();
+                doAction();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+        public abstract void doAction();
+
+        @Override
+        public void conceptStored(Concept<?> concept) {
+            if (concept.getId().equals(idToWaitFor)) {
+                semaphore.release();
+                cache.removeListener(this);
+            }
+        }
+
+    }
+
+    private class SetSuperConceptTask<T> extends CacheWaiterTask<T> {
+
+        public SetSuperConceptTask(ConceptImpl<T> concept, String idToWaitFor) {
+            super(concept, idToWaitFor);
+        }
+
+        @Override
+        public void doAction() {
+            concept.setSuperConcept(cache.getConcept(idToWaitFor));
+        }
+
+    }
+
+    private class AddSoftReferenceTask<T> extends CacheWaiterTask<T> {
+
+        private String fieldName;
+
+        private String regexp;
+
+        public AddSoftReferenceTask(ConceptImpl<T> concept, String idToWaitFor, String fieldName, String regexp) {
+            super(concept, idToWaitFor);
+            this.fieldName = fieldName;
+            this.regexp = regexp;
+        }
+
+        @Override
+        public void doAction() {
+            Concept<?> targetConcept = cache.getConcept(idToWaitFor);
+            concept.addSoftReference(createSoftRef(concept, targetConcept, fieldName, regexp));
+        }
+
     }
 
 }
