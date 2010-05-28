@@ -28,7 +28,8 @@ import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.DomainQueryInterface;
 import org.openengsb.ekb.api.EKB;
-import org.openengsb.ekb.core.endpointmanagement.EndpointManager;
+import org.openengsb.ekb.api.NoSuchConceptException;
+import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 import org.openengsb.ekb.core.messagetransformation.TransformationException;
 import org.openengsb.ekb.core.messagetransformation.Transformer;
@@ -41,7 +42,7 @@ public class EKBImplementation implements EKB {
 
     private MessageProperties messageProperties;
 
-    private EndpointManager endpointManager;
+    private ConceptSourceManager endpointManager;
 
     private Transformer transformer;
 
@@ -51,14 +52,24 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    public Concept<?> getConcept(String id) {
+    public Concept<?> getConcept(String id) throws NoSuchConceptException {
         return knowledgeManager.getConcept(id);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Concept<T> getConcept(String id, Class<T> conceptClass) {
-        return (Concept<T>) getConcept(id);
+    public <T> Concept<T> getConcept(String id, Class<T> conceptClass) throws NoSuchConceptException {
+        Concept<?> concept = getConcept(id);
+        checkConceptClass(id, conceptClass, concept);
+        return (Concept<T>) concept;
+    }
+
+    private void checkConceptClass(String id, Class<?> conceptClass, Concept<?> concept) throws NoSuchConceptException {
+        if (concept != null && !concept.getConceptClass().equals(conceptClass)) {
+            throw new NoSuchConceptException("The concept stored under the id " + id + " has concept class "
+                    + concept.getConceptClass() + " but a concept with concept class " + conceptClass
+                    + " was requested.");
+        }
     }
 
     @Override

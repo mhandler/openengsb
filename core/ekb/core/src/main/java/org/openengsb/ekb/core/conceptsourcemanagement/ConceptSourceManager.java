@@ -15,30 +15,22 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.knowledgemanagement;
+package org.openengsb.ekb.core.conceptsourcemanagement;
 
 import java.util.List;
 
-import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.api.NoSuchConceptException;
 
-public interface KnowledgeManager {
+public interface ConceptSourceManager {
 
-    public List<Concept<?>> getActiveConcepts();
+    void activate(ConceptSource source);
 
-    public Concept<?> getConcept(String id) throws NoSuchConceptException;
+    void deactivate(ConceptSource source);
 
-    public List<Concept<?>> getActiveConcepts(ConceptSource source);
+    List<ConceptSource> getActiveConceptSources();
 
-    public List<Concept<?>> getInactiveConcepts();
+    void addListener(ConceptSourceStatusListener listener);
 
-    public List<Concept<?>> getInactiveConcepts(ConceptSource source);
-
-    public void storeConcepts(List<Concept<?>> concepts);
-
-    public void deactivateConcepts(List<Concept<?>> concepts);
-
-    public void activateConcepts(List<Concept<?>> concepts);
+    void removeListener(ConceptSourceStatusListener listener);
 
 }

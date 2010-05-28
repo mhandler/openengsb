@@ -24,12 +24,13 @@ import java.util.Map;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
+import org.openengsb.ekb.api.NoSuchConceptException;
 
 public class UC1 {
 
     private static EKB ekb = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchConceptException {
 
         Concept<Signal> signalConcept = ekb.getConcept("#Signal", Signal.class);
         List<ConceptSource> signalSources = ekb.getSources(signalConcept);

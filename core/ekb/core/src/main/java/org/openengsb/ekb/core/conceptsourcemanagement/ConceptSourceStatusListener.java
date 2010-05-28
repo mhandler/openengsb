@@ -15,18 +15,12 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.endpointmanagement;
-
-import java.util.List;
+package org.openengsb.ekb.core.conceptsourcemanagement;
 
 import org.openengsb.ekb.api.ConceptSource;
 
-public interface EndpointManager {
+public interface ConceptSourceStatusListener {
+    void activated(ConceptSource source);
 
-    void activate(ConceptSource source);
-
-    void deactivate(ConceptSource source);
-
-    List<ConceptSource> getActiveConceptSources();
-
+    void deactivated(ConceptSource source);
 }

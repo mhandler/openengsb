@@ -21,13 +21,14 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.EKB;
+import org.openengsb.ekb.api.NoSuchConceptException;
 import org.openengsb.ekb.api.SoftReference;
 
 public class UC2 {
 
     private static EKB ekb = null;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchConceptException {
         Concept<Requirement> reqConcept = ekb.getConcept("requirement", Requirement.class);
         Concept<Issue> issueConcept = ekb.getConcept("issue", Issue.class);
 
@@ -42,7 +43,7 @@ public class UC2 {
 
     }
 
-    private static void handleIssue(Concept<Issue> issueConcept, Issue issue) {
+    private static void handleIssue(Concept<Issue> issueConcept, Issue issue) throws NoSuchConceptException {
         Concept<Developer> devConcept = ekb.getConcept("Developer", Developer.class);
         List<SoftReference<Issue, Developer>> refs = issueConcept.getSoftReferences(devConcept);
         List<Developer> developers = refs.get(0).follow(ekb, issue);

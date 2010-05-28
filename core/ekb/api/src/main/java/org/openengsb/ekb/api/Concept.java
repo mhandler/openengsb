@@ -36,4 +36,10 @@ public interface Concept<TYPE> {
     @Override
     String toString();
 
+    @Override
+    boolean equals(Object obj);
+
+    @Override
+    int hashCode();
+
 }

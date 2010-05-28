@@ -31,4 +31,10 @@ public interface ConceptSource {
 
     @Override
     String toString();
+
+    @Override
+    boolean equals(Object obj);
+
+    @Override
+    int hashCode();
 }
