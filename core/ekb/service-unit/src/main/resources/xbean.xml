@@ -28,5 +28,6 @@
   </bean>
 
   <enterpriseKnowledgeBase:ekbEndpoint endpoint="ekbEndpoint" service="ekb:ekbService" contextProperties="#contextProperties" />
+  <enterpriseKnowledgeBase:conceptSourceManagerEndpoint endpoint="conceptSourceManagerEndpoint" service="ekb:conceptSourceManagerService" contextProperties="#contextProperties" />
 
 </beans>

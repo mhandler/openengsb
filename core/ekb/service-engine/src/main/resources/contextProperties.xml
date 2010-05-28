@@ -27,6 +27,7 @@
           <map key-type="java.lang.String" value-type="java.lang.String">
             <entry key="ekb/servicename" value="ekbService" />
             <entry key="ekb/namespace" value="urn:openengsb:ekb" />
+            <entry key="ekb/conceptSourceManager/servicename" value="conceptSourceManagerService" />
           </map>
         </entry>
       </map>
