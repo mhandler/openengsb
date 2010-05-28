@@ -28,16 +28,17 @@ import java.util.regex.Pattern;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
-import org.openengsb.ekb.api.ReferenceableConcept;
 import org.openengsb.ekb.api.SoftReference;
 
 public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference<SOURCETYPE, TARGETTYPE> {
 
     private Concept<SOURCETYPE> sourceConcept;
 
-    private ReferenceableConcept<TARGETTYPE> targetConcept;
+    private Concept<TARGETTYPE> targetConcept;
 
     private String referenceField;
+
+    private String regex;
 
     @Override
     public List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject) {
@@ -62,13 +63,11 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
     }
 
     private List<TARGETTYPE> findAndFollow(EKB ekb, String sourceFieldText) {
-        Matcher matcher = Pattern.compile(targetConcept.getReferenceRegex()).matcher(sourceFieldText);
+        Matcher matcher = Pattern.compile(regex).matcher(sourceFieldText);
 
         List<TARGETTYPE> result = new ArrayList<TARGETTYPE>();
         while (matcher.find()) {
-            String matchingPart = matcher.group();
-
-            String key = targetConcept.extractKey(matchingPart);
+            String key = matcher.group(1);
             if (key != null) {
                 TARGETTYPE element = getTargetElementByKey(ekb, key);
                 if (element != null) {
@@ -107,6 +106,18 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
 
     public String getReferenceField() {
         return referenceField;
+    }
+
+    public void setRegex(String regex) {
+        this.regex = regex;
+    }
+
+    public void setTargetConcept(Concept<TARGETTYPE> targetConcept) {
+        this.targetConcept = targetConcept;
+    }
+
+    public void setSourceConcept(Concept<SOURCETYPE> sourceConcept) {
+        this.sourceConcept = sourceConcept;
     }
 
 }

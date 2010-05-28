@@ -15,12 +15,8 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.analyzer;
 
-public interface ReferenceableConcept<TYPE> extends Concept<TYPE> {
-
-    String getReferenceRegex();
-
-    String extractKey(String reference);
+public class JarReader {
 
 }
