@@ -25,8 +25,6 @@ public interface Concept<TYPE> {
 
     Class<TYPE> getConceptClass();
 
-    String getModelPartId();
-
     List<SoftReference<TYPE, ?>> getSoftReferences();
 
     <TARGET> List<SoftReference<TYPE, TARGET>> getSoftReferences(Concept<TARGET> targetConcept);

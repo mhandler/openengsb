@@ -27,6 +27,8 @@ public interface ConceptSource {
 
     boolean canProvide(Concept<?> concept);
 
+    boolean canProvideSubconcept(Concept<?> concept);
+
     @Override
     String toString();
 }

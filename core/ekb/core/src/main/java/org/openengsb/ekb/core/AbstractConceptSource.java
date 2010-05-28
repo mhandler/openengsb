@@ -23,12 +23,12 @@ import org.openengsb.ekb.api.ConceptSource;
 public abstract class AbstractConceptSource implements ConceptSource {
 
     @Override
-    public boolean canProvide(Concept<?> concept) {
-        if (getId().equals(concept.getModelPartId())) {
-            return true;
-        }
+    public boolean canProvideSubconcept(Concept<?> concept) {
         for (Concept<?> subConcept : concept.getSubConcepts()) {
             if (canProvide(subConcept)) {
+                return true;
+            }
+            if (canProvideSubconcept(subConcept)) {
                 return true;
             }
         }

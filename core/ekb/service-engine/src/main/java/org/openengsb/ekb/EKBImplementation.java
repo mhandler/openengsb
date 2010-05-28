@@ -66,7 +66,7 @@ public class EKBImplementation implements EKB {
     public <T> List<T> getData(ConceptSource source, Concept<T> concept) {
         checkProvided(source, concept);
 
-        if (source.getId().equals(concept.getModelPartId())) {
+        if (source.canProvide(concept)) {
             Method method = getQueryMethodGetAll();
             Object[] args = new Object[] { concept.getConceptClass() };
             return (List<T>) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args,
@@ -87,7 +87,7 @@ public class EKBImplementation implements EKB {
     public <T> T getDataElement(ConceptSource source, Concept<T> concept, String key) {
         checkProvided(source, concept);
 
-        if (source.getId().equals(concept.getModelPartId())) {
+        if (source.canProvide(concept)) {
             Method method = getQueryMethodGetByKey();
             Object[] args = new Object[] { concept.getConceptClass(), key };
             return (T) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args, messageProperties);
@@ -115,8 +115,9 @@ public class EKBImplementation implements EKB {
     }
 
     private void checkProvided(ConceptSource source, Concept<?> concept) {
-        if (!source.canProvide(concept)) {
-            throw new IllegalArgumentException("ConceptSource " + source + " does not provide the concept: " + concept);
+        if (!source.canProvide(concept) && !source.canProvideSubconcept(concept)) {
+            throw new IllegalArgumentException("ConceptSource " + source + " does not provide the concept: " + concept
+                    + " or any subconcepts of it.");
         }
     }
 
@@ -141,7 +142,7 @@ public class EKBImplementation implements EKB {
         List<ConceptSource> activeConceptSources = endpointManager.getActiveConceptSources();
         List<ConceptSource> sources = new ArrayList<ConceptSource>();
         for (ConceptSource source : activeConceptSources) {
-            if (source.canProvide(concept)) {
+            if (source.canProvide(concept) || source.canProvideSubconcept(concept)) {
                 sources.add(source);
             }
         }
