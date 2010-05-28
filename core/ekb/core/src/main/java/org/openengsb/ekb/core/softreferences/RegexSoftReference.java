@@ -1,3 +1,22 @@
+/**
+
+   Copyright 2010 OpenEngSB Division, Viennimport java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptSource;
+import org.openengsb.ekb.api.EKB;
+import org.openengsb.ekb.api.ReferenceableConcept;
+import org.openengsb.ekb.api.SoftReference;
+se is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+ */
 package org.openengsb.ekb.core.softreferences;
 
 import java.lang.reflect.Field;
