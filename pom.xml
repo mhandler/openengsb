@@ -146,6 +146,7 @@
     <module>core/ekb/service-engine</module>
     <module>core/ekb/service-unit</module>
     <module>core/ekb/api</module>
+    <module>core/ekb/model-analyzer</module>
 
     <!-- Enterprise Data Base -->
     <module>features/edb/core</module>
@@ -810,6 +811,11 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-ekb-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-ekb-modelAnalyzer</artifactId>
         <version>${pom.version}</version>
       </dependency>
 
