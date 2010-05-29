@@ -19,7 +19,8 @@ package org.openengsb.ekb.analyzer;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.concurrent.Executor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -36,12 +37,37 @@ import org.openengsb.ekb.core.softreferences.RegexSoftReference;
 
 public class ConceptParser {
 
-    private ConceptCache cache = new ConceptCache();
+    private ConceptCache cache;
 
-    private Executor executor = new ThreadPoolExecutor(1, 10, 1000, TimeUnit.MILLISECONDS,
-            new LinkedBlockingDeque<Runnable>());
+    private ThreadPoolExecutor executor;
 
-    public <TYPE> Concept<TYPE> parseConcept(Class<TYPE> clazz) throws AnnotationMissingException {
+    private static final int EXECUTOR_TIME_OUT = 5000;
+
+    public <TYPE> List<Concept<TYPE>> parseConcepts(List<Class<TYPE>> classes) throws AnnotationMissingException {
+        List<Concept<TYPE>> result = new ArrayList<Concept<TYPE>>();
+
+        executor = new ThreadPoolExecutor(1, 10, 1000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>());
+        cache = new ConceptCache();
+
+        for (Class<TYPE> clazz : classes) {
+            result.add(parseConcept(clazz));
+        }
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(EXECUTOR_TIME_OUT, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Thread.interrupted();
+        }
+
+        if (!executor.isShutdown()) {
+            throw new IllegalStateException("Some references to superclasses or soft references could not be resolved.");
+        }
+
+        return result;
+    }
+
+    private <TYPE> Concept<TYPE> parseConcept(Class<TYPE> clazz) throws AnnotationMissingException {
         ConceptImpl<TYPE> concept = new ConceptImpl<TYPE>();
         concept.setConceptClass(clazz);
 
@@ -131,6 +157,10 @@ public class ConceptParser {
     private boolean isAnnotationPresent(Field field, Class<? extends Annotation> annotationClass) {
         Annotation annotation = field.getAnnotation(annotationClass);
         return annotation != null;
+    }
+
+    public void setCache(ConceptCache cache) {
+        this.cache = cache;
     }
 
     private abstract class CacheWaiterTask<T> implements Runnable, ConceptCacheListener {
