@@ -25,10 +25,7 @@ public abstract class AbstractConceptSource implements ConceptSource {
     @Override
     public boolean canProvideSubconcept(Concept<?> concept) {
         for (Concept<?> subConcept : concept.getSubConcepts()) {
-            if (canProvide(subConcept)) {
-                return true;
-            }
-            if (canProvideSubconcept(subConcept)) {
+            if (canProvide(subConcept) || canProvideSubconcept(subConcept)) {
                 return true;
             }
         }

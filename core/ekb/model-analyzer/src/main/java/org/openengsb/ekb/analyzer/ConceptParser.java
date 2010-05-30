@@ -92,7 +92,7 @@ public class ConceptParser {
             if (superConcept != null) {
                 concept.setSuperConcept(superConcept);
             } else {
-                SetSuperConceptTask<TYPE> task = new SetSuperConceptTask<TYPE>(concept, superConceptId);
+                SuperConceptSettingTask<TYPE> task = new SuperConceptSettingTask<TYPE>(concept, superConceptId);
                 cache.addListener(task);
                 executor.execute(task);
             }
@@ -123,7 +123,7 @@ public class ConceptParser {
                 if (targetConcept != null) {
                     concept.addSoftReference(createSoftRef(concept, targetConcept, field.getName(), regexp));
                 } else {
-                    AddSoftReferenceTask<TYPE> task = new AddSoftReferenceTask<TYPE>(concept, targetConceptId, field
+                    SoftReferenceAddingTask<TYPE> task = new SoftReferenceAddingTask<TYPE>(concept, targetConceptId, field
                             .getName(), regexp);
                     cache.addListener(task);
                     executor.execute(task);
@@ -199,9 +199,9 @@ public class ConceptParser {
 
     }
 
-    private class SetSuperConceptTask<T> extends CacheWaiterTask<T> {
+    private class SuperConceptSettingTask<T> extends CacheWaiterTask<T> {
 
-        public SetSuperConceptTask(ConceptImpl<T> concept, String idToWaitFor) {
+        public SuperConceptSettingTask(ConceptImpl<T> concept, String idToWaitFor) {
             super(concept, idToWaitFor);
         }
 
@@ -212,13 +212,13 @@ public class ConceptParser {
 
     }
 
-    private class AddSoftReferenceTask<T> extends CacheWaiterTask<T> {
+    private class SoftReferenceAddingTask<T> extends CacheWaiterTask<T> {
 
         private String fieldName;
 
         private String regexp;
 
-        public AddSoftReferenceTask(ConceptImpl<T> concept, String idToWaitFor, String fieldName, String regexp) {
+        public SoftReferenceAddingTask(ConceptImpl<T> concept, String idToWaitFor, String fieldName, String regexp) {
             super(concept, idToWaitFor);
             this.fieldName = fieldName;
             this.regexp = regexp;
