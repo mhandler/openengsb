@@ -30,4 +30,20 @@ public class AnnotationMissingException extends Exception {
         super("Annotation " + annotation + " is missing on field " + annotatedField);
     }
 
+    public AnnotationMissingException(String message) {
+        super(message);
+    }
+
+    public AnnotationMissingException() {
+        super();
+    }
+
+    public AnnotationMissingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AnnotationMissingException(Throwable cause) {
+        super(cause);
+    }
+
 }

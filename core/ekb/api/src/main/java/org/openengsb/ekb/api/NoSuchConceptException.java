@@ -6,4 +6,16 @@ public class NoSuchConceptException extends Exception {
         super(message);
     }
 
+    public NoSuchConceptException() {
+        super();
+    }
+
+    public NoSuchConceptException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public NoSuchConceptException(Throwable cause) {
+        super(cause);
+    }
+
 }
