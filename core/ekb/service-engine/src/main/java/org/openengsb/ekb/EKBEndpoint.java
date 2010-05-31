@@ -20,6 +20,7 @@ package org.openengsb.ekb;
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.LinkingEndpoint;
 import org.openengsb.core.messaging.MessageProperties;
+import org.openengsb.ekb.analyzer.DirectoryWatcher;
 import org.openengsb.ekb.api.EKB;
 
 /**
@@ -27,10 +28,33 @@ import org.openengsb.ekb.api.EKB;
  */
 public class EKBEndpoint extends LinkingEndpoint<EKB> {
 
-    private EKB ekb = new EKBImplementation();
+    private EKB ekb;
+
+    private DirectoryWatcher dirWatcher;
 
     @Override
     protected EKB getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
         return ekb;
     }
+
+    public void setEkb(EKB ekb) {
+        this.ekb = ekb;
+    }
+
+    @Override
+    public void activate() throws Exception {
+        super.activate();
+        dirWatcher.start();
+    }
+
+    @Override
+    public void deactivate() throws Exception {
+        dirWatcher.stop();
+        super.deactivate();
+    }
+
+    public void setDirWatcher(DirectoryWatcher dirWatcher) {
+        this.dirWatcher = dirWatcher;
+    }
+
 }

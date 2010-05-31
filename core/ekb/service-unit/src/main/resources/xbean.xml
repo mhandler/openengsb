@@ -27,7 +27,36 @@
     </constructor-arg>
   </bean>
 
-  <enterpriseKnowledgeBase:ekbEndpoint endpoint="ekbEndpoint" service="ekb:ekbService" contextProperties="#contextProperties" />
-  <enterpriseKnowledgeBase:conceptSourceManagerEndpoint endpoint="conceptSourceManagerEndpoint" service="ekb:conceptSourceManagerService" contextProperties="#contextProperties" />
+  <bean class="org.openengsb.ekb.core.messagetransformation.SimpleTransformer" id="transformer" />
+
+  <bean class="org.openengsb.ekb.core.knowledgemanagement.InMemoryKnowledgeManager" id="knowledgeManager" />
+
+  <bean class="org.openengsb.ekb.core.conceptsourcemanagement.InMemoryConceptSourceManager" id="conceptSourceManager">
+    <constructor-arg type="java.util.Set">
+      <set value-type="org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceStatusListener">
+        <ref local="knowledgeManager"/>
+      </set>
+    </constructor-arg>
+  </bean>
+
+  <bean class="org.openengsb.ekb.EKBImplementation" id="ekb">
+    <property name="knowledgeManager" ref="knowledgeManager" />
+    <property name="conceptSourceManager" ref="conceptSourceManager" />
+    <property name="transformer" ref="transformer" />
+  </bean>
+  
+  <bean class="org.openengsb.ekb.analyzer.ModelAnalyzer" id="modelAnalyzer" >
+    <property name="knowledgeManager" ref="knowledgeManager"/>
+  </bean>
+  
+  <bean class="org.openengsb.ekb.analyzer.DirectoryWatcher" id="dirWatcher" >
+     <constructor-arg type="java.lang.String">
+       <value>knowledge-model/</value>
+    </constructor-arg>
+    <property name="analyzer" ref="modelAnalyzer"/>
+  </bean>
+  
+  <enterpriseKnowledgeBase:ekbEndpoint endpoint="ekbEndpoint" service="ekb:ekbService" contextProperties="#contextProperties" ekb="#ekb" dirWatcher="#dirWatcher"/>
+  <enterpriseKnowledgeBase:conceptSourceManagerEndpoint endpoint="conceptSourceManagerEndpoint" service="ekb:conceptSourceManagerService" contextProperties="#contextProperties" conceptSourceManager="#conceptSourceManager" />
 
 </beans>

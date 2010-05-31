@@ -20,6 +20,8 @@ package org.openengsb.ekb.analyzer;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.openengsb.util.WorkingDirectory;
+
 public class DirectoryWatcher {
 
     private File directory;
@@ -30,11 +32,18 @@ public class DirectoryWatcher {
 
     private DirectoryWatcherRunnable runnable = new DirectoryWatcherRunnable();
 
-    public DirectoryWatcher(File directory) {
-        this.directory = directory;
+    public DirectoryWatcher(String directory) {
+        this.directory = new File(WorkingDirectory.getDirectory("ekb"), directory);
+        if (this.directory.exists() && !this.directory.isDirectory()) {
+            throw new IllegalArgumentException("Under the given path a file exists that is no directory.");
+        }
+        if (!this.directory.exists()) {
+            this.directory.mkdirs();
+        }
     }
 
     public void start() {
+        runnable.active = true;
         new Thread(runnable).start();
     }
 

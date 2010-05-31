@@ -42,7 +42,7 @@ public class EKBImplementation implements EKB {
 
     private MessageProperties messageProperties;
 
-    private ConceptSourceManager endpointManager;
+    private ConceptSourceManager conceptSourceManager;
 
     private Transformer transformer;
 
@@ -150,7 +150,7 @@ public class EKBImplementation implements EKB {
 
     @Override
     public List<ConceptSource> getSources(Concept<?> concept) {
-        List<ConceptSource> activeConceptSources = endpointManager.getActiveConceptSources();
+        List<ConceptSource> activeConceptSources = conceptSourceManager.getActiveConceptSources();
         List<ConceptSource> sources = new ArrayList<ConceptSource>();
         for (ConceptSource source : activeConceptSources) {
             if (source.canProvide(concept) || source.canProvideSubconcept(concept)) {
@@ -158,6 +158,26 @@ public class EKBImplementation implements EKB {
             }
         }
         return sources;
+    }
+
+    public void setKnowledgeManager(KnowledgeManager knowledgeManager) {
+        this.knowledgeManager = knowledgeManager;
+    }
+
+    public void setEndpoint(EKBEndpoint endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public void setMessageProperties(MessageProperties messageProperties) {
+        this.messageProperties = messageProperties;
+    }
+
+    public void setConceptSourceManager(ConceptSourceManager conceptSourceManager) {
+        this.conceptSourceManager = conceptSourceManager;
+    }
+
+    public void setTransformer(Transformer transformer) {
+        this.transformer = transformer;
     }
 
 }

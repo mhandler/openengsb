@@ -21,7 +21,6 @@ import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.LinkingEndpoint;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
-import org.openengsb.ekb.core.conceptsourcemanagement.InMemoryConceptSourceManager;
 
 /**
  * @org.apache.xbean.XBean element="conceptSourceManagerEndpoint"
@@ -29,10 +28,14 @@ import org.openengsb.ekb.core.conceptsourcemanagement.InMemoryConceptSourceManag
  */
 public class KnowledgeManagerEndpoint extends LinkingEndpoint<ConceptSourceManager> {
 
-    private ConceptSourceManager conceptSourceManager = new InMemoryConceptSourceManager();
+    private ConceptSourceManager conceptSourceManager;
 
     @Override
     protected ConceptSourceManager getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
         return conceptSourceManager;
+    }
+
+    public void setConceptSourceManager(ConceptSourceManager conceptSourceManager) {
+        this.conceptSourceManager = conceptSourceManager;
     }
 }

@@ -30,6 +30,10 @@ public class InMemoryConceptSourceManager implements ConceptSourceManager {
 
     private Set<ConceptSourceStatusListener> listeners = new HashSet<ConceptSourceStatusListener>();
 
+    public InMemoryConceptSourceManager(Set<ConceptSourceStatusListener> listeners) {
+        this.listeners.addAll(listeners);
+    }
+
     @Override
     public void activate(ConceptSource source) {
         activeSources.add(source);
