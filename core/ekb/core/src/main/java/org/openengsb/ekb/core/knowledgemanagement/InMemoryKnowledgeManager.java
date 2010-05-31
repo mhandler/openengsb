@@ -62,7 +62,9 @@ public class InMemoryKnowledgeManager implements KnowledgeManager, ConceptSource
     }
 
     @Override
-    public void storeConcepts(List<Concept<?>> concepts) {
+    public void setConcepts(List<Concept<?>> concepts) {
+        activeConcepts.clear();
+        inactiveConcepts.clear();
         inactiveConcepts.addAll(concepts);
     }
 

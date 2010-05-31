@@ -43,13 +43,13 @@ public class ConceptParser {
 
     private static final int EXECUTOR_TIME_OUT = 5000;
 
-    public <TYPE> List<Concept<TYPE>> parseConcepts(List<Class<TYPE>> classes) throws AnnotationMissingException {
-        List<Concept<TYPE>> result = new ArrayList<Concept<TYPE>>();
+    public List<Concept<?>> parseConcepts(List<Class<?>> classes) throws AnnotationMissingException {
+        List<Concept<?>> result = new ArrayList<Concept<?>>();
 
         executor = new ThreadPoolExecutor(1, 10, 1000, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>());
         cache = new ConceptCache();
 
-        for (Class<TYPE> clazz : classes) {
+        for (Class<?> clazz : classes) {
             result.add(parseConcept(clazz));
         }
 
@@ -123,8 +123,8 @@ public class ConceptParser {
                 if (targetConcept != null) {
                     concept.addSoftReference(createSoftRef(concept, targetConcept, field.getName(), regexp));
                 } else {
-                    SoftReferenceAddingTask<TYPE> task = new SoftReferenceAddingTask<TYPE>(concept, targetConceptId, field
-                            .getName(), regexp);
+                    SoftReferenceAddingTask<TYPE> task = new SoftReferenceAddingTask<TYPE>(concept, targetConceptId,
+                            field.getName(), regexp);
                     cache.addListener(task);
                     executor.execute(task);
                 }

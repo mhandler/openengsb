@@ -35,7 +35,7 @@ public interface KnowledgeManager {
 
     public List<Concept<?>> getInactiveConcepts(ConceptSource source);
 
-    public void storeConcepts(List<Concept<?>> concepts);
+    public void setConcepts(List<Concept<?>> concepts);
 
     public void deactivateConcepts(List<Concept<?>> concepts);
 
