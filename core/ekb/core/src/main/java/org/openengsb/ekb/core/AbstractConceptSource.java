@@ -17,10 +17,18 @@
  */
 package org.openengsb.ekb.core;
 
+import javax.xml.namespace.QName;
+
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
 
 public abstract class AbstractConceptSource implements ConceptSource {
+
+    private String id;
+
+    private String urn;
+
+    private String serviceName;
 
     @Override
     public boolean canProvideSubconcept(Concept<?> concept) {
@@ -30,5 +38,53 @@ public abstract class AbstractConceptSource implements ConceptSource {
             }
         }
         return false;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setUrn(String urn) {
+        this.urn = urn;
+    }
+
+    public String getUrn() {
+        return urn;
+    }
+
+    @Override
+    public QName getService() {
+        return new QName(urn, serviceName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConceptSource)) {
+            return false;
+        }
+        return id.equals(((ConceptSource) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "[ConceptSource(" + id + ") service:" + getService() + "]";
     }
 }
