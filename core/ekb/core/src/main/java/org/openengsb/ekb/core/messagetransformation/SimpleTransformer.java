@@ -42,9 +42,7 @@ public class SimpleTransformer implements Transformer {
 
     @SuppressWarnings("unchecked")
     private <TARGETTYPE> TARGETTYPE handlePrimitive(Concept<?> source, Concept<TARGETTYPE> target, Object input) {
-        // TODO support more than identity transformation for primitives (like
-        // string to integer, etc...
-        return (TARGETTYPE) input;
+        return (TARGETTYPE) PrimitivesTransformer.transform(source.getConceptClass(), target.getConceptClass(), input);
     }
 
     private <TARGETTYPE> TARGETTYPE createInstance(Class<TARGETTYPE> clazz) {
@@ -66,8 +64,8 @@ public class SimpleTransformer implements Transformer {
             String sourceFieldName = mapping.getSourceFieldName();
             Object value = getFieldValue(sourceFieldName, source.getConceptClass(), input);
             String targetFieldName = mapping.getTargetFieldName();
-            // TODO transform value
-            setFieldValue(targetFieldName, target.getConceptClass(), output, value);
+            Object targetValue = mapping.transform(value);
+            setFieldValue(targetFieldName, target.getConceptClass(), output, targetValue);
         }
     }
 

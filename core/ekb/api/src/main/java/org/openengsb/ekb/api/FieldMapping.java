@@ -6,4 +6,6 @@ public interface FieldMapping {
 
     String getTargetFieldName();
 
+    Object transform(Object source);
+
 }

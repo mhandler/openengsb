@@ -32,7 +32,7 @@ import org.openengsb.ekb.annotations.SuperConcept;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.SoftReference;
 import org.openengsb.ekb.core.ConceptImpl;
-import org.openengsb.ekb.core.FieldMappingImpl;
+import org.openengsb.ekb.core.IdentityMapping;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
 
 public class ConceptParser {
@@ -104,7 +104,8 @@ public class ConceptParser {
         for (Field field : fields) {
             if (isAnnotationPresent(field, MapsTo.class)) {
                 String targetField = field.getAnnotation(MapsTo.class).value();
-                FieldMappingImpl mapping = new FieldMappingImpl();
+                // TODO support more than identity mapping
+                IdentityMapping mapping = new IdentityMapping();
                 mapping.setSourceField(field.getName());
                 mapping.setTargetField(targetField);
                 concept.addFieldMapping(mapping);
