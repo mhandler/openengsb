@@ -32,8 +32,8 @@ import org.openengsb.ekb.annotations.SuperConcept;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.SoftReference;
 import org.openengsb.ekb.core.ConceptImpl;
-import org.openengsb.ekb.core.IdentityMapping;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
+import org.openengsb.ekb.core.transformation.mappings.IdentityMapping;
 
 public class ConceptParser {
 

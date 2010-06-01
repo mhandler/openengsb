@@ -27,7 +27,7 @@ public interface KnowledgeManager {
 
     public List<Concept<?>> getActiveConcepts();
 
-    public Concept<?> getConcept(String id) throws NoSuchConceptException;
+    public Concept<?> getActiveConcept(String id) throws NoSuchConceptException;
 
     public List<Concept<?>> getActiveConcepts(ConceptSource source);
 

@@ -15,7 +15,7 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.messagetransformation;
+package org.openengsb.ekb.core.transformation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -30,31 +30,22 @@ public class SimpleTransformer implements Transformer {
     public <TARGETTYPE> TARGETTYPE transform(Concept<?> source, Concept<TARGETTYPE> target, Object input)
             throws TransformationException {
         Class<TARGETTYPE> targetClass = target.getConceptClass();
-        Class<?> sourceClass = source.getConceptClass();
-        if (sourceClass.isPrimitive() || targetClass.isPrimitive()) {
-            return handlePrimitive(source, target, input);
-        }
 
         TARGETTYPE output = createInstance(targetClass);
         mapFields(source, target, input, output);
         return output;
     }
 
-    @SuppressWarnings("unchecked")
-    private <TARGETTYPE> TARGETTYPE handlePrimitive(Concept<?> source, Concept<TARGETTYPE> target, Object input) {
-        return (TARGETTYPE) PrimitivesTransformer.transform(source.getConceptClass(), target.getConceptClass(), input);
-    }
-
-    private <TARGETTYPE> TARGETTYPE createInstance(Class<TARGETTYPE> clazz) {
+    private <TARGETTYPE> TARGETTYPE createInstance(Class<TARGETTYPE> clazz) throws TransformationException {
         try {
-            Constructor<TARGETTYPE> constructor = clazz.getConstructor();
+            Constructor<TARGETTYPE> constructor = clazz.getDeclaredConstructor();
             boolean accessible = constructor.isAccessible();
             constructor.setAccessible(true);
             TARGETTYPE instance = constructor.newInstance();
             constructor.setAccessible(accessible);
             return instance;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new TransformationException("Cannot instantiate target type.", e);
         }
     }
 

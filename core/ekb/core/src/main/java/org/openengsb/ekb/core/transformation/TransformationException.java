@@ -15,7 +15,7 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.messagetransformation;
+package org.openengsb.ekb.core.transformation;
 
 public class TransformationException extends Exception {
 

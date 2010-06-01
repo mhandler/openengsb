@@ -97,4 +97,21 @@ public class ConceptImpl<TYPE> implements Concept<TYPE> {
         this.subConcepts.remove(subConcept);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Concept<?>)) {
+            return false;
+        }
+        return id.equals(((Concept<?>) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "[Concept(" + id + ") class: " + conceptClass + "]";
+    }
 }

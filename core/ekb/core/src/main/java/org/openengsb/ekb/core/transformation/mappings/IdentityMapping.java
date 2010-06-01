@@ -1,4 +1,4 @@
-package org.openengsb.ekb.core;
+package org.openengsb.ekb.core.transformation.mappings;
 
 import org.openengsb.ekb.api.FieldMapping;
 

@@ -31,8 +31,8 @@ import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
 import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
-import org.openengsb.ekb.core.messagetransformation.TransformationException;
-import org.openengsb.ekb.core.messagetransformation.Transformer;
+import org.openengsb.ekb.core.transformation.TransformationException;
+import org.openengsb.ekb.core.transformation.Transformer;
 
 public class EKBImplementation implements EKB {
 
@@ -53,7 +53,7 @@ public class EKBImplementation implements EKB {
 
     @Override
     public Concept<?> getConcept(String id) throws NoSuchConceptException {
-        return knowledgeManager.getConcept(id);
+        return knowledgeManager.getActiveConcept(id);
     }
 
     @Override

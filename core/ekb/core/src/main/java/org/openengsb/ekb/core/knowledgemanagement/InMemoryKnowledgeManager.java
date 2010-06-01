@@ -40,10 +40,8 @@ public class InMemoryKnowledgeManager implements KnowledgeManager, ConceptSource
     }
 
     @Override
-    public Concept<?> getConcept(String id) throws NoSuchConceptException {
-        List<Concept<?>> concepts = new ArrayList<Concept<?>>(getActiveConcepts());
-        concepts.addAll(getInactiveConcepts());
-        for (Concept<?> concept : concepts) {
+    public Concept<?> getActiveConcept(String id) throws NoSuchConceptException {
+        for (Concept<?> concept : getActiveConcepts()) {
             if (concept.getId().equals(id)) {
                 return concept;
             }

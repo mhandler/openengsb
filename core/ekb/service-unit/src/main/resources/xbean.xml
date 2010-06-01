@@ -27,7 +27,7 @@
     </constructor-arg>
   </bean>
 
-  <bean class="org.openengsb.ekb.core.messagetransformation.SimpleTransformer" id="transformer" />
+  <bean class="org.openengsb.ekb.core.transformation.SimpleTransformer" id="transformer" />
 
   <bean class="org.openengsb.ekb.core.knowledgemanagement.InMemoryKnowledgeManager" id="knowledgeManager" />
 
