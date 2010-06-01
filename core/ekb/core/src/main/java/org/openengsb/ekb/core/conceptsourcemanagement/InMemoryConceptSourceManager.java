@@ -26,7 +26,7 @@ import org.openengsb.ekb.api.ConceptSource;
 
 public class InMemoryConceptSourceManager implements ConceptSourceManager {
 
-    private Set<ConceptSource> activeSources;
+    private Set<ConceptSource> activeSources = new HashSet<ConceptSource>();
 
     private Set<ConceptSourceStatusListener> listeners = new HashSet<ConceptSourceStatusListener>();
 
