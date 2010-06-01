@@ -25,7 +25,7 @@ import org.openengsb.core.OpenEngSBComponent;
 public class EKBComponent extends OpenEngSBComponent {
     @Override
     protected Class<?>[] getEndpointClasses() {
-        return new Class[] { EKBEndpoint.class };
+        return new Class[] { EKBEndpoint.class, ConceptSourceManagerEndpoint.class };
     }
 
 }

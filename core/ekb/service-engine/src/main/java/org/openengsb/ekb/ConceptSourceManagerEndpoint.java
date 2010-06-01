@@ -26,7 +26,7 @@ import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
  * @org.apache.xbean.XBean element="conceptSourceManagerEndpoint"
  *                         description="EKB ConceptSourceManager Endpoint"
  */
-public class KnowledgeManagerEndpoint extends LinkingEndpoint<ConceptSourceManager> {
+public class ConceptSourceManagerEndpoint extends LinkingEndpoint<ConceptSourceManager> {
 
     private ConceptSourceManager conceptSourceManager;
 
