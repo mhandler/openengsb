@@ -36,7 +36,7 @@ public class DomainQueryTranslator<T> implements DomainQueryInterface {
     @Override
     @SuppressWarnings("unchecked")
     public <U> U getByKey(Class<U> type, String key) {
-        return (U) invokeMethod("getByKey" + type.getName(), String.class);
+        return (U) invokeMethod("get" + type.getName() + "ByKey", String.class);
     }
 
     private Object invokeMethod(String name, Class<?>... argTypes) {
