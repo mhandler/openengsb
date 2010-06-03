@@ -17,17 +17,17 @@
  */
 package org.openengsb.ekb.analyzer;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class ConceptCache {
 
-    private Map<String, ConceptImpl<?>> concepts = new HashMap<String, ConceptImpl<?>>();
+    private Map<String, ConceptImpl<?>> concepts = new ConcurrentHashMap<String, ConceptImpl<?>>();
 
     private Set<ConceptCacheListener> listeners = new HashSet<ConceptCacheListener>();
 
@@ -41,15 +41,23 @@ public class ConceptCache {
     }
 
     public void addListener(ConceptCacheListener listener) {
-        this.listeners.add(listener);
+        synchronized (listeners) {
+            this.listeners.add(listener);
+        }
     }
 
     public void removeListener(ConceptCacheListener listener) {
-        this.listeners.remove(listener);
+        synchronized (listeners) {
+            this.listeners.remove(listener);
+        }
     }
 
     private void notifyAboutStore(Concept<?> concept) {
-        for (ConceptCacheListener listener : listeners) {
+        Set<ConceptCacheListener> listenersCopy = new HashSet<ConceptCacheListener>();
+        synchronized (listeners) {
+            listenersCopy.addAll(listeners);
+        }
+        for (ConceptCacheListener listener : listenersCopy) {
             listener.conceptStored(concept);
         }
     }

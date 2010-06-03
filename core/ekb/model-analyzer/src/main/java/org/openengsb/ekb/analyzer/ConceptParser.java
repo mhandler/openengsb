@@ -100,7 +100,7 @@ public class ConceptParser {
     }
 
     private <TYPE> void setFieldMappings(Class<TYPE> clazz, ConceptImpl<TYPE> concept) {
-        Field[] fields = clazz.getFields();
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (isAnnotationPresent(field, MapsTo.class)) {
                 String targetField = field.getAnnotation(MapsTo.class).value();
@@ -114,7 +114,7 @@ public class ConceptParser {
     }
 
     private <TYPE> void setSoftReferences(Class<TYPE> clazz, ConceptImpl<TYPE> concept) {
-        Field[] fields = clazz.getFields();
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (isAnnotationPresent(field, ReferenceId.class)) {
                 ReferenceId referenceId = field.getAnnotation(ReferenceId.class);

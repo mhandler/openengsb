@@ -112,6 +112,10 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
         this.regex = regex;
     }
 
+    public String getRegex() {
+        return regex;
+    }
+
     public void setTargetConcept(Concept<TARGETTYPE> targetConcept) {
         this.targetConcept = targetConcept;
     }
