@@ -102,7 +102,7 @@ public class ToXmlTypesTransformer {
     private XMLBean toXmlBean(Object o) {
         XMLBean xmlBean = new XMLBean();
         List<XMLField> fields = new ArrayList<XMLField>();
-        for (Field field : o.getClass().getDeclaredFields()) {
+        for (Field field : TransformerUtil.getFields(o.getClass())) {
             if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())) {
                 continue;
             }

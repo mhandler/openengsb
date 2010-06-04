@@ -20,6 +20,8 @@ package org.openengsb.core.transformation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 class TransformerUtil {
 
@@ -78,11 +80,29 @@ class TransformerUtil {
     }
 
     public static Field getField(Class<?> clazz, String name) {
+        if (Object.class.equals(clazz)) {
+            throw new RuntimeException(new NoSuchFieldException("No field with name '" + name + "' found."));
+        }
         try {
             return clazz.getDeclaredField(name);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchFieldException e) {
+            return getField(clazz.getSuperclass(), name);
         }
     }
 
+    public static Field[] getFields(Class<?> clazz) {
+        if (Object.class.equals(clazz)) {
+            return new Field[0];
+        }
+        List<Field> fields = new ArrayList<Field>();
+        addAll(fields, clazz.getDeclaredFields());
+        addAll(fields, getFields(clazz.getSuperclass()));
+        return fields.toArray(new Field[fields.size()]);
+    }
+
+    private static void addAll(List<Field> fields, Field[] fieldArray) {
+        for (int i = 0; i < fieldArray.length; i++) {
+            fields.add(fieldArray[i]);
+        }
+    }
 }
