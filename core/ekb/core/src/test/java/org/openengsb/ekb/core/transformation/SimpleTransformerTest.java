@@ -17,10 +17,13 @@
  */
 package org.openengsb.ekb.core.transformation;
 
+import java.util.UUID;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.transformation.mappings.IdentityMapping;
 
@@ -67,7 +70,7 @@ public class SimpleTransformerTest {
 
     private ConceptImpl<Target> getTarget() {
         ConceptImpl<Target> target = new ConceptImpl<Target>();
-        target.setId("target");
+        target.setKey(new ConceptKey("target", UUID.randomUUID().toString()));
         target.setConceptClass(Target.class);
         return target;
     }
@@ -75,7 +78,7 @@ public class SimpleTransformerTest {
     private ConceptImpl<Source> getSource(ConceptImpl<Target> target) {
         ConceptImpl<Source> source = new ConceptImpl<Source>();
         source.setConceptClass(Source.class);
-        source.setId("source");
+        source.setKey(new ConceptKey("source", UUID.randomUUID().toString()));
         source.setSuperConcept(target);
         return source;
     }

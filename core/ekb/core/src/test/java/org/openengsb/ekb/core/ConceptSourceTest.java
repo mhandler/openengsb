@@ -17,11 +17,14 @@
  */
 package org.openengsb.ekb.core;
 
+import java.util.UUID;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 
 public class ConceptSourceTest {
@@ -35,10 +38,8 @@ public class ConceptSourceTest {
 
     @Test
     public void testCanProvideSubconcept() {
-        ConceptImpl<String> concept = new ConceptImpl<String>();
-        concept.setId("conceptA-1");
-        ConceptImpl<String> superConcept = new ConceptImpl<String>();
-        superConcept.setId("conceptB-1");
+        ConceptImpl<String> concept = getConcept("conceptA-1");
+        ConceptImpl<String> superConcept = getConcept("conceptB-1");
         concept.setSuperConcept(superConcept);
 
         Assert.assertTrue(source.canProvide(concept));
@@ -49,15 +50,12 @@ public class ConceptSourceTest {
 
     @Test
     public void testCanProvideSubSubconcept() {
-        ConceptImpl<String> concept = new ConceptImpl<String>();
-        concept.setId("conceptA-1");
+        ConceptImpl<String> concept = getConcept("conceptA-1");
 
-        ConceptImpl<String> superConcept = new ConceptImpl<String>();
-        superConcept.setId("conceptB-1");
+        ConceptImpl<String> superConcept = getConcept("conceptB-1");
         concept.setSuperConcept(superConcept);
 
-        ConceptImpl<String> superSuperConcept = new ConceptImpl<String>();
-        superSuperConcept.setId("conceptC-1");
+        ConceptImpl<String> superSuperConcept = getConcept("conceptC-1");
         superConcept.setSuperConcept(superSuperConcept);
 
         Assert.assertTrue(source.canProvideSubconcept(superSuperConcept));
@@ -65,11 +63,17 @@ public class ConceptSourceTest {
         Assert.assertFalse(source.canProvideSubconcept(concept));
     }
 
-    private class TestSource extends AbstractConceptSource {
+    private ConceptImpl<String> getConcept(String id) {
+        ConceptImpl<String> concept = new ConceptImpl<String>();
+        concept.setKey(new ConceptKey(id, UUID.randomUUID().toString()));
+        return concept;
+    }
+
+    private class TestSource extends SimpleConceptSource {
 
         @Override
         public boolean canProvide(Concept<?> concept) {
-            return concept.getId().startsWith("conceptA-");
+            return concept.getKey().getId().startsWith("conceptA-");
         }
 
     }

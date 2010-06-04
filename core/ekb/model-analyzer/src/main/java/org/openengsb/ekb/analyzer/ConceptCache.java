@@ -36,7 +36,7 @@ public class ConceptCache {
     }
 
     public void storeConcept(ConceptImpl<?> concept) {
-        this.concepts.put(concept.getId(), concept);
+        this.concepts.put(concept.getKey().getId(), concept);
         notifyAboutStore(concept);
     }
 

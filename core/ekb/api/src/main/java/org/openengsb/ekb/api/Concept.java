@@ -21,7 +21,7 @@ import java.util.List;
 
 public interface Concept<TYPE> {
 
-    String getId();
+    ConceptKey getKey();
 
     Class<TYPE> getConceptClass();
 

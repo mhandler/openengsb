@@ -15,30 +15,14 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.core.knowledgemanagement;
 
-import java.util.List;
+public interface KnowledgeChangeListener {
 
-import javax.xml.namespace.QName;
+    void conceptsChanged();
 
-public interface ConceptSource {
+    void conceptsActivated();
 
-    String getId();
+    void conceptsDeactivated();
 
-    QName getService();
-
-    boolean canProvide(Concept<?> concept);
-
-    boolean canProvideSubconcept(Concept<?> concept);
-
-    List<ConceptKey> getProvidedConcepts();
-
-    @Override
-    String toString();
-
-    @Override
-    boolean equals(Object obj);
-
-    @Override
-    int hashCode();
 }

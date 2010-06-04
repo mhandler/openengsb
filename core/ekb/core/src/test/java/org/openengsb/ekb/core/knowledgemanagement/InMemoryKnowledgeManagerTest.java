@@ -20,14 +20,16 @@ package org.openengsb.ekb.core.knowledgemanagement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.core.AbstractConceptSource;
+import org.openengsb.ekb.core.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class InMemoryKnowledgeManagerTest {
@@ -154,7 +156,7 @@ public class InMemoryKnowledgeManagerTest {
     private Concept<?> createConcept(String id) {
         ConceptImpl<SomeConcept> concept = new ConceptImpl<SomeConcept>();
         concept.setConceptClass(SomeConcept.class);
-        concept.setId(id);
+        concept.setKey(new ConceptKey(id, UUID.randomUUID().toString()));
         return concept;
     }
 
@@ -162,7 +164,7 @@ public class InMemoryKnowledgeManagerTest {
 
     }
 
-    private class MockConceptSource extends AbstractConceptSource {
+    private class MockConceptSource extends SimpleConceptSource {
 
         private List<String> ids;
 
@@ -172,7 +174,7 @@ public class InMemoryKnowledgeManagerTest {
 
         @Override
         public boolean canProvide(Concept<?> concept) {
-            return ids.contains(concept.getId());
+            return ids.contains(concept.getKey().getId());
         }
     }
 }

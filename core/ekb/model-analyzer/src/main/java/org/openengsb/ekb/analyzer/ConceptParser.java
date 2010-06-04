@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -30,6 +31,7 @@ import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.ReferenceId;
 import org.openengsb.ekb.annotations.SuperConcept;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.SoftReference;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
@@ -70,8 +72,7 @@ public class ConceptParser {
     private <TYPE> Concept<TYPE> parseConcept(Class<TYPE> clazz) throws AnnotationMissingException {
         ConceptImpl<TYPE> concept = new ConceptImpl<TYPE>();
         concept.setConceptClass(clazz);
-
-        setId(clazz, concept);
+        setKey(clazz, concept);
         cache.storeConcept(concept);
         setSuperConcept(clazz, concept);
         setFieldMappings(clazz, concept);
@@ -80,9 +81,11 @@ public class ConceptParser {
         return concept;
     }
 
-    private <TYPE> void setId(Class<TYPE> clazz, ConceptImpl<TYPE> concept) throws AnnotationMissingException {
+    private <TYPE> void setKey(Class<TYPE> clazz, ConceptImpl<TYPE> concept) throws AnnotationMissingException {
         checkObligatoryAnnotationPresent(clazz, org.openengsb.ekb.annotations.Concept.class);
-        concept.setId(clazz.getAnnotation(org.openengsb.ekb.annotations.Concept.class).value());
+        String id = clazz.getAnnotation(org.openengsb.ekb.annotations.Concept.class).value();
+        String version = UUID.randomUUID().toString();
+        concept.setKey(new ConceptKey(id, version));
     }
 
     private <TYPE> void setSuperConcept(Class<TYPE> clazz, ConceptImpl<TYPE> concept) {
@@ -192,7 +195,7 @@ public class ConceptParser {
 
         @Override
         public void conceptStored(Concept<?> concept) {
-            if (concept.getId().equals(idToWaitFor)) {
+            if (concept.getKey().getId().equals(idToWaitFor)) {
                 semaphore.release();
                 cache.removeListener(this);
             }

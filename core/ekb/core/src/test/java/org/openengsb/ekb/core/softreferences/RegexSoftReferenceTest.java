@@ -19,16 +19,18 @@ package org.openengsb.ekb.core.softreferences;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.core.AbstractConceptSource;
+import org.openengsb.ekb.core.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class RegexSoftReferenceTest {
@@ -98,7 +100,7 @@ public class RegexSoftReferenceTest {
     private ConceptImpl<Source> getSourceConcept() {
         ConceptImpl<Source> source = new ConceptImpl<Source>();
         source.setConceptClass(Source.class);
-        source.setId("source");
+        source.setKey(new ConceptKey("source", UUID.randomUUID().toString()));
         source.addSoftReference(ref);
         return source;
     }
@@ -106,7 +108,7 @@ public class RegexSoftReferenceTest {
     private ConceptImpl<Target> getTargetConcept() {
         ConceptImpl<Target> target = new ConceptImpl<Target>();
         target.setConceptClass(Target.class);
-        target.setId("target");
+        target.setKey(new ConceptKey("target", UUID.randomUUID().toString()));
         return target;
     }
 
@@ -171,11 +173,11 @@ public class RegexSoftReferenceTest {
         }
     }
 
-    private class MockSource extends AbstractConceptSource {
+    private class MockSource extends SimpleConceptSource {
 
         @Override
         public boolean canProvide(Concept<?> concept) {
-            return concept.getId().equals("target");
+            return concept.getKey().getId().equals("target");
         }
 
     }

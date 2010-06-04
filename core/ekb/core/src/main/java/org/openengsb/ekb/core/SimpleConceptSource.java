@@ -23,28 +23,88 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
+import org.openengsb.ekb.api.ConceptSource;
 
-public class SimpleConceptSource extends AbstractConceptSource {
+public class SimpleConceptSource implements ConceptSource {
 
-    private List<Concept<?>> providedConcepts;
+    private String id;
 
-    @SuppressWarnings("unused")
-    private SimpleConceptSource() {
-        // this constructor is used by infrastructure components instantiating
-        // this class by reflection
-        providedConcepts = new ArrayList<Concept<?>>();
-    }
+    private String urn;
 
-    public SimpleConceptSource(List<Concept<?>> providedConcepts, String id, QName service) {
-        this.providedConcepts = new ArrayList<Concept<?>>(providedConcepts);
-        super.setId(id);
-        super.setServiceName(service.getLocalPart());
-        super.setUrn(service.getNamespaceURI());
+    private String serviceName;
+
+    private List<ConceptKey> providedConcepts = new ArrayList<ConceptKey>();
+
+    @Override
+    public boolean canProvideSubconcept(Concept<?> concept) {
+        for (Concept<?> subConcept : concept.getSubConcepts()) {
+            if (canProvide(subConcept) || canProvideSubconcept(subConcept)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean canProvide(Concept<?> concept) {
-        return providedConcepts.contains(concept);
+        return providedConcepts.contains(concept.getKey());
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public List<ConceptKey> getProvidedConcepts() {
+        return new ArrayList<ConceptKey>(providedConcepts);
+    }
+
+    public void setProvidedConcepts(List<ConceptKey> providedConcepts) {
+        this.providedConcepts = new ArrayList<ConceptKey>(providedConcepts);
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setUrn(String urn) {
+        this.urn = urn;
+    }
+
+    public String getUrn() {
+        return urn;
+    }
+
+    @Override
+    public QName getService() {
+        return new QName(urn, serviceName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConceptSource)) {
+            return false;
+        }
+        return id.equals(((ConceptSource) obj).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "[ConceptSource(" + id + ") service:" + getService() + "]";
+    }
 }

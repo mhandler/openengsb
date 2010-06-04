@@ -61,7 +61,7 @@ public class ConceptParserTest {
         classes.add(SimpleConcept.class);
         List<org.openengsb.ekb.api.Concept<?>> concepts = parser.parseConcepts(classes);
         Assert.assertEquals(1, concepts.size());
-        Assert.assertEquals("SimpleConcept", concepts.get(0).getId());
+        Assert.assertEquals("SimpleConcept", concepts.get(0).getKey().getId());
         Assert.assertEquals(SimpleConcept.class, concepts.get(0).getConceptClass());
     }
 
@@ -75,10 +75,10 @@ public class ConceptParserTest {
         org.openengsb.ekb.api.Concept<?> concept = getConcept(concepts, "ConceptWithSuperConcept");
 
         Assert.assertEquals(2, concepts.size());
-        Assert.assertEquals("ConceptWithSuperConcept", concept.getId());
+        Assert.assertEquals("ConceptWithSuperConcept", concept.getKey().getId());
         Assert.assertEquals(ConceptWithSuperConcept.class, concept.getConceptClass());
 
-        Assert.assertEquals("SimpleConcept", concept.getSuperConcept().getId());
+        Assert.assertEquals("SimpleConcept", concept.getSuperConcept().getKey().getId());
         Assert.assertEquals(SimpleConcept.class, concept.getSuperConcept().getConceptClass());
     }
 
@@ -96,7 +96,7 @@ public class ConceptParserTest {
         org.openengsb.ekb.api.Concept<?> otherConcept = getConcept(concepts, "ConceptWithSoftReferences2");
 
         Assert.assertEquals(3, concepts.size());
-        Assert.assertEquals("ConceptWithSoftReferences", concept.getId());
+        Assert.assertEquals("ConceptWithSoftReferences", concept.getKey().getId());
         Assert.assertEquals(ConceptWithSoftReferences.class, concept.getConceptClass());
 
         Assert.assertEquals(2, concept.getSoftReferences().size());
@@ -136,7 +136,7 @@ public class ConceptParserTest {
         org.openengsb.ekb.api.Concept<?> simpleConcept = getConcept(concepts, "SimpleConcept");
 
         Assert.assertEquals(3, concepts.size());
-        Assert.assertEquals("ConceptWithSoftReferences", concept.getId());
+        Assert.assertEquals("ConceptWithSoftReferences", concept.getKey().getId());
         Assert.assertEquals(ConceptWithSoftReferences.class, concept.getConceptClass());
 
         Assert.assertEquals(2, concept.getSoftReferences().size());
@@ -158,7 +158,7 @@ public class ConceptParserTest {
         org.openengsb.ekb.api.Concept<?> simpleConcept = getConcept(concepts, "SimpleConcept");
 
         Assert.assertEquals(2, concepts.size());
-        Assert.assertEquals("ConceptWithFieldMappings", concept.getId());
+        Assert.assertEquals("ConceptWithFieldMappings", concept.getKey().getId());
         Assert.assertEquals(ConceptWithFieldMappings.class, concept.getConceptClass());
 
         Assert.assertEquals(4, concept.getFieldMappings(simpleConcept).size());
@@ -171,7 +171,7 @@ public class ConceptParserTest {
 
     private org.openengsb.ekb.api.Concept<?> getConcept(List<org.openengsb.ekb.api.Concept<?>> concepts, String id) {
         for (org.openengsb.ekb.api.Concept<?> concept : concepts) {
-            if (concept.getId().equals(id)) {
+            if (concept.getKey().getId().equals(id)) {
                 return concept;
             }
         }

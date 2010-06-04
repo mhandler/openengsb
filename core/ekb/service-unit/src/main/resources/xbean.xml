@@ -31,12 +31,12 @@
 
   <bean class="org.openengsb.ekb.core.knowledgemanagement.InMemoryKnowledgeManager" id="knowledgeManager" />
 
-  <bean class="org.openengsb.ekb.core.conceptsourcemanagement.InMemoryConceptSourceManager" id="conceptSourceManager">
-    <constructor-arg type="java.util.Set">
-      <set value-type="org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceStatusListener">
-        <ref local="knowledgeManager"/>
-      </set>
-    </constructor-arg>
+
+  <bean class="org.openengsb.ekb.core.conceptsourcemanagement.InMemoryConceptSourceManager" id="conceptSourceManager"/>
+
+  <bean class="org.openengsb.ekb.ConsistencyControl" id="consistencyControl">
+    <property name="knowledgeManager" ref="knowledgeManager"/>
+    <property name="conceptSourceManager" ref="conceptSourceManager"/>
   </bean>
 
   <bean class="org.openengsb.ekb.EKBImplementation" id="ekb">

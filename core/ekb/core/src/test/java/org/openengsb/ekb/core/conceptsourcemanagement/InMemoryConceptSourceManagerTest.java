@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.core.AbstractConceptSource;
+import org.openengsb.ekb.core.SimpleConceptSource;
 
 public class InMemoryConceptSourceManagerTest implements ConceptSourceStatusListener {
 
@@ -75,7 +75,7 @@ public class InMemoryConceptSourceManagerTest implements ConceptSourceStatusList
         notified = true;
     }
 
-    private class MockConceptSource extends AbstractConceptSource {
+    private class MockConceptSource extends SimpleConceptSource {
 
         public MockConceptSource() {
             super.setId("mock");

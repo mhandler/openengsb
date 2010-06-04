@@ -25,20 +25,24 @@ import org.openengsb.ekb.api.NoSuchConceptException;
 
 public interface KnowledgeManager {
 
-    public List<Concept<?>> getActiveConcepts();
+    List<Concept<?>> getActiveConcepts();
 
-    public Concept<?> getActiveConcept(String id) throws NoSuchConceptException;
+    Concept<?> getActiveConcept(String id) throws NoSuchConceptException;
 
-    public List<Concept<?>> getActiveConcepts(ConceptSource source);
+    List<Concept<?>> getActiveConcepts(ConceptSource source);
 
-    public List<Concept<?>> getInactiveConcepts();
+    List<Concept<?>> getInactiveConcepts();
 
-    public List<Concept<?>> getInactiveConcepts(ConceptSource source);
+    List<Concept<?>> getInactiveConcepts(ConceptSource source);
 
-    public void setConcepts(List<Concept<?>> concepts);
+    void setConcepts(List<Concept<?>> concepts);
 
-    public void deactivateConcepts(List<Concept<?>> concepts);
+    void deactivateConcepts(List<Concept<?>> concepts);
 
-    public void activateConcepts(List<Concept<?>> concepts);
+    void activateConcepts(List<Concept<?>> concepts);
+
+    void addListener(KnowledgeChangeListener listener);
+
+    void removeListener(KnowledgeChangeListener listener);
 
 }

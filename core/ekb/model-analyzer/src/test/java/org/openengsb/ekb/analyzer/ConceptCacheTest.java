@@ -24,6 +24,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class ConceptCacheTest implements ConceptCacheListener {
@@ -54,13 +55,13 @@ public class ConceptCacheTest implements ConceptCacheListener {
 
     private ConceptImpl<SomeConcept> getConcept() {
         ConceptImpl<SomeConcept> concept = new ConceptImpl<SomeConcept>();
-        concept.setId(id);
+        concept.setKey(new ConceptKey(id, UUID.randomUUID().toString()));
         return concept;
     }
 
     @Override
     public void conceptStored(Concept<?> concept) {
-        if (concept.getId().equals(id)) {
+        if (concept.getKey().getId().equals(id)) {
             notified = true;
         }
     }
