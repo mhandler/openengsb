@@ -18,7 +18,6 @@
 package org.openengsb.ekb;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
@@ -63,26 +62,11 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
     @Override
     public void activated(ConceptSource source) {
         List<Concept<?>> candidates = knowledgeManager.getInactiveConcepts(source);
-        List<Inconsistency> inconsistencies = getInconsistencies(candidates, Collections.singletonList(source));
+        List<Inconsistency> inconsistencies = getInconsistencies(candidates, source);
         for (Inconsistency inconsistency : inconsistencies) {
             candidates.remove(inconsistency.getModelConcept());
         }
         knowledgeManager.activateConcepts(candidates);
-    }
-
-    private List<Inconsistency> getInconsistencies(List<Concept<?>> concepts, List<ConceptSource> sources) {
-        List<Inconsistency> inconsistencies = new ArrayList<Inconsistency>();
-        for (ConceptSource source : sources) {
-            for (Concept<?> concept : concepts) {
-                for (ConceptKey key : source.getProvidedConcepts()) {
-                    if (concept.getKey().getId().equals(key.getId())
-                            && !concept.getKey().getVersion().equals(key.getVersion())) {
-                        inconsistencies.add(new Inconsistency(source, concept));
-                    }
-                }
-            }
-        }
-        return inconsistencies;
     }
 
     @Override
@@ -92,6 +76,30 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
             candidates.removeAll(knowledgeManager.getActiveConcepts(otherSource));
         }
         knowledgeManager.deactivateConcepts(candidates);
+    }
+
+    private List<Inconsistency> getInconsistencies(List<Concept<?>> concepts, List<ConceptSource> sources) {
+        List<Inconsistency> inconsistencies = new ArrayList<Inconsistency>();
+        for (ConceptSource source : sources) {
+            inconsistencies.addAll(getInconsistencies(concepts, source));
+        }
+        return inconsistencies;
+    }
+
+    private List<Inconsistency> getInconsistencies(List<Concept<?>> concepts, ConceptSource source) {
+        List<Inconsistency> inconsistencies = new ArrayList<Inconsistency>();
+        for (ConceptKey key : source.getProvidedConcepts()) {
+            for (Concept<?> concept : concepts) {
+                if (isInconsistent(key, concept.getKey())) {
+                    inconsistencies.add(new Inconsistency(source, concept));
+                }
+            }
+        }
+        return inconsistencies;
+    }
+
+    private boolean isInconsistent(ConceptKey key, ConceptKey other) {
+        return key.getId().equals(other.getId()) && !key.getVersion().equals(other.getVersion());
     }
 
     @Override
