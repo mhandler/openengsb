@@ -30,8 +30,8 @@ import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.core.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
+import org.openengsb.ekb.core.SimpleConceptSource;
 
 public class RegexSoftReferenceTest {
 
@@ -139,12 +139,12 @@ public class RegexSoftReferenceTest {
         }
 
         @Override
-        public Concept<?> getConcept(String id) throws NoSuchConceptException {
+        public Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException {
             return null;
         }
 
         @Override
-        public <TYPE> Concept<TYPE> getConcept(String id, Class<TYPE> conceptClass) throws NoSuchConceptException {
+        public <TYPE> Concept<TYPE> getConcept(ConceptKey key, Class<TYPE> conceptClass) throws NoSuchConceptException {
             return null;
         }
 
@@ -155,7 +155,7 @@ public class RegexSoftReferenceTest {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, String key) {
+        public <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, Object key) {
             if (key.equals(target.id)) {
                 return (TYPE) target;
             } else if (key.equals(target2.id)) {

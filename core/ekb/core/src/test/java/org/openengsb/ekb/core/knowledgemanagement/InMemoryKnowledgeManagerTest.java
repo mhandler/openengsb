@@ -20,7 +20,6 @@ package org.openengsb.ekb.core.knowledgemanagement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import junit.framework.Assert;
 
@@ -29,8 +28,8 @@ import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.core.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
+import org.openengsb.ekb.core.SimpleConceptSource;
 
 public class InMemoryKnowledgeManagerTest {
 
@@ -105,7 +104,7 @@ public class InMemoryKnowledgeManagerTest {
     public void testGetConceptByIdFail() throws NoSuchConceptException {
         List<Concept<?>> concepts = createConcepts();
         manager.setConcepts(concepts);
-        manager.getActiveConcept("42");
+        manager.getActiveConcept(new ConceptKey("42", "1.0.0"));
     }
 
     @Test
@@ -113,10 +112,10 @@ public class InMemoryKnowledgeManagerTest {
         List<Concept<?>> concepts = createConcepts();
         manager.setConcepts(concepts);
         manager.activateConcepts(concepts);
-        manager.getActiveConcept("42");
-        manager.getActiveConcept("foo");
-        manager.getActiveConcept("bar");
-        manager.getActiveConcept("buz");
+        manager.getActiveConcept(new ConceptKey("42", "1.0.0"));
+        manager.getActiveConcept(new ConceptKey("foo", "1.0.0"));
+        manager.getActiveConcept(new ConceptKey("bar", "1.0.0"));
+        manager.getActiveConcept(new ConceptKey("buz", "1.0.0"));
     }
 
     @Test
@@ -156,7 +155,7 @@ public class InMemoryKnowledgeManagerTest {
     private Concept<?> createConcept(String id) {
         ConceptImpl<SomeConcept> concept = new ConceptImpl<SomeConcept>();
         concept.setConceptClass(SomeConcept.class);
-        concept.setKey(new ConceptKey(id, UUID.randomUUID().toString()));
+        concept.setKey(new ConceptKey(id, "1.0.0"));
         return concept;
     }
 

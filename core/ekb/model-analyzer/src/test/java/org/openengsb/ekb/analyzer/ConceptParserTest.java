@@ -82,6 +82,15 @@ public class ConceptParserTest {
         Assert.assertEquals(SimpleConcept.class, concept.getSuperConcept().getConceptClass());
     }
 
+    @Test(expected = AnnotationMissingException.class)
+    public void testParseIllegalSoftReferences() throws AnnotationMissingException {
+        List<Class<?>> classes = new ArrayList<Class<?>>();
+        classes.add(SimpleConcept.class);
+        classes.add(ConceptWithSuperConcept.class);
+        classes.add(ConceptWithIllegalSoftReferences.class);
+        parser.parseConcepts(classes);
+    }
+
     @Test
     @SuppressWarnings("unchecked")
     public void testParseSoftReferences() throws AnnotationMissingException {
@@ -102,9 +111,6 @@ public class ConceptParserTest {
         Assert.assertEquals(2, concept.getSoftReferences().size());
         Assert.assertEquals(1, concept.getSoftReferences(simpleConcept).size());
         Assert.assertEquals(1, concept.getSoftReferences(otherConcept).size());
-
-        Assert.assertEquals(concept, concept.getSoftReferences(simpleConcept).get(0).getSourceConcept());
-        Assert.assertEquals(concept, concept.getSoftReferences(otherConcept).get(0).getSourceConcept());
 
         Assert.assertEquals(simpleConcept, concept.getSoftReferences(simpleConcept).get(0).getTargetConcept());
         Assert.assertEquals(otherConcept, concept.getSoftReferences(otherConcept).get(0).getTargetConcept());
@@ -178,7 +184,7 @@ public class ConceptParserTest {
         return null;
     }
 
-    @Concept("SimpleConcept")
+    @Concept(id = "SimpleConcept", version = "1.0.0")
     @SuppressWarnings("unused")
     private class SimpleConcept {
         @Key
@@ -189,45 +195,50 @@ public class ConceptParserTest {
         private TestObject test4;
     }
 
-    @Concept("ConceptWithSuperConcept")
-    @SuperConcept("SimpleConcept")
+    @Concept(id = "ConceptWithSuperConcept", version = "1.0.0")
+    @SuperConcept(id = "SimpleConcept", version = "1.0.0")
     private class ConceptWithSuperConcept {
 
     }
 
-    @Concept("ConceptWithSoftReferences")
+    @Concept(id = "ConceptWithIllegalSoftReferences", version = "1.0.0")
+    @SuppressWarnings("unused")
+    private class ConceptWithIllegalSoftReferences {
+        @Key
+        private String someKey;
+
+        @ReferenceId(regexp = "#ref\\(([\\d]+)\\)", targetConceptId = "ConceptWithSuperConcept", targetConceptVersion = "1.0.0")
+        private String refField1;
+
+    }
+
+    @Concept(id = "ConceptWithSoftReferences", version = "1.0.0")
     @SuppressWarnings("unused")
     private class ConceptWithSoftReferences {
         @Key
         private String someKey;
 
-        @ReferenceId(regexp = "#ref\\(([\\d]+)\\)", targetConcept = "SimpleConcept")
+        @ReferenceId(regexp = "#ref\\(([\\d]+)\\)", targetConceptId = "SimpleConcept", targetConceptVersion = "1.0.0")
         private String refField1;
 
-        @ReferenceId(regexp = "#someRef\\(([a-z,A-Z]+)\\)", targetConcept = "ConceptWithSoftReferences2")
+        @ReferenceId(regexp = "#someRef\\(([a-z,A-Z]+)\\)", targetConceptId = "ConceptWithSoftReferences2", targetConceptVersion = "1.0.0")
         private String refField2;
 
     }
 
-    @Concept("ConceptWithSoftReferences2")
+    @Concept(id = "ConceptWithSoftReferences2", version = "1.0.0")
     @SuppressWarnings("unused")
     private class ConceptWithSoftReferences2 {
         @Key
         private String someKey;
 
-        @ReferenceId(regexp = "#someRef\\(([a-z,A-Z]+)\\)", targetConcept = "ConceptWithSoftReferences")
+        @ReferenceId(regexp = "#someRef\\(([a-z,A-Z]+)\\)", targetConceptId = "ConceptWithSoftReferences", targetConceptVersion = "1.0.0")
         private String refField;
 
     }
 
-    @Concept("ConceptWithBiDirectionalReferences")
-    @SuppressWarnings("unused")
-    private class ConceptWithBiDirectionalReferences {
-
-    }
-
-    @Concept("ConceptWithFieldMappings")
-    @SuperConcept("SimpleConcept")
+    @Concept(id = "ConceptWithFieldMappings", version = "1.0.0")
+    @SuperConcept(id = "SimpleConcept", version = "1.0.0")
     @SuppressWarnings("unused")
     private class ConceptWithFieldMappings {
 

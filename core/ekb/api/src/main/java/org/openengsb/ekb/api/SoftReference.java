@@ -23,8 +23,6 @@ public interface SoftReference<SOURCETYPE, TARGETTYPE> {
 
     List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject);
 
-    Concept<SOURCETYPE> getSourceConcept();
-
     Concept<TARGETTYPE> getTargetConcept();
 
 }

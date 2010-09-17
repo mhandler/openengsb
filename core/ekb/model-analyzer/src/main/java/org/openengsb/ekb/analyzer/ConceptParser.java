@@ -21,12 +21,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.openengsb.ekb.annotations.Key;
 import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.ReferenceId;
 import org.openengsb.ekb.annotations.SuperConcept;
@@ -66,7 +66,27 @@ public class ConceptParser {
             throw new IllegalStateException("Some references to superclasses or soft references could not be resolved.");
         }
 
+        checkSoftRefTargetsValid(result);
+
         return result;
+    }
+
+    private void checkSoftRefTargetsValid(List<Concept<?>> result) throws AnnotationMissingException {
+        for (Concept<?> c : result) {
+            for (SoftReference<?, ?> ref : c.getSoftReferences()) {
+                checkSoftRefTargetValid(ref.getTargetConcept());
+            }
+        }
+    }
+
+    private void checkSoftRefTargetValid(Concept<?> targetConcept) throws AnnotationMissingException {
+        for (Field f : targetConcept.getConceptClass().getDeclaredFields()) {
+            if (f.isAnnotationPresent(Key.class)) {
+                return;
+            }
+        }
+        throw new AnnotationMissingException(
+                "A target of a soft reference has to define a key by annotating a field with the org.openengsb.ekb.annotations.Key annotation.");
     }
 
     private <TYPE> Concept<TYPE> parseConcept(Class<TYPE> clazz) throws AnnotationMissingException {
@@ -83,19 +103,20 @@ public class ConceptParser {
 
     private <TYPE> void setKey(Class<TYPE> clazz, ConceptImpl<TYPE> concept) throws AnnotationMissingException {
         checkObligatoryAnnotationPresent(clazz, org.openengsb.ekb.annotations.Concept.class);
-        String id = clazz.getAnnotation(org.openengsb.ekb.annotations.Concept.class).value();
-        String version = UUID.randomUUID().toString();
+        String id = clazz.getAnnotation(org.openengsb.ekb.annotations.Concept.class).id();
+        String version = clazz.getAnnotation(org.openengsb.ekb.annotations.Concept.class).version();
         concept.setKey(new ConceptKey(id, version));
     }
 
     private <TYPE> void setSuperConcept(Class<TYPE> clazz, ConceptImpl<TYPE> concept) {
         if (isAnnotationPresent(clazz, SuperConcept.class)) {
-            String superConceptId = clazz.getAnnotation(SuperConcept.class).value();
-            ConceptImpl<?> superConcept = cache.getConcept(superConceptId);
+            SuperConcept superConceptAnn = clazz.getAnnotation(SuperConcept.class);
+            ConceptKey superConceptKey = new ConceptKey(superConceptAnn.id(), superConceptAnn.version());
+            ConceptImpl<?> superConcept = cache.getConcept(superConceptKey);
             if (superConcept != null) {
                 concept.setSuperConcept(superConcept);
             } else {
-                SuperConceptSettingTask<TYPE> task = new SuperConceptSettingTask<TYPE>(concept, superConceptId);
+                SuperConceptSettingTask<TYPE> task = new SuperConceptSettingTask<TYPE>(concept, superConceptKey);
                 cache.addListener(task);
                 executor.execute(task);
             }
@@ -116,18 +137,21 @@ public class ConceptParser {
         }
     }
 
-    private <TYPE> void setSoftReferences(Class<TYPE> clazz, ConceptImpl<TYPE> concept) {
+    private <TYPE> void setSoftReferences(Class<TYPE> clazz, ConceptImpl<TYPE> concept)
+            throws AnnotationMissingException {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (isAnnotationPresent(field, ReferenceId.class)) {
                 ReferenceId referenceId = field.getAnnotation(ReferenceId.class);
-                String targetConceptId = referenceId.targetConcept();
+                String targetConceptId = referenceId.targetConceptId();
+                String targetConceptVersion = referenceId.targetConceptVersion();
+                ConceptKey targetConceptKey = new ConceptKey(targetConceptId, targetConceptVersion);
                 String regexp = referenceId.regexp();
-                Concept<?> targetConcept = cache.getConcept(targetConceptId);
+                Concept<?> targetConcept = cache.getConcept(targetConceptKey);
                 if (targetConcept != null) {
                     concept.addSoftReference(createSoftRef(concept, targetConcept, field.getName(), regexp));
                 } else {
-                    SoftReferenceAddingTask<TYPE> task = new SoftReferenceAddingTask<TYPE>(concept, targetConceptId,
+                    SoftReferenceAddingTask<TYPE> task = new SoftReferenceAddingTask<TYPE>(concept, targetConceptKey,
                             field.getName(), regexp);
                     cache.addListener(task);
                     executor.execute(task);
@@ -171,13 +195,13 @@ public class ConceptParser {
 
         protected ConceptImpl<T> concept;
 
-        protected String idToWaitFor;
+        protected ConceptKey keyToWaitFor;
 
         private Semaphore semaphore = new Semaphore(0);
 
-        public CacheWaiterTask(ConceptImpl<T> concept, String idToWaitFor) {
+        public CacheWaiterTask(ConceptImpl<T> concept, ConceptKey keyToWaitFor) {
             this.concept = concept;
-            this.idToWaitFor = idToWaitFor;
+            this.keyToWaitFor = keyToWaitFor;
         }
 
         @Override
@@ -195,7 +219,7 @@ public class ConceptParser {
 
         @Override
         public void conceptStored(Concept<?> concept) {
-            if (concept.getKey().getId().equals(idToWaitFor)) {
+            if (concept.getKey().equals(keyToWaitFor)) {
                 semaphore.release();
                 cache.removeListener(this);
             }
@@ -205,13 +229,13 @@ public class ConceptParser {
 
     private class SuperConceptSettingTask<T> extends CacheWaiterTask<T> {
 
-        public SuperConceptSettingTask(ConceptImpl<T> concept, String idToWaitFor) {
-            super(concept, idToWaitFor);
+        public SuperConceptSettingTask(ConceptImpl<T> concept, ConceptKey keyToWaitFor) {
+            super(concept, keyToWaitFor);
         }
 
         @Override
         public void doAction() {
-            concept.setSuperConcept(cache.getConcept(idToWaitFor));
+            concept.setSuperConcept(cache.getConcept(keyToWaitFor));
         }
 
     }
@@ -222,15 +246,15 @@ public class ConceptParser {
 
         private String regexp;
 
-        public SoftReferenceAddingTask(ConceptImpl<T> concept, String idToWaitFor, String fieldName, String regexp) {
-            super(concept, idToWaitFor);
+        public SoftReferenceAddingTask(ConceptImpl<T> concept, ConceptKey keyToWaitFor, String fieldName, String regexp) {
+            super(concept, keyToWaitFor);
             this.fieldName = fieldName;
             this.regexp = regexp;
         }
 
         @Override
         public void doAction() {
-            Concept<?> targetConcept = cache.getConcept(idToWaitFor);
+            Concept<?> targetConcept = cache.getConcept(keyToWaitFor);
             concept.addSoftReference(createSoftRef(concept, targetConcept, fieldName, regexp));
         }
 

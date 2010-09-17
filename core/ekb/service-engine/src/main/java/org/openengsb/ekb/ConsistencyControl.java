@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
 import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceStatusListener;
@@ -46,60 +45,52 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
         List<Concept<?>> allConcepts = new ArrayList<Concept<?>>(activeConcepts.size() + inactiveConcepts.size());
         allConcepts.addAll(inactiveConcepts);
         allConcepts.addAll(activeConcepts);
-        checkConsistency(allConcepts, conceptSourceManager.getActiveConceptSources());
+        activateSupportedConcepts(inactiveConcepts, conceptSourceManager.getActiveConceptSources());
     }
 
-    private void checkConsistency(List<Concept<?>> concepts, List<ConceptSource> sources) {
-        List<Inconsistency> inconsistencies = getInconsistencies(concepts, sources);
-        if (inconsistencies.isEmpty()) {
-            return;
+    private void activateSupportedConcepts(List<Concept<?>> inactiveConcepts, List<ConceptSource> activeConceptSources) {
+        List<Concept<?>> toActivate = new ArrayList<Concept<?>>();
+        for (ConceptSource source : activeConceptSources) {
+            for (Concept<?> concept : inactiveConcepts) {
+                if (source.canProvide(concept) || source.canProvideSubconcept(concept)) {
+                    toActivate.add(concept);
+                }
+            }
         }
-        for (Inconsistency inconsistency : inconsistencies) {
-            conceptSourceManager.deactivate(inconsistency.getSource());
-        }
+        knowledgeManager.activateConcepts(toActivate);
     }
 
     @Override
     public void activated(ConceptSource source) {
-        List<Concept<?>> candidates = knowledgeManager.getInactiveConcepts(source);
-        List<Inconsistency> inconsistencies = getInconsistencies(candidates, source);
-        for (Inconsistency inconsistency : inconsistencies) {
-            candidates.remove(inconsistency.getModelConcept());
-        }
-        knowledgeManager.activateConcepts(candidates);
+        knowledgeManager.activateConcepts(knowledgeManager.getInactiveConcepts(source));
     }
 
     @Override
     public void deactivated(ConceptSource source) {
         List<Concept<?>> candidates = knowledgeManager.getActiveConcepts(source);
+        candidates.addAll(getAllSuperConcepts(candidates));
         for (ConceptSource otherSource : conceptSourceManager.getActiveConceptSources()) {
             candidates.removeAll(knowledgeManager.getActiveConcepts(otherSource));
         }
         knowledgeManager.deactivateConcepts(candidates);
     }
 
-    private List<Inconsistency> getInconsistencies(List<Concept<?>> concepts, List<ConceptSource> sources) {
-        List<Inconsistency> inconsistencies = new ArrayList<Inconsistency>();
-        for (ConceptSource source : sources) {
-            inconsistencies.addAll(getInconsistencies(concepts, source));
+    private List<Concept<?>> getAllSuperConcepts(List<Concept<?>> concepts) {
+        List<Concept<?>> superConcepts = new ArrayList<Concept<?>>();
+        for (Concept<?> concept : concepts) {
+            superConcepts.addAll(getAllSuperConcepts(concept));
         }
-        return inconsistencies;
+        return superConcepts;
     }
 
-    private List<Inconsistency> getInconsistencies(List<Concept<?>> concepts, ConceptSource source) {
-        List<Inconsistency> inconsistencies = new ArrayList<Inconsistency>();
-        for (ConceptKey key : source.getProvidedConcepts()) {
-            for (Concept<?> concept : concepts) {
-                if (isInconsistent(key, concept.getKey())) {
-                    inconsistencies.add(new Inconsistency(source, concept));
-                }
-            }
+    private List<? extends Concept<?>> getAllSuperConcepts(Concept<?> concept) {
+        List<Concept<?>> superConcepts = new ArrayList<Concept<?>>();
+        Concept<?> superConcept = concept.getSuperConcept();
+        while (superConcept != null) {
+            superConcepts.add(superConcept);
+            superConcept = superConcept.getSuperConcept();
         }
-        return inconsistencies;
-    }
-
-    private boolean isInconsistent(ConceptKey key, ConceptKey other) {
-        return key.getId().equals(other.getId()) && !key.getVersion().equals(other.getVersion());
+        return superConcepts;
     }
 
     @Override
@@ -124,26 +115,6 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
 
     public void setKnowledgeManager(KnowledgeManager knowledgeManager) {
         this.knowledgeManager = knowledgeManager;
-    }
-
-    private class Inconsistency {
-        private Concept<?> modelConcept;
-
-        private ConceptSource source;
-
-        public Inconsistency(ConceptSource source, Concept<?> modelConcept) {
-            this.source = source;
-            this.modelConcept = modelConcept;
-        }
-
-        public Concept<?> getModelConcept() {
-            return modelConcept;
-        }
-
-        public ConceptSource getSource() {
-            return source;
-        }
-
     }
 
 }

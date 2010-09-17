@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
@@ -32,16 +33,34 @@ public class UC1 {
 
     public static void main(String[] args) throws NoSuchConceptException {
 
-        Concept<Signal> signalConcept = ekb.getConcept("#Signal", Signal.class);
-        List<ConceptSource> signalSources = ekb.getSources(signalConcept);
+        Concept<Sensor> sensorConcept = ekb.getConcept(new ConceptKey("#Sensor", "1.0.0"), Sensor.class);
+        List<ConceptSource> sensorSources = ekb.getSources(sensorConcept);
 
-        Map<String, List<Signal>> data = new HashMap<String, List<Signal>>();
+        Map<String, List<Sensor>> data = new HashMap<String, List<Sensor>>();
 
-        for (ConceptSource source : signalSources) {
-            List<Signal> signals = ekb.getData(source, signalConcept);
-            data.put(source.getId(), signals);
+        for (ConceptSource source : sensorSources) {
+            List<Sensor> sensors = ekb.getData(source, sensorConcept);
+            data.put(source.getId(), sensors);
         }
 
-        // TODO: find out whatever we want to find out about the data
+        List<Map<String, Sensor>> alignedSensors = alignSensors(data);
+        checkThreeSources(alignedSensors);
+        checkConsistency(alignedSensors);
     }
+
+    private static List<Map<String, Sensor>> alignSensors(Map<String, List<Sensor>> data) {
+        // find the same sensor from different sources
+        return null;
+    }
+
+    private static void checkThreeSources(List<Map<String, Sensor>> alignedSensors) {
+        // check if each software variable representation of a sensor has three
+        // physical sources
+    }
+
+    private static void checkConsistency(List<Map<String, Sensor>> alignedSensors) {
+        // check if the unit of measurement is consistent for each sensor
+
+    }
+
 }

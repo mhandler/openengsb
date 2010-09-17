@@ -25,6 +25,7 @@ import java.util.List;
 import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.DomainQueryInterface;
 import org.openengsb.ekb.api.EKB;
@@ -52,21 +53,22 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    public Concept<?> getConcept(String id) throws NoSuchConceptException {
-        return knowledgeManager.getActiveConcept(id);
+    public Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException {
+        return knowledgeManager.getActiveConcept(key);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Concept<T> getConcept(String id, Class<T> conceptClass) throws NoSuchConceptException {
-        Concept<?> concept = getConcept(id);
-        checkConceptClass(id, conceptClass, concept);
+    public <T> Concept<T> getConcept(ConceptKey key, Class<T> conceptClass) throws NoSuchConceptException {
+        Concept<?> concept = getConcept(key);
+        checkConceptClass(key, conceptClass, concept);
         return (Concept<T>) concept;
     }
 
-    private void checkConceptClass(String id, Class<?> conceptClass, Concept<?> concept) throws NoSuchConceptException {
+    private void checkConceptClass(ConceptKey key, Class<?> conceptClass, Concept<?> concept)
+            throws NoSuchConceptException {
         if (concept != null && !concept.getConceptClass().equals(conceptClass)) {
-            throw new NoSuchConceptException("The concept stored under the id " + id + " has concept class "
+            throw new NoSuchConceptException("The concept stored under the key " + key + " has concept class "
                     + concept.getConceptClass() + " but a concept with concept class " + conceptClass
                     + " was requested.");
         }
@@ -95,7 +97,7 @@ public class EKBImplementation implements EKB {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getDataElement(ConceptSource source, Concept<T> concept, String key) {
+    public <T> T getDataElement(ConceptSource source, Concept<T> concept, Object key) {
         checkProvided(source, concept);
 
         if (source.canProvide(concept)) {

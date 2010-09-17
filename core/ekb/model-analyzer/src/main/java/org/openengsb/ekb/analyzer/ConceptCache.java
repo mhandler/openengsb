@@ -23,20 +23,21 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class ConceptCache {
 
-    private Map<String, ConceptImpl<?>> concepts = new ConcurrentHashMap<String, ConceptImpl<?>>();
+    private Map<ConceptKey, ConceptImpl<?>> concepts = new ConcurrentHashMap<ConceptKey, ConceptImpl<?>>();
 
     private Set<ConceptCacheListener> listeners = new HashSet<ConceptCacheListener>();
 
-    public ConceptImpl<?> getConcept(String id) {
+    public ConceptImpl<?> getConcept(ConceptKey id) {
         return concepts.get(id);
     }
 
     public void storeConcept(ConceptImpl<?> concept) {
-        this.concepts.put(concept.getKey().getId(), concept);
+        this.concepts.put(concept.getKey(), concept);
         notifyAboutStore(concept);
     }
 

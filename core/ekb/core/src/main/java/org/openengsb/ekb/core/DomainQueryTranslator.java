@@ -30,18 +30,18 @@ public class DomainQueryTranslator<T> implements DomainQueryInterface {
     @Override
     @SuppressWarnings("unchecked")
     public <U> List<U> getAll(Class<U> type) {
-        return (List<U>) invokeMethod("getAll" + type.getName());
+        return (List<U>) invokeMethod("getAll" + type.getName(), new Class<?>[0], new Object[0]);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> U getByKey(Class<U> type, String key) {
-        return (U) invokeMethod("get" + type.getName() + "ByKey", String.class);
+    public <U> U getByKey(Class<U> type, Object key) {
+        return (U) invokeMethod("get" + type.getName() + "ByKey", new Class<?>[] { String.class }, new Object[] { key });
     }
 
-    private Object invokeMethod(String name, Class<?>... argTypes) {
+    private Object invokeMethod(String name, Class<?>[] argTypes, Object[] args) {
         try {
-            return interfaceClass.getMethod(name, argTypes).invoke(interfaceImplementation);
+            return interfaceClass.getMethod(name, argTypes).invoke(interfaceImplementation, args);
         } catch (RuntimeException re) {
             throw re;
         } catch (Exception e) {

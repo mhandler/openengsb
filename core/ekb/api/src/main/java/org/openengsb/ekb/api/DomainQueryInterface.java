@@ -23,6 +23,6 @@ public interface DomainQueryInterface {
 
     <TYPE> List<TYPE> getAll(Class<TYPE> type);
 
-    <TYPE> TYPE getByKey(Class<TYPE> type, String key);
+    <TYPE> TYPE getByKey(Class<TYPE> type, Object key);
 
 }

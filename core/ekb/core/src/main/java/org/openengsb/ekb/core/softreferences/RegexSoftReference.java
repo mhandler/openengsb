@@ -91,11 +91,6 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
     }
 
     @Override
-    public Concept<SOURCETYPE> getSourceConcept() {
-        return sourceConcept;
-    }
-
-    @Override
     public Concept<TARGETTYPE> getTargetConcept() {
         return targetConcept;
     }

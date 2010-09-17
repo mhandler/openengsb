@@ -20,6 +20,7 @@ package org.openengsb.ekb.core.knowledgemanagement;
 import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.NoSuchConceptException;
 
@@ -27,7 +28,7 @@ public interface KnowledgeManager {
 
     List<Concept<?>> getActiveConcepts();
 
-    Concept<?> getActiveConcept(String id) throws NoSuchConceptException;
+    Concept<?> getActiveConcept(ConceptKey key) throws NoSuchConceptException;
 
     List<Concept<?>> getActiveConcepts(ConceptSource source);
 

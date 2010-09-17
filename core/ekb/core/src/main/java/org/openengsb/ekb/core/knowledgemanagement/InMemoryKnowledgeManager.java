@@ -24,6 +24,7 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.NoSuchConceptException;
 
@@ -64,13 +65,13 @@ public class InMemoryKnowledgeManager implements KnowledgeManager {
     }
 
     @Override
-    public Concept<?> getActiveConcept(String id) throws NoSuchConceptException {
+    public Concept<?> getActiveConcept(ConceptKey key) throws NoSuchConceptException {
         for (Concept<?> concept : getActiveConcepts()) {
-            if (concept.getKey().getId().equals(id)) {
+            if (concept.getKey().equals(key)) {
                 return concept;
             }
         }
-        throw new NoSuchConceptException("No concept stored with id " + id);
+        throw new NoSuchConceptException("No concept stored with key " + key);
     }
 
     @Override

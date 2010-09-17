@@ -21,16 +21,16 @@ import java.util.List;
 
 public interface EKB {
 
-    Concept<?> getConcept(String id) throws NoSuchConceptException;
+    Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException;
 
     List<Concept<?>> getAllConcepts();
 
-    <TYPE> Concept<TYPE> getConcept(String id, Class<TYPE> conceptClass) throws NoSuchConceptException;
+    <TYPE> Concept<TYPE> getConcept(ConceptKey key, Class<TYPE> conceptClass) throws NoSuchConceptException;
 
     List<ConceptSource> getSources(Concept<?> concept);
 
     <TYPE> List<TYPE> getData(ConceptSource source, Concept<TYPE> concept);
 
-    <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, String key);
+    <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, Object key);
 
 }

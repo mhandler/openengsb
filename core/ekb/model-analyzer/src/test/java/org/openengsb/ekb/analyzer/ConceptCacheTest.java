@@ -33,14 +33,14 @@ public class ConceptCacheTest implements ConceptCacheListener {
 
     private ConceptCache cache;
 
-    private String id;
+    private ConceptKey key;
 
     @Before
     public void setUp() {
         this.notified = false;
         this.cache = new ConceptCache();
         cache.addListener(this);
-        this.id = UUID.randomUUID().toString();
+        this.key = new ConceptKey(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     @Test
@@ -49,19 +49,19 @@ public class ConceptCacheTest implements ConceptCacheListener {
         Assert.assertFalse(notified);
         cache.storeConcept(concept);
         Assert.assertTrue(notified);
-        ConceptImpl<?> cached = cache.getConcept(id);
+        ConceptImpl<?> cached = cache.getConcept(key);
         Assert.assertEquals(concept, cached);
     }
 
     private ConceptImpl<SomeConcept> getConcept() {
         ConceptImpl<SomeConcept> concept = new ConceptImpl<SomeConcept>();
-        concept.setKey(new ConceptKey(id, UUID.randomUUID().toString()));
+        concept.setKey(key);
         return concept;
     }
 
     @Override
     public void conceptStored(Concept<?> concept) {
-        if (concept.getKey().getId().equals(id)) {
+        if (concept.getKey().equals(key)) {
             notified = true;
         }
     }
