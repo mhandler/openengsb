@@ -17,12 +17,23 @@
  */
 package org.openengsb.ekb.usecases;
 
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.MapsTo;
+import org.openengsb.ekb.annotations.SuperConcept;
+import org.openengsb.ekb.annotations.Transformation;
+
+@Concept(id = "sweSensor", version = "1.0.0")
+@SuperConcept(id = "sensor", version = "1.0.0")
 public class SweSensor {
 
+    @MapsTo({ "id", "connectionId" })
     private String id;
 
+    @MapsTo("unit")
     private String unit;
 
+    @MapsTo("type")
+    @Transformation(TypeToTypeTransformer.class)
     private String type;
 
     public String getId() {

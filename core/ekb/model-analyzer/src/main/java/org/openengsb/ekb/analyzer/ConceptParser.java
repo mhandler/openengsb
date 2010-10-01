@@ -131,20 +131,20 @@ public class ConceptParser {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (isAnnotationPresent(field, MapsTo.class)) {
-                String targetField = field.getAnnotation(MapsTo.class).value();
-
-                AbstractMapping mapping = null;
-                if (isAnnotationPresent(field, Transformation.class)) {
-                    Class<? extends Transformer> transformation = field.getAnnotation(Transformation.class).value();
-                    TransformerFieldMapping transformer = new TransformerFieldMapping();
-                    transformer.setTransformer(transformation.getName());
-                    mapping = transformer;
-                } else {
-                    mapping = new AutomaticMapping();
+                for (String targetField : field.getAnnotation(MapsTo.class).value()) {
+                    AbstractMapping mapping = null;
+                    if (isAnnotationPresent(field, Transformation.class)) {
+                        Class<? extends Transformer> transformation = field.getAnnotation(Transformation.class).value();
+                        TransformerFieldMapping transformer = new TransformerFieldMapping();
+                        transformer.setTransformer(transformation.getName());
+                        mapping = transformer;
+                    } else {
+                        mapping = new AutomaticMapping();
+                    }
+                    mapping.setSourceField(field.getName());
+                    mapping.setTargetField(targetField);
+                    concept.addFieldMapping(mapping);
                 }
-                mapping.setSourceField(field.getName());
-                mapping.setTargetField(targetField);
-                concept.addFieldMapping(mapping);
             }
         }
     }

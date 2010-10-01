@@ -170,16 +170,16 @@ public class ConceptParserTest {
         Assert.assertEquals("ConceptWithFieldMappings", concept.getKey().getId());
         Assert.assertEquals(ConceptWithFieldMappings.class, concept.getConceptClass());
 
-        Assert.assertEquals(5, concept.getFieldMappings(simpleConcept).size());
+        Assert.assertEquals(6, concept.getFieldMappings(simpleConcept).size());
 
         for (FieldMapping fm : concept.getFieldMappings(simpleConcept)) {
-            Assert.assertEquals("mapsTo" + fm.getTargetFieldName(), fm.getSourceFieldName());
-            if (!fm.getTargetFieldName().equals("test5")) {
-                Assert.assertEquals(AutomaticMapping.class, fm.getClass());
-            } else {
+            if (fm.getTargetFieldName().equals("test5") || fm.getTargetFieldName().equals("test6")) {
                 Assert.assertEquals(TransformerFieldMapping.class, fm.getClass());
                 TransformerFieldMapping tfm = (TransformerFieldMapping) fm;
                 Assert.assertEquals(TestTransformer.class.getName(), tfm.getTransformer());
+            } else {
+                Assert.assertEquals("mapsTo" + fm.getTargetFieldName(), fm.getSourceFieldName());
+                Assert.assertEquals(AutomaticMapping.class, fm.getClass());
             }
         }
     }
@@ -204,6 +204,7 @@ public class ConceptParserTest {
         private TestObject test4;
 
         private String test5;
+        private String test6;
     }
 
     @Concept(id = "ConceptWithSuperConcept", version = "1.0.0")
@@ -265,7 +266,7 @@ public class ConceptParserTest {
         @MapsTo("test4")
         private TestObject mapsTotest4;
 
-        @MapsTo("test5")
+        @MapsTo({ "test5", "test6" })
         @Transformation(TestTransformer.class)
         private TestObject mapsTotest5;
 
