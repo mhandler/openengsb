@@ -19,26 +19,25 @@ package org.openengsb.ekb.usecases;
 
 import org.openengsb.ekb.annotations.Concept;
 import org.openengsb.ekb.annotations.Key;
+import org.openengsb.ekb.annotations.MapsTo;
+import org.openengsb.ekb.annotations.SuperConcept;
 
-@Concept(id = "sensor", version = "1.0.0")
-public class Sensor {
-
-    public enum Type {
-        BINARY, INTEGER, OTHER
-    }
+@Concept(id = "eeSensor", version = "1.0.0")
+@SuperConcept(id = "sensor", version = "1.0.0")
+public class EeSensor {
 
     @Key
+    @MapsTo("id")
     private String id;
 
-    private String connectionId;
-
+    @MapsTo("unit")
     private String unit;
 
-    private Type type;
+    @MapsTo("type")
+    private int[] range;
 
-    public void setConnectionId(String connectionId) {
-        this.connectionId = connectionId;
-    }
+    @MapsTo("connectionId")
+    private String connectionId;
 
     public String getId() {
         return id;
@@ -48,8 +47,8 @@ public class Sensor {
         return connectionId;
     }
 
-    public Type getType() {
-        return type;
+    public int[] getRange() {
+        return range;
     }
 
     public String getUnit() {

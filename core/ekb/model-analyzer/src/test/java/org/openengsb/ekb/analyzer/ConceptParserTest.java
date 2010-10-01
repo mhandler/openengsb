@@ -29,9 +29,12 @@ import org.openengsb.ekb.annotations.Key;
 import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.ReferenceId;
 import org.openengsb.ekb.annotations.SuperConcept;
+import org.openengsb.ekb.annotations.Transformation;
 import org.openengsb.ekb.api.FieldMapping;
+import org.openengsb.ekb.api.Transformer;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
-import org.openengsb.ekb.core.transformation.mappings.IdentityMapping;
+import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
+import org.openengsb.ekb.core.transformation.mappings.TransformerFieldMapping;
 
 public class ConceptParserTest {
 
@@ -92,7 +95,7 @@ public class ConceptParserTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public void testParseSoftReferences() throws AnnotationMissingException {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(ConceptWithSoftReferences.class);
@@ -123,10 +126,10 @@ public class ConceptParserTest {
         Assert.assertEquals("#someRef\\(([a-z,A-Z]+)\\)", ((RegexSoftReference) concept.getSoftReferences(otherConcept)
                 .get(0)).getRegex());
 
-        Assert.assertEquals("refField1", ((RegexSoftReference) concept.getSoftReferences(simpleConcept).get(0))
-                .getReferenceField());
-        Assert.assertEquals("refField2", ((RegexSoftReference) concept.getSoftReferences(otherConcept).get(0))
-                .getReferenceField());
+        Assert.assertEquals("refField1",
+                ((RegexSoftReference) concept.getSoftReferences(simpleConcept).get(0)).getReferenceField());
+        Assert.assertEquals("refField2",
+                ((RegexSoftReference) concept.getSoftReferences(otherConcept).get(0)).getReferenceField());
     }
 
     @Test
@@ -167,11 +170,17 @@ public class ConceptParserTest {
         Assert.assertEquals("ConceptWithFieldMappings", concept.getKey().getId());
         Assert.assertEquals(ConceptWithFieldMappings.class, concept.getConceptClass());
 
-        Assert.assertEquals(4, concept.getFieldMappings(simpleConcept).size());
+        Assert.assertEquals(5, concept.getFieldMappings(simpleConcept).size());
 
         for (FieldMapping fm : concept.getFieldMappings(simpleConcept)) {
             Assert.assertEquals("mapsTo" + fm.getTargetFieldName(), fm.getSourceFieldName());
-            Assert.assertEquals(IdentityMapping.class, fm.getClass());
+            if (!fm.getTargetFieldName().equals("test5")) {
+                Assert.assertEquals(AutomaticMapping.class, fm.getClass());
+            } else {
+                Assert.assertEquals(TransformerFieldMapping.class, fm.getClass());
+                TransformerFieldMapping tfm = (TransformerFieldMapping) fm;
+                Assert.assertEquals(TestTransformer.class.getName(), tfm.getTransformer());
+            }
         }
     }
 
@@ -193,6 +202,8 @@ public class ConceptParserTest {
         private Integer test2;
         private Boolean test3;
         private TestObject test4;
+
+        private String test5;
     }
 
     @Concept(id = "ConceptWithSuperConcept", version = "1.0.0")
@@ -254,9 +265,22 @@ public class ConceptParserTest {
         @MapsTo("test4")
         private TestObject mapsTotest4;
 
+        @MapsTo("test5")
+        @Transformation(TestTransformer.class)
+        private TestObject mapsTotest5;
+
     }
 
     private class TestObject {
+    }
+
+    private class TestTransformer implements Transformer {
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) {
+            return (TARGETTYPE) source.toString();
+        }
     }
 
 }

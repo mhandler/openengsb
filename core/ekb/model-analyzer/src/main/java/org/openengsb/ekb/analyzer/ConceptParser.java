@@ -30,12 +30,16 @@ import org.openengsb.ekb.annotations.Key;
 import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.ReferenceId;
 import org.openengsb.ekb.annotations.SuperConcept;
+import org.openengsb.ekb.annotations.Transformation;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.SoftReference;
+import org.openengsb.ekb.api.Transformer;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
-import org.openengsb.ekb.core.transformation.mappings.IdentityMapping;
+import org.openengsb.ekb.core.transformation.mappings.AbstractMapping;
+import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
+import org.openengsb.ekb.core.transformation.mappings.TransformerFieldMapping;
 
 public class ConceptParser {
 
@@ -128,8 +132,16 @@ public class ConceptParser {
         for (Field field : fields) {
             if (isAnnotationPresent(field, MapsTo.class)) {
                 String targetField = field.getAnnotation(MapsTo.class).value();
-                // TODO support more than identity mapping
-                IdentityMapping mapping = new IdentityMapping();
+
+                AbstractMapping mapping = null;
+                if (isAnnotationPresent(field, Transformation.class)) {
+                    Class<? extends Transformer> transformation = field.getAnnotation(Transformation.class).value();
+                    TransformerFieldMapping transformer = new TransformerFieldMapping();
+                    transformer.setTransformer(transformation.getName());
+                    mapping = transformer;
+                } else {
+                    mapping = new AutomaticMapping();
+                }
                 mapping.setSourceField(field.getName());
                 mapping.setTargetField(targetField);
                 concept.addFieldMapping(mapping);

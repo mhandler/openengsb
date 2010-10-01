@@ -17,9 +17,8 @@
  */
 package org.openengsb.ekb.usecases;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
@@ -36,31 +35,75 @@ public class UC1 {
         Concept<Sensor> sensorConcept = ekb.getConcept(new ConceptKey("#Sensor", "1.0.0"), Sensor.class);
         List<ConceptSource> sensorSources = ekb.getSources(sensorConcept);
 
-        Map<String, List<Sensor>> data = new HashMap<String, List<Sensor>>();
+        // test whether sw tool and electrical engineering tool is present
 
-        for (ConceptSource source : sensorSources) {
-            List<Sensor> sensors = ekb.getData(source, sensorConcept);
-            data.put(source.getId(), sensors);
+        ConceptSource sweSource = getSource("sweTool", sensorSources);
+        ConceptSource eeSource = getSource("eeTool", sensorSources);
+
+        // test three sources
+        List<Sensor> sweSensors = ekb.getData(sweSource, sensorConcept);
+        List<Sensor> eeSensors = ekb.getData(eeSource, sensorConcept);
+
+        for (Sensor sweSensor : sweSensors) {
+            List<Sensor> connected = getConnectedSensors(sweSensor, eeSensors);
+            if (connected.size() != 3) {
+                reportProblem("Software Sensor '" + sweSensor.getId() + "' is connected to " + connected.size()
+                        + " sensors in the electrical engineering tool, but should be 3.");
+            }
         }
 
-        List<Map<String, Sensor>> alignedSensors = alignSensors(data);
-        checkThreeSources(alignedSensors);
-        checkConsistency(alignedSensors);
+        // test no double connect
+        for (Sensor eeSensor : eeSensors) {
+            List<Sensor> connected = getConnectedSensors(eeSensor, sweSensors);
+            if (connected.size() != 1) {
+                reportProblem("Physical Sensor '" + eeSensor.getId() + "' is connected to " + connected.size()
+                        + " sensors in the software engineering tool, but should be 1.");
+            }
+        }
+
+        // test type and unit valid
+        for (Sensor sweSensor : sweSensors) {
+            List<Sensor> connected = getConnectedSensors(sweSensor, eeSensors);
+            for (Sensor eeSensor : connected) {
+                testTypeAndUnit(sweSensor, eeSensor);
+            }
+        }
     }
 
-    private static List<Map<String, Sensor>> alignSensors(Map<String, List<Sensor>> data) {
-        // find the same sensor from different sources
-        return null;
+    private static void testTypeAndUnit(Sensor sweSensor, Sensor eeSensor) {
+        if (!sweSensor.getType().equals(eeSensor.getType())) {
+            reportProblem("Software sensor '" + sweSensor.getId() + "' and electrical engineering sensor '" + eeSensor
+                    + "' are connected but have a different sensor type. '" + sweSensor.getType() + "' vs '"
+                    + eeSensor.getType() + "'");
+        }
+        if (!sweSensor.getUnit().equals(eeSensor.getUnit())) {
+            reportProblem("Software sensor '" + sweSensor.getId() + "' and electrical engineering sensor '" + eeSensor
+                    + "' are connected but have a different sensor unit. '" + sweSensor.getUnit() + "' vs '"
+                    + eeSensor.getUnit() + "'");
+        }
     }
 
-    private static void checkThreeSources(List<Map<String, Sensor>> alignedSensors) {
-        // check if each software variable representation of a sensor has three
-        // physical sources
+    private static void reportProblem(String string) {
+        // TODO Auto-generated method stub
     }
 
-    private static void checkConsistency(List<Map<String, Sensor>> alignedSensors) {
-        // check if the unit of measurement is consistent for each sensor
+    private static List<Sensor> getConnectedSensors(Sensor sensor, List<Sensor> sensors) {
+        List<Sensor> result = new ArrayList<Sensor>();
+        for (Sensor other : sensors) {
+            if (other.getConnectionId().equals(sensor.getConnectionId())) {
+                result.add(other);
+            }
+        }
+        return result;
+    }
 
+    private static ConceptSource getSource(String sourceId, List<ConceptSource> sources) {
+        for (ConceptSource source : sources) {
+            if (source.getId().equals(sourceId)) {
+                return source;
+            }
+        }
+        throw new IllegalStateException("No concept source with ID '" + sourceId + "' active.");
     }
 
 }

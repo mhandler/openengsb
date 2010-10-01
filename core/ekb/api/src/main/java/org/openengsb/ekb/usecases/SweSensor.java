@@ -17,38 +17,19 @@
  */
 package org.openengsb.ekb.usecases;
 
-import org.openengsb.ekb.annotations.Concept;
-import org.openengsb.ekb.annotations.Key;
+public class SweSensor {
 
-@Concept(id = "sensor", version = "1.0.0")
-public class Sensor {
-
-    public enum Type {
-        BINARY, INTEGER, OTHER
-    }
-
-    @Key
     private String id;
-
-    private String connectionId;
 
     private String unit;
 
-    private Type type;
-
-    public void setConnectionId(String connectionId) {
-        this.connectionId = connectionId;
-    }
+    private String type;
 
     public String getId() {
         return id;
     }
 
-    public String getConnectionId() {
-        return connectionId;
-    }
-
-    public Type getType() {
+    public String getType() {
         return type;
     }
 

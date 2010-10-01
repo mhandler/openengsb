@@ -55,8 +55,18 @@ public class SimpleTransformer implements Transformer {
             String sourceFieldName = mapping.getSourceFieldName();
             Object value = getFieldValue(sourceFieldName, source.getConceptClass(), input);
             String targetFieldName = mapping.getTargetFieldName();
-            Object targetValue = mapping.transform(value);
+            Object targetValue = mapping.transform(value, getFieldType(target, targetFieldName));
             setFieldValue(targetFieldName, target.getConceptClass(), output, targetValue);
+        }
+    }
+
+    private <TARGETTYPE> Class<?> getFieldType(Concept<TARGETTYPE> target, String targetFieldName) {
+        try {
+            Class<TARGETTYPE> conceptClass = target.getConceptClass();
+            Field targetField = conceptClass.getDeclaredField(targetFieldName);
+            return targetField.getType();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

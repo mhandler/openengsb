@@ -19,7 +19,7 @@ package org.openengsb.ekb.core.transformation.mappings;
 
 import org.openengsb.ekb.api.FieldMapping;
 
-public class IdentityMapping implements FieldMapping {
+public abstract class AbstractMapping implements FieldMapping {
 
     private String sourceField;
 
@@ -33,11 +33,6 @@ public class IdentityMapping implements FieldMapping {
     @Override
     public String getTargetFieldName() {
         return this.targetField;
-    }
-
-    @Override
-    public Object transform(Object source) {
-        return source;
     }
 
     public void setTargetField(String targetField) {

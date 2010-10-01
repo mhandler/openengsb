@@ -25,7 +25,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.core.ConceptImpl;
-import org.openengsb.ekb.core.transformation.mappings.IdentityMapping;
+import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
+import org.openengsb.ekb.core.transformation.mappings.TransformerFieldMapping;
 
 public class SimpleTransformerTest {
 
@@ -50,12 +51,12 @@ public class SimpleTransformerTest {
         ConceptImpl<Target> target = getTarget();
         ConceptImpl<Source> source = getSource(target);
 
-        IdentityMapping stringMapping = new IdentityMapping();
+        AutomaticMapping stringMapping = new AutomaticMapping();
         stringMapping.setSourceField("someString");
         stringMapping.setTargetField("targetString");
         source.addFieldMapping(stringMapping);
 
-        IdentityMapping intMapping = new IdentityMapping();
+        AutomaticMapping intMapping = new AutomaticMapping();
         intMapping.setSourceField("someInt");
         intMapping.setTargetField("targetInt");
         source.addFieldMapping(intMapping);
@@ -66,6 +67,24 @@ public class SimpleTransformerTest {
 
         Assert.assertEquals(input.someString, result.getTargetString());
         Assert.assertEquals(input.someInt, result.getTargetInt());
+    }
+
+    @Test
+    public void testConceptWithTransformerMappings() throws TransformationException {
+        ConceptImpl<Target> target = getTarget();
+        ConceptImpl<Source> source = getSource(target);
+
+        TransformerFieldMapping mapping = new TransformerFieldMapping();
+        mapping.setSourceField("someString");
+        mapping.setTargetField("targetString");
+        mapping.setTransformer(TestTransformer.class.getName());
+        source.addFieldMapping(mapping);
+
+        Source input = new Source();
+
+        Target result = transformer.transform(source, target, input);
+
+        Assert.assertEquals(input.someString, result.getTargetString());
     }
 
     private ConceptImpl<Target> getTarget() {
@@ -86,6 +105,16 @@ public class SimpleTransformerTest {
     private class Source {
         private String someString = "foo";
         private Integer someInt = new Integer(42);
+    }
+
+    public static class TestTransformer implements org.openengsb.ekb.api.Transformer {
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) {
+            return (TARGETTYPE) source.toString();
+        }
+
     }
 
 }
