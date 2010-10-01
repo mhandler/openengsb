@@ -75,7 +75,7 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> List<T> getData(ConceptSource source, Concept<T> concept) {
         checkProvided(source, concept);
 
