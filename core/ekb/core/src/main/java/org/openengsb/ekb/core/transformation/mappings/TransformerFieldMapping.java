@@ -9,9 +9,10 @@ public class TransformerFieldMapping extends AbstractMapping {
     private String transformer;
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T transform(Object source, Class<T> targetType) {
         Transformer instance = createTransformer();
-        return instance.transform(source, targetType);
+        return (T) instance.transform(source, targetType);
     }
 
     private Transformer createTransformer() {

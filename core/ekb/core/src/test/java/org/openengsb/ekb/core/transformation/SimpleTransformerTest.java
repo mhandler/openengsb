@@ -110,9 +110,8 @@ public class SimpleTransformerTest {
     public static class TestTransformer implements org.openengsb.ekb.api.Transformer {
 
         @Override
-        @SuppressWarnings("unchecked")
-        public <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) {
-            return (TARGETTYPE) source.toString();
+        public Object transform(Object source, Class<?> targetType) {
+            return source.toString();
         }
 
     }

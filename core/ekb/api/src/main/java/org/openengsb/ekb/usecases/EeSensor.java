@@ -21,6 +21,7 @@ import org.openengsb.ekb.annotations.Concept;
 import org.openengsb.ekb.annotations.Key;
 import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.SuperConcept;
+import org.openengsb.ekb.annotations.Transformation;
 
 @Concept(id = "eeSensor", version = "1.0.0")
 @SuperConcept(id = "sensor", version = "1.0.0")
@@ -34,7 +35,8 @@ public class EeSensor {
     private String unit;
 
     @MapsTo("type")
-    private int[] range;
+    @Transformation(RangeToTypeTransformer.class)
+    private String range;
 
     @MapsTo("connectionId")
     private String connectionId;
@@ -47,7 +49,7 @@ public class EeSensor {
         return connectionId;
     }
 
-    public int[] getRange() {
+    public String getRange() {
         return range;
     }
 
