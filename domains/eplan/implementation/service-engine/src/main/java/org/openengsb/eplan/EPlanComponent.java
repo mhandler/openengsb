@@ -15,10 +15,9 @@
    limitations under the License.
    
  */
-package org.openengsb.notification;
+package org.openengsb.eplan;
 
 import org.openengsb.core.OpenEngSBComponent;
-import org.openengsb.core.endpoints.EventForwardEndpoint;
 
 /**
  * @org.apache.xbean.XBean element="eplanComponent"

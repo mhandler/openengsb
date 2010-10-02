@@ -15,11 +15,7 @@
    limitations under the License.
    
  */
-package org.openengsb.email;
-
-import java.util.Map;
-import java.util.Properties;
-import java.util.Map.Entry;
+package org.openengsb.eplanTool;
 
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.LinkingEndpoint;
@@ -34,8 +30,7 @@ public class EPlanToolEndpoint extends LinkingEndpoint<EPlanDomain> {
 
     @Override
     protected EPlanDomain getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
-      return null;
+        return null;
     }
-
 
 }

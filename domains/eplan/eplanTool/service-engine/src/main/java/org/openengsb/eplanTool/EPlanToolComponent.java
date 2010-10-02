@@ -15,7 +15,7 @@
    limitations under the License.
    
  */
-package org.openengsb.email;
+package org.openengsb.eplanTool;
 
 import org.openengsb.core.OpenEngSBComponent;
 
