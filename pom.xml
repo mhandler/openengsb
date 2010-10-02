@@ -148,17 +148,6 @@
     <module>core/ekb/api</module>
     <module>core/ekb/model-analyzer</module>
 
-    <!-- Enterprise Data Base -->
-    <module>features/edb/core</module>
-    <module>features/edb/service-engine</module>
-    <module>features/edb/service-unit</module>
-    <module>features/edb/jms</module>
-
-    <!-- SCM Domain -->
-    <module>domains/scm/implementation/service-engine</module>
-    <module>domains/scm/implementation/service-unit</module>
-    <module>domains/scm/common</module>
-
     <!--  Notification Domain -->
     <module>domains/notification/implementation/service-engine</module>
     <module>domains/notification/implementation/service-unit</module>
@@ -175,65 +164,25 @@
     <module>domains/report/implementation/service-engine</module>
     <module>domains/report/implementation/service-unit</module>
 
-    <!--  Test Domain -->
-    <module>domains/test/implementation/service-engine</module>
-    <module>domains/test/implementation/service-unit</module>
-
-    <!-- Build Domain -->
-    <module>domains/build/implementation/service-engine</module>
-    <module>domains/build/implementation/service-unit</module>
-
-    <!--  Deploy Domain -->
-    <module>domains/deploy/implementation/service-engine</module>
-    <module>domains/deploy/implementation/service-unit</module>
-
-    <!-- Tool Abstraction -->
-    <module>domains/toolabstraction/maven</module>
-    <module>domains/toolabstraction/twitter</module>
-
     <!-- Connectors -->
-    <module>domains/scm/subversion/service-engine</module>
     <module>domains/notification/email/service-engine</module>
-    <module>domains/notification/twitter/service-engine</module>
-    <module>domains/notification/xmpp/service-engine</module>
     <module>domains/report/plaintext/service-engine</module>
     <module>domains/issues/trac/service-engine</module>
-    <module>domains/test/maven/service-engine</module>
-    <module>domains/build/maven/service-engine</module>
-    <module>domains/deploy/maven/service-engine</module>
     <module>domains/eplan/eplanTool/service-engine</module>
 
     <!-- Implementation Modules -->
-    <module>domains/build/maven/service-unit</module>
-    <module>domains/deploy/maven/service-unit</module>
-    <module>domains/test/maven/service-unit</module>
-    <module>domains/scm/subversion/service-unit</module>
     <module>domains/notification/email/service-unit</module>
-    <module>domains/notification/twitter/service-unit</module>
-    <module>domains/notification/xmpp/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
     <module>domains/eplan/eplanTool/service-unit</module>
 
     <!-- Packaging Modules -->
     <module>package/all</module>
-    <module>package/essential</module>
-    <module>package/assembly</module>
-
-    <!-- Config -->
-    <module>core/config/jbi</module>
-    <module>core/config/ui</module>
 
     <!-- Context -->
     <module>core/context/service-engine</module>
     <module>core/context/service-unit</module>
 
-    <!-- tool-links -->
-    <module>features/link/http/service-unit</module>
-    <module>features/link/http-jms/service-unit</module>
-    <module>features/link/http-processor/service-engine</module>
-    <module>features/link/http-processor/service-unit</module>
-    
   </modules>
 
   <inceptionYear>2009</inceptionYear>
@@ -825,45 +774,6 @@
         <version>${pom.version}</version>
       </dependency>
 
-      <!-- Enterprise Data Base -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-edb-core</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-edb-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-edb-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-edb-jms</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-      <!-- SCM Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-scm-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-scm-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-scm-common</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
       <!-- Notification Domain -->
       <dependency>
         <groupId>org.openengsb</groupId>
@@ -900,42 +810,6 @@
         <version>${pom.version}</version>
       </dependency>
 
-      <!-- Test Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-test-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-test-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-      <!-- Build Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-build-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-build-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-      <!-- Deploy Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-deploy-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-deploy-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
       <!-- Issue Domain -->
       <dependency>
         <groupId>org.openengsb</groupId>
@@ -948,39 +822,6 @@
         <version>${pom.version}</version>
       </dependency>
       
-      <!-- Maven things -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-test-maven-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-build-maven-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-deploy-maven-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-      <!-- Connectors -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-scm-subversion-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-toolabstraction-maven</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-toolabstraction-twitter</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-issues-trac-se</artifactId>
@@ -999,26 +840,6 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-notification-email-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-	  <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-notification-twitter-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-	  <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-notification-twitter-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-notification-xmpp-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-notification-xmpp-se</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>
@@ -1054,88 +875,10 @@
         <version>${pom.version}</version>
       </dependency>
 
-      <!-- tool links -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-link-http-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-link-http-processor-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-link-http-processor-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-features-link-http-jms-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-      <!-- Implementation Modules -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-build-maven-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-test-maven-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-deploy-maven-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-scm-subversion-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
       <!-- Packaging Modules -->
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-package-all</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-package-assembly</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-package-essential</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-package-embedded</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-
-
-      <!-- WebApp Modules -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-config-jbi</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-config-ui</artifactId>
-        <version>${pom.version}</version>
-        <type>war</type>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-embedded</artifactId>
         <version>${pom.version}</version>
       </dependency>
 

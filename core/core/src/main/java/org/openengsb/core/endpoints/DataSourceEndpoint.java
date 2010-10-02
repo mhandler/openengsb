@@ -13,27 +13,36 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
- */
-package org.openengsb.test;
 
+ */
+package org.openengsb.core.endpoints;
+
+import javax.jbi.messaging.MessageExchange;
+import javax.jbi.messaging.NormalizedMessage;
 import javax.xml.namespace.QName;
 
 import org.openengsb.contextcommon.ContextHelper;
-import org.openengsb.core.endpoints.ForwardEndpoint;
-import org.openengsb.drools.TestDomain;
+import org.openengsb.core.messaging.MessageProperties;
 
-/**
- * @org.apache.xbean.XBean element="testEndpoint" description="Test Endpoint"
- */
-public class TestEndpoint extends ForwardEndpoint<TestDomain> {
+public class DataSourceEndpoint extends RPCEndpoint<Object> {
+
+    @Override
+    protected Object getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     @Override
     protected QName getForwardTarget(ContextHelper contextHelper) {
-        String defaultName = contextHelper.getValue("test/default");
-        String serviceName = contextHelper.getValue("test/" + defaultName + "/servicename");
-        String namespace = contextHelper.getValue("test/" + defaultName + "/namespace");
-        return new QName(namespace, serviceName);
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void inOut(MessageExchange exchange, NormalizedMessage in, NormalizedMessage out,
+            ContextHelper contextHelper, MessageProperties msgProperties) throws Exception {
+        // TODO Auto-generated method stub
+
     }
 
 }

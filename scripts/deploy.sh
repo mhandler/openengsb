@@ -76,7 +76,6 @@ cd ../../
 
 files=`find . -iname '*-installer.zip' | grep -v package/embedded/`
 files="$files package/all/target/openengsb-package-all-${openengsb_version}.zip"
-files="features/edb/core/target/openengsb-features-edb-core-${openengsb_version}.zip $files"
 files="$M2_REPO/org/apache/servicemix/servicemix-shared/$smx_comp_version/servicemix-shared-${smx_comp_version}-installer.zip $files"
 
 for file in $files; do

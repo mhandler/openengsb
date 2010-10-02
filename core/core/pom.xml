@@ -45,6 +45,11 @@
       <artifactId>openengsb-util-common</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-ekb-api</artifactId>
+    </dependency>
+
     <!-- JibX Dependencies -->
     <dependency>
       <groupId>org.jibx</groupId>
