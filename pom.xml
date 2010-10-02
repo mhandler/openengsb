@@ -162,7 +162,11 @@
     <!--  Notification Domain -->
     <module>domains/notification/implementation/service-engine</module>
     <module>domains/notification/implementation/service-unit</module>
-    
+   
+    <!--  ePlan Domain -->
+    <module>domains/eplan/implementation/service-engine</module>
+    <module>domains/eplan/implementation/service-unit</module>
+ 
     <!--  Issues Domain -->
     <module>domains/issues/implementation/service-engine</module>
     <module>domains/issues/implementation/service-unit</module>
@@ -197,6 +201,7 @@
     <module>domains/test/maven/service-engine</module>
     <module>domains/build/maven/service-engine</module>
     <module>domains/deploy/maven/service-engine</module>
+    <module>domains/eplan/eplanTool/service-engine</module>
 
     <!-- Implementation Modules -->
     <module>domains/build/maven/service-unit</module>
@@ -208,6 +213,7 @@
     <module>domains/notification/xmpp/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
+    <module>domains/eplan/eplanTool/service-unit</module>
 
     <!-- Packaging Modules -->
     <module>package/all</module>
@@ -869,7 +875,19 @@
         <artifactId>openengsb-domains-notification-implementation-su</artifactId>
         <version>${pom.version}</version>
       </dependency>
-      
+     
+      <!-- ePlan Domain -->
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-eplan-implementation-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-eplan-implementation-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+ 
       <!-- Report Domain -->
       <dependency>
         <groupId>org.openengsb</groupId>
@@ -1011,6 +1029,16 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-report-plaintext-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-eplan-eplanTool-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-eplan-eplanTool-se</artifactId>
         <version>${pom.version}</version>
       </dependency>
 
