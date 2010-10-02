@@ -118,6 +118,13 @@
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-domains-issues-trac-su</artifactId>
     </dependency>    
+  <!--  eplan -->
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-domains-eplan-eplanTool-su</artifactId>
+    </dependency>
+
   </dependencies>
+
 
 </project>

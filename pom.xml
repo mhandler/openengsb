@@ -152,10 +152,6 @@
     <module>domains/notification/implementation/service-engine</module>
     <module>domains/notification/implementation/service-unit</module>
    
-    <!--  ePlan Domain -->
-    <module>domains/eplan/implementation/service-engine</module>
-    <module>domains/eplan/implementation/service-unit</module>
- 
     <!--  Issues Domain -->
     <module>domains/issues/implementation/service-engine</module>
     <module>domains/issues/implementation/service-unit</module>
@@ -783,18 +779,6 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-notification-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-     
-      <!-- ePlan Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-eplan-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-eplan-implementation-su</artifactId>
         <version>${pom.version}</version>
       </dependency>
  

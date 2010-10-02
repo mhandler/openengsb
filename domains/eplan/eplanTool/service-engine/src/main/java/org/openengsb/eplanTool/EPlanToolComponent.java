@@ -26,7 +26,7 @@ import org.openengsb.core.OpenEngSBComponent;
 public class EPlanToolComponent extends OpenEngSBComponent {
     @Override
     protected Class<?>[] getEndpointClasses() {
-        return new Class[] { EPlanToolEndpoint.class, EPlanToolDataSourceEndpoint.class };
+        return new Class[] { EPlanToolDataSourceEndpoint.class };
     }
 
 }
