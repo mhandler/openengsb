@@ -11,10 +11,13 @@ public class AutomaticMapping extends AbstractMapping {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T transform(Object source, Class<T> targetType) {
+        if (source == null) {
+            return null;
+        }
         Class<?> sourceType = source.getClass();
 
         if (targetType.isAssignableFrom(sourceType)) {
-            return (T) source;
+            return targetType.cast(source);
         } else if (targetType.equals(String.class)) {
             return (T) String.valueOf(source);
         } else if (isPrimitiveObjectClass(targetType)) {
@@ -23,7 +26,7 @@ public class AutomaticMapping extends AbstractMapping {
             }
         }
 
-        return null;
+        return targetType.cast(source);
     }
 
     private boolean isPrimitiveObjectClass(Class<?> type) {
