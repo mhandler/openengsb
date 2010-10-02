@@ -15,11 +15,9 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.conceptsourcemanagement;
+package org.openengsb.ekb.api;
 
 import java.util.List;
-
-import org.openengsb.ekb.api.ConceptSource;
 
 public interface ConceptSourceManager {
 

@@ -15,16 +15,13 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core;
+package org.openengsb.ekb.api;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.ConceptKey;
-import org.openengsb.ekb.api.ConceptSource;
 
 public class SimpleConceptSource implements ConceptSource {
 

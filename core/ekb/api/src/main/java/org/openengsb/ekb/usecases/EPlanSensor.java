@@ -23,9 +23,9 @@ import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.SuperConcept;
 import org.openengsb.ekb.annotations.Transformation;
 
-@Concept(id = "eeSensor", version = "1.0.0")
+@Concept(id = "eplanSensor", version = "1.0.0")
 @SuperConcept(id = "sensor", version = "1.0.0")
-public class EeSensor {
+public class EPlanSensor {
 
     @Key
     @MapsTo("id")

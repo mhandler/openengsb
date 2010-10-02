@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.openengsb.ekb.api.ConceptSource;
+import org.openengsb.ekb.api.ConceptSourceManager;
+import org.openengsb.ekb.api.ConceptSourceStatusListener;
 
 public class InMemoryConceptSourceManager implements ConceptSourceManager {
 

@@ -20,7 +20,7 @@ package org.openengsb.ekb;
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.LinkingEndpoint;
 import org.openengsb.core.messaging.MessageProperties;
-import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
+import org.openengsb.ekb.api.ConceptSourceManager;
 
 /**
  * @org.apache.xbean.XBean element="conceptSourceManagerEndpoint"

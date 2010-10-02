@@ -21,5 +21,6 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <eplanTool:eplanToolEndpoint endpoint="eplanToolEndpoint" service="ept:eplanToolService" />
+  <eplanTool:conceptSourceEndpoint endpoint="conceptSourceEndpoint" service="ept:conceptSourceService" />
 
 </beans>

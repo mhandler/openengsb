@@ -27,11 +27,11 @@ import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
+import org.openengsb.ekb.api.ConceptSourceManager;
 import org.openengsb.ekb.api.DomainQueryInterface;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
 import org.openengsb.ekb.api.TransformationException;
-import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 import org.openengsb.ekb.core.transformation.Transformer;
 

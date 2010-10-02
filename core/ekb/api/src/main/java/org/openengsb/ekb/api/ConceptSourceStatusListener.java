@@ -15,9 +15,8 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.core.conceptsourcemanagement;
+package org.openengsb.ekb.api;
 
-import org.openengsb.ekb.api.ConceptSource;
 
 public interface ConceptSourceStatusListener {
     void activated(ConceptSource source);

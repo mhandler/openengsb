@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
+import org.openengsb.ekb.api.SimpleConceptSource;
 
 public class ConceptSourceTest {
 

@@ -30,8 +30,8 @@ import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
+import org.openengsb.ekb.api.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
-import org.openengsb.ekb.core.SimpleConceptSource;
 
 public class RegexSoftReferenceTest {
 

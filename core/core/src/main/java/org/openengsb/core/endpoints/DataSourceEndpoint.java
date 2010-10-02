@@ -17,32 +17,53 @@
  */
 package org.openengsb.core.endpoints;
 
-import javax.jbi.messaging.MessageExchange;
-import javax.jbi.messaging.NormalizedMessage;
+import java.lang.reflect.Method;
+import java.util.UUID;
+
 import javax.xml.namespace.QName;
 
-import org.openengsb.contextcommon.ContextHelper;
+import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
+import org.openengsb.ekb.api.ConceptSource;
+import org.openengsb.ekb.api.ConceptSourceManager;
+import org.openengsb.ekb.api.DomainQueryInterface;
 
-public class DataSourceEndpoint extends RPCEndpoint<Object> {
+public abstract class DataSourceEndpoint<T extends DomainQueryInterface> extends LinkingEndpoint<T> {
+
+    public abstract ConceptSource getConceptSource();
 
     @Override
-    protected Object getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
-        // TODO Auto-generated method stub
-        return null;
+    public void activate() throws Exception {
+        super.activate();
+        MethodCallHelper.sendMethodCall(this, getEKBEndpoint(), getActivateMethod(),
+                new Object[] { getConceptSource() }, new MessageProperties("", UUID.randomUUID().toString()));
     }
 
     @Override
-    protected QName getForwardTarget(ContextHelper contextHelper) {
-        // TODO Auto-generated method stub
-        return null;
+    public void deactivate() throws Exception {
+        super.deactivate();
+        MethodCallHelper.sendMethodCall(this, getEKBEndpoint(), getDeactivateMethod(),
+                new Object[] { getConceptSource() }, new MessageProperties("", UUID.randomUUID().toString()));
     }
 
-    @Override
-    protected void inOut(MessageExchange exchange, NormalizedMessage in, NormalizedMessage out,
-            ContextHelper contextHelper, MessageProperties msgProperties) throws Exception {
-        // TODO Auto-generated method stub
+    private Method getActivateMethod() {
+        try {
+            return ConceptSourceManager.class.getMethod("activate", ConceptSource.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private Method getDeactivateMethod() {
+        try {
+            return ConceptSourceManager.class.getMethod("deactivate", ConceptSource.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private QName getEKBEndpoint() {
+        return new QName("urn:openengsb:ekb", "conceptSourceManagerService");
     }
 
 }

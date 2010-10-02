@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceManager;
-import org.openengsb.ekb.core.conceptsourcemanagement.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.ConceptSourceManager;
+import org.openengsb.ekb.api.ConceptSourceStatusListener;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeChangeListener;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 

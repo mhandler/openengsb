@@ -27,7 +27,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.core.SimpleConceptSource;
+import org.openengsb.ekb.api.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.SimpleConceptSource;
 
 public class InMemoryConceptSourceManagerTest implements ConceptSourceStatusListener {
 
