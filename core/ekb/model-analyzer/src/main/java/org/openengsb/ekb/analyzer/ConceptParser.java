@@ -34,7 +34,7 @@ import org.openengsb.ekb.annotations.Transformation;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.SoftReference;
-import org.openengsb.ekb.api.Transformer;
+import org.openengsb.ekb.api.mapping.Transformer;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.softreferences.RegexSoftReference;
 import org.openengsb.ekb.core.transformation.mappings.AbstractMapping;

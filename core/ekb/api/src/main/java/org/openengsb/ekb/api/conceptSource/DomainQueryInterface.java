@@ -15,30 +15,14 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.conceptSource;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
+public interface DomainQueryInterface {
 
-public interface ConceptSource {
+    <TYPE> List<TYPE> getAll(Class<TYPE> type);
 
-    String getId();
+    <TYPE> TYPE getByKey(Class<TYPE> type, Object key);
 
-    QName getService();
-
-    boolean canProvide(Concept<?> concept);
-
-    boolean canProvideSubconcept(Concept<?> concept);
-
-    List<ConceptKey> getProvidedConcepts();
-
-    @Override
-    String toString();
-
-    @Override
-    boolean equals(Object obj);
-
-    @Override
-    int hashCode();
 }

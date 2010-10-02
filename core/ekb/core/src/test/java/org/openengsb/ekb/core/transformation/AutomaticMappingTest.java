@@ -21,7 +21,7 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openengsb.ekb.api.TransformationException;
+import org.openengsb.ekb.api.mapping.TransformationException;
 import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
 
 public class AutomaticMappingTest {

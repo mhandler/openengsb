@@ -24,9 +24,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.SoftReference;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
 
 public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference<SOURCETYPE, TARGETTYPE> {
 

@@ -17,7 +17,7 @@ the Apache License, Version 2.0 (the "License");
 package org.openengsb.ekb.core.transformation;
 
 import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.TransformationException;
+import org.openengsb.ekb.api.mapping.TransformationException;
 
 public interface Transformer {
 

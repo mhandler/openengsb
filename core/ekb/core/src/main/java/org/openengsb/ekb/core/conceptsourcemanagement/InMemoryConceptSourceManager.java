@@ -22,9 +22,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.api.ConceptSourceManager;
-import org.openengsb.ekb.api.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
+import org.openengsb.ekb.api.conceptSource.ConceptSourceManager;
+import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
 
 public class InMemoryConceptSourceManager implements ConceptSourceManager {
 

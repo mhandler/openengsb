@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.openengsb.ekb.api.Transformer;
+import org.openengsb.ekb.api.mapping.Transformer;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

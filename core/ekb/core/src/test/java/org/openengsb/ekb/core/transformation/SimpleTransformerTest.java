@@ -24,7 +24,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.ConceptKey;
-import org.openengsb.ekb.api.TransformationException;
+import org.openengsb.ekb.api.mapping.TransformationException;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
 import org.openengsb.ekb.core.transformation.mappings.TransformerFieldMapping;
@@ -108,7 +108,7 @@ public class SimpleTransformerTest {
         private Integer someInt = new Integer(42);
     }
 
-    public static class TestTransformer implements org.openengsb.ekb.api.Transformer {
+    public static class TestTransformer implements org.openengsb.ekb.api.mapping.Transformer {
 
         @Override
         public Object transform(Object source, Class<?> targetType) {

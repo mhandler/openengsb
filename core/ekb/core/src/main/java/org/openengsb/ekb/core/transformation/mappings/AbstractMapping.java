@@ -17,7 +17,7 @@
  */
 package org.openengsb.ekb.core.transformation.mappings;
 
-import org.openengsb.ekb.api.FieldMapping;
+import org.openengsb.ekb.api.mapping.FieldMapping;
 
 public abstract class AbstractMapping implements FieldMapping {
 

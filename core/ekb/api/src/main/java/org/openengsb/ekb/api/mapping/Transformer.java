@@ -15,20 +15,8 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.mapping;
 
-import java.util.List;
-
-public interface ConceptSourceManager {
-
-    void activate(ConceptSource source);
-
-    void deactivate(ConceptSource source);
-
-    List<ConceptSource> getActiveConceptSources();
-
-    void addListener(ConceptSourceStatusListener listener);
-
-    void removeListener(ConceptSourceStatusListener listener);
-
+public interface Transformer {
+    Object transform(Object source, Class<?> targetType) throws TransformationException;
 }

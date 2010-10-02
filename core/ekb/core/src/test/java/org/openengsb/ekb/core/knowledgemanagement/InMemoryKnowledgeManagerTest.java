@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.api.SimpleConceptSource;
+import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class InMemoryKnowledgeManagerTest {

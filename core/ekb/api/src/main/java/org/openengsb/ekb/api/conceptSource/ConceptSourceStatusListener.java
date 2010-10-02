@@ -15,14 +15,11 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.conceptSource;
 
-public interface FieldMapping {
 
-    String getSourceFieldName();
+public interface ConceptSourceStatusListener {
+    void activated(ConceptSource source);
 
-    String getTargetFieldName();
-
-    <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) throws TransformationException;
-
+    void deactivated(ConceptSource source);
 }

@@ -15,14 +15,14 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.mapping;
 
-import java.util.List;
+public interface FieldMapping {
 
-public interface DomainQueryInterface {
+    String getSourceFieldName();
 
-    <TYPE> List<TYPE> getAll(Class<TYPE> type);
+    String getTargetFieldName();
 
-    <TYPE> TYPE getByKey(Class<TYPE> type, Object key);
+    <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) throws TransformationException;
 
 }

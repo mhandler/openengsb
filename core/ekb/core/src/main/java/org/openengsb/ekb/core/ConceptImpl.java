@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
-import org.openengsb.ekb.api.FieldMapping;
 import org.openengsb.ekb.api.SoftReference;
+import org.openengsb.ekb.api.mapping.FieldMapping;
 
 public class ConceptImpl<TYPE> implements Concept<TYPE> {
 

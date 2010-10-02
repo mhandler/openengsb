@@ -24,9 +24,9 @@ import javax.xml.namespace.QName;
 
 import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
-import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.api.ConceptSourceManager;
-import org.openengsb.ekb.api.DomainQueryInterface;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
+import org.openengsb.ekb.api.conceptSource.ConceptSourceManager;
+import org.openengsb.ekb.api.conceptSource.DomainQueryInterface;
 
 public abstract class DataSourceEndpoint<T extends DomainQueryInterface> extends LinkingEndpoint<T> {
 

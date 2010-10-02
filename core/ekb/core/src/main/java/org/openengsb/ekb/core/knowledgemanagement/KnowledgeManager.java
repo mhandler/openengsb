@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
-import org.openengsb.ekb.api.ConceptSource;
 import org.openengsb.ekb.api.NoSuchConceptException;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
 
 public interface KnowledgeManager {
 

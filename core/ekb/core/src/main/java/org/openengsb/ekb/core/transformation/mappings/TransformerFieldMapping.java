@@ -19,7 +19,8 @@ package org.openengsb.ekb.core.transformation.mappings;
 
 import java.lang.reflect.Constructor;
 
-import org.openengsb.ekb.api.Transformer;
+import org.openengsb.ekb.api.mapping.TransformationException;
+import org.openengsb.ekb.api.mapping.Transformer;
 
 public class TransformerFieldMapping extends AbstractMapping {
 
@@ -27,7 +28,7 @@ public class TransformerFieldMapping extends AbstractMapping {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T transform(Object source, Class<T> targetType) {
+    public <T> T transform(Object source, Class<T> targetType) throws TransformationException {
         Transformer instance = createTransformer();
         return (T) instance.transform(source, targetType);
     }

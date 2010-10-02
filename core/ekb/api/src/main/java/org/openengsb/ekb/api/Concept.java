@@ -19,6 +19,8 @@ package org.openengsb.ekb.api;
 
 import java.util.List;
 
+import org.openengsb.ekb.api.mapping.FieldMapping;
+
 public interface Concept<TYPE> {
 
     ConceptKey getKey();

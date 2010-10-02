@@ -26,9 +26,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.api.ConceptSourceStatusListener;
-import org.openengsb.ekb.api.SimpleConceptSource;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
+import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
 
 public class InMemoryConceptSourceManagerTest implements ConceptSourceStatusListener {
 

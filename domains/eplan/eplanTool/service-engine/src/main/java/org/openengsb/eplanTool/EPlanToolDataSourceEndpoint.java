@@ -23,8 +23,8 @@ import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.DataSourceEndpoint;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.api.ConceptKey;
-import org.openengsb.ekb.api.ConceptSource;
-import org.openengsb.ekb.api.SimpleConceptSource;
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
+import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
 
 /**
  * @org.apache.xbean.XBean element="conceptSourceEndpoint"

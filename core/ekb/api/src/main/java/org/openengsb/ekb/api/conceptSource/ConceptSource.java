@@ -15,8 +15,33 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.conceptSource;
 
-public interface Transformer {
-    Object transform(Object source, Class<?> targetType);
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.openengsb.ekb.api.Concept;
+import org.openengsb.ekb.api.ConceptKey;
+
+public interface ConceptSource {
+
+    String getId();
+
+    QName getService();
+
+    boolean canProvide(Concept<?> concept);
+
+    boolean canProvideSubconcept(Concept<?> concept);
+
+    List<ConceptKey> getProvidedConcepts();
+
+    @Override
+    String toString();
+
+    @Override
+    boolean equals(Object obj);
+
+    @Override
+    int hashCode();
 }

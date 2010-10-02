@@ -19,6 +19,8 @@ package org.openengsb.ekb.api;
 
 import java.util.List;
 
+import org.openengsb.ekb.api.conceptSource.ConceptSource;
+
 public interface EKB {
 
     Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException;

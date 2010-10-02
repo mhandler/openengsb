@@ -22,8 +22,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
-import org.openengsb.ekb.api.FieldMapping;
-import org.openengsb.ekb.api.TransformationException;
+import org.openengsb.ekb.api.mapping.FieldMapping;
+import org.openengsb.ekb.api.mapping.TransformationException;
 
 public class SimpleTransformer implements Transformer {
 

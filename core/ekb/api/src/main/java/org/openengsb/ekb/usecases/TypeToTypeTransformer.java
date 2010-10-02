@@ -17,7 +17,7 @@
  */
 package org.openengsb.ekb.usecases;
 
-import org.openengsb.ekb.api.Transformer;
+import org.openengsb.ekb.api.mapping.Transformer;
 
 public class TypeToTypeTransformer implements Transformer {
 

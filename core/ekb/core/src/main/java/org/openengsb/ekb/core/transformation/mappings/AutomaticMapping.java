@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.openengsb.ekb.api.TransformationException;
-import org.openengsb.ekb.api.Transformer;
+import org.openengsb.ekb.api.mapping.TransformationException;
+import org.openengsb.ekb.api.mapping.Transformer;
 
 public class AutomaticMapping extends AbstractMapping {
 
@@ -95,7 +95,7 @@ public class AutomaticMapping extends AbstractMapping {
         throw new IllegalStateException("Parse to Primitive called with no primitive type.");
     }
 
-    private Object primitiveToPrimitive(Object input, Class<?> targetType) {
+    private Object primitiveToPrimitive(Object input, Class<?> targetType) throws TransformationException {
         Map<Class<?>, Transformer> map = primitiveTransformers.get(targetType);
         return map.get(input.getClass()).transform(input, targetType);
     }

@@ -15,9 +15,10 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.api;
+package org.openengsb.ekb.api.conceptSource;
 
 import java.util.List;
+
 
 public abstract class SingleConceptProvider<T> implements DomainQueryInterface {
 

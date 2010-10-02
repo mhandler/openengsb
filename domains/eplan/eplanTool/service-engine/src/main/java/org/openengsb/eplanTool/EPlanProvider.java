@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.openengsb.ekb.api.SingleConceptProvider;
+import org.openengsb.ekb.api.conceptSource.SingleConceptProvider;
 
 public class EPlanProvider extends SingleConceptProvider<EPlanSensor> {
 
