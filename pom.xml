@@ -165,12 +165,14 @@
     <module>domains/report/plaintext/service-engine</module>
     <module>domains/issues/trac/service-engine</module>
     <module>domains/eplan/eplanTool/service-engine</module>
+    <module>domains/sourcecode/eclipse/service-engine</module>
 
     <!-- Implementation Modules -->
     <module>domains/notification/email/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
     <module>domains/eplan/eplanTool/service-unit</module>
+    <module>domains/sourcecode/eclipse/service-unit</module>
 
     <!-- Packaging Modules -->
     <module>package/all</module>
@@ -846,6 +848,17 @@
         <artifactId>openengsb-domains-eplan-eplanTool-se</artifactId>
         <version>${pom.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-sourcecode-eclipse-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-sourcecode-eclipse-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+
 
       <!-- Context -->
       <dependency>
