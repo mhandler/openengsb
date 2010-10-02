@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.core.endpoints.ForwardEndpoint;
-import org.openengsb.drools.NotificationDomain;
+import org.openengsb.drools.EPlanDomain;
 
 /**
  * @org.apache.xbean.XBean element="eplanEndpoint"
