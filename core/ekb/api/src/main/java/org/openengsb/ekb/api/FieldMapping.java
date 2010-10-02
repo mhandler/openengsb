@@ -6,6 +6,6 @@ public interface FieldMapping {
 
     String getTargetFieldName();
 
-    <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType);
+    <TARGETTYPE> TARGETTYPE transform(Object source, Class<TARGETTYPE> targetType) throws TransformationException;
 
 }

@@ -24,6 +24,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openengsb.ekb.api.ConceptKey;
+import org.openengsb.ekb.api.TransformationException;
 import org.openengsb.ekb.core.ConceptImpl;
 import org.openengsb.ekb.core.transformation.mappings.AutomaticMapping;
 import org.openengsb.ekb.core.transformation.mappings.TransformerFieldMapping;

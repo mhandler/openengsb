@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.FieldMapping;
+import org.openengsb.ekb.api.TransformationException;
 
 public class SimpleTransformer implements Transformer {
 
@@ -49,7 +50,8 @@ public class SimpleTransformer implements Transformer {
         }
     }
 
-    private <TARGETTYPE> void mapFields(Concept<?> source, Concept<TARGETTYPE> target, Object input, TARGETTYPE output) {
+    private <TARGETTYPE> void mapFields(Concept<?> source, Concept<TARGETTYPE> target, Object input, TARGETTYPE output)
+            throws TransformationException {
         List<FieldMapping> mappings = source.getFieldMappings(target);
         for (FieldMapping mapping : mappings) {
             String sourceFieldName = mapping.getSourceFieldName();
