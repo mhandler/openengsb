@@ -74,6 +74,9 @@ public class ToXmlTypesTransformer {
             XMLMappableList mappableList = new XMLMappableList();
             mappableList.setMappables(mappables);
             m.setList(mappableList);
+        } else if (o instanceof Class<?>) {
+            String className = ((Class<?>) o).getName();
+            m.set_Class(className);
         } else if (isPrimitive(o)) {
             XMLPrimitive primitive = toPrimitive(o);
             m.setPrimitive(primitive);

@@ -44,6 +44,8 @@ public class FromXmlTypesTransformer {
             return null;
         } else if (mappable.ifPrimitive()) {
             return toObject(mappable.getPrimitive(), mappable.getId());
+        } else if (mappable.if_Class()) {
+            return TransformerUtil.simpleGetClass(mappable.get_Class());
         } else if (mappable.ifList()) {
             return toList(mappable.getList().getMappables(), mappable.getId());
         } else if (mappable.ifMap()) {
