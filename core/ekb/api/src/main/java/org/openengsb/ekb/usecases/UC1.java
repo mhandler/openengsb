@@ -37,8 +37,8 @@ public class UC1 {
 
         // test whether sw tool and electrical engineering tool is present
 
-        ConceptSource sweSource = getSource("sweTool", sensorSources);
-        ConceptSource eeSource = getSource("eeTool", sensorSources);
+        ConceptSource sweSource = getSource("eclipse", sensorSources);
+        ConceptSource eeSource = getSource("eplan", sensorSources);
 
         // test three sources
         List<Sensor> sweSensors = ekb.getData(sweSource, sensorConcept);
