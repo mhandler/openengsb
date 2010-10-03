@@ -13,23 +13,24 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
  */
-package org.openengsb.drools.events;
+package org.openengsb.drools.model.transformer;
 
-import org.openengsb.core.model.Event;
+import org.openengsb.drools.model.Sensor;
+import org.openengsb.ekb.api.mapping.Transformer;
 
-public class TestStartEvent extends Event {
-    public TestStartEvent() {
-        super("test", "testStartedEvent");
-    }
+public class RangeToTypeTransformer implements Transformer {
 
-    public void setParameters(String parameters) {
-        setValue("parameters", parameters);
-    }
-
-    public String getParameters(String parameters) {
-        return (String) getValue("parameters");
+    @Override
+    public Object transform(Object source, Class<?> targetType) {
+        String range = source.toString();
+        if (range.equals("[0,1]")) {
+            return Sensor.Type.BINARY;
+        } else if (range.equals("[*,*]")) {
+            return Sensor.Type.INTEGER;
+        }
+        return Sensor.Type.OTHER;
     }
 
 }

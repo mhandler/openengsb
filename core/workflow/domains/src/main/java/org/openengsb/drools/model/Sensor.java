@@ -15,32 +15,40 @@
    limitations under the License.
 
  */
-package org.openengsb.eclipse;
+package org.openengsb.drools.model;
 
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.Key;
 
-public class SWSensor {
+@Concept(id = "sensor", version = "1.0.0")
+public class Sensor {
 
-    private SWSensor() {
+    public enum Type {
+        BINARY, INTEGER, OTHER
     }
 
-    public SWSensor(String id, String unit, String type) {
-        this();
-        this.id = id;
-        this.unit = unit;
-        this.type = type;
-    }
-
+    @Key
     private String id;
+
+    private String connectionId;
 
     private String unit;
 
-    private String type;
+    private Type type;
+
+    public void setConnectionId(String connectionId) {
+        this.connectionId = connectionId;
+    }
 
     public String getId() {
         return id;
     }
 
-    public String getType() {
+    public String getConnectionId() {
+        return connectionId;
+    }
+
+    public Type getType() {
         return type;
     }
 

@@ -16,27 +16,47 @@
 
 # first some java-utils
 import java.util.Map
+import java.util.HashMap
 import java.util.Set
+import java.util.HashSet
 import java.util.Iterator
 import java.util.List
 import java.util.ArrayList
 import java.util.Collection
 import java.util.Arrays
 import java.util.Date
-# openengsb-events
-import org.openengsb.drools.events.EdbCommitEvent
-# misc openengsb-imports
+# openengsb-core
+import org.openengsb.core.model.Event
+import org.openengsb.core.EventHelper
+import org.openengsb.contextcommon.ContextHelper
+# openengsb-ekb-api
+import org.openengsb.ekb.api.Concept
+import org.openengsb.ekb.api.ConceptKey
+import org.openengsb.ekb.api.EKB
+import org.openengsb.ekb.api.SoftReference
+import org.openengsb.ekb.api.conceptSource.ConceptSource
+import org.openengsb.ekb.api.NoSuchConceptException;
+# openengsb-model
 import org.openengsb.drools.model.Notification
+import org.openengsb.drools.model.Attachment
+import org.openengsb.drools.model.Sensor
+import org.openengsb.drools.model.Report
+import org.openengsb.drools.model.Issue
+# openengsb-domains-infrastructure
+import org.openengsb.drools.DomainConfiguration
+import org.openengsb.drools.DroolsHelper
+import org.openengsb.drools.SensorValidityCheck
+# openengsb-domains
 import org.openengsb.drools.NotificationDomain
+import org.openengsb.drools.IssuesDomain
+import org.openengsb.drools.ReportDomain
 # globals
-global org.openengsb.contextcommon.ContextHelper ctx
+global org.openengsb.drools.DroolsHelper droolsHelper
+global org.openengsb.drools.DomainConfiguration config
 global org.openengsb.core.EventHelper eventHelper
+global org.openengsb.drools.SensorValidityCheck sensorCheck
+global org.openengsb.ekb.api.EKB ekb
+global org.openengsb.contextcommon.ContextHelper ctx
 global org.openengsb.drools.NotificationDomain notification
 global org.openengsb.drools.IssuesDomain issue
-global org.openengsb.drools.BuildDomain build
 global org.openengsb.drools.ReportDomain report
-global org.openengsb.drools.DeployDomain deploy
-global org.openengsb.drools.DomainConfiguration config
-global org.openengsb.drools.DroolsHelper droolsHelper
-global org.openengsb.drools.ScmDomain scm
-global org.openengsb.drools.TestDomain test

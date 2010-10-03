@@ -15,8 +15,9 @@
    limitations under the License.
 
  */
-package org.openengsb.ekb.usecases;
+package org.openengsb.drools.model;
 
+import org.openengsb.drools.model.transformer.RangeToTypeTransformer;
 import org.openengsb.ekb.annotations.Concept;
 import org.openengsb.ekb.annotations.Key;
 import org.openengsb.ekb.annotations.MapsTo;
@@ -26,6 +27,17 @@ import org.openengsb.ekb.annotations.Transformation;
 @Concept(id = "eplanSensor", version = "1.0.0")
 @SuperConcept(id = "sensor", version = "1.0.0")
 public class EPlanSensor {
+
+    private EPlanSensor() {
+    }
+
+    public EPlanSensor(String id, String unit, String range, String connectionId) {
+        this();
+        this.id = id;
+        this.unit = unit;
+        this.range = range;
+        this.connectionId = connectionId;
+    }
 
     @Key
     @MapsTo("id")

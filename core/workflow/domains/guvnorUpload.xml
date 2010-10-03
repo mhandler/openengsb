@@ -42,6 +42,13 @@
         <include>org/openengsb/core/EventHelper.class</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>../../ekb/api/target/classes</directory>
+      <outputDirectory>.</outputDirectory>
+      <includes>
+        <include>org/openengsb/ekb/api/**</include>
+      </includes>
+    </fileSet>
   </fileSets>
 </assembly>
 

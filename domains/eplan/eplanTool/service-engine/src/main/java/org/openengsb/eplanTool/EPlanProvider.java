@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openengsb.drools.model.EPlanSensor;
 import org.openengsb.ekb.api.conceptSource.SingleConceptProvider;
 
 public class EPlanProvider extends SingleConceptProvider<EPlanSensor> {

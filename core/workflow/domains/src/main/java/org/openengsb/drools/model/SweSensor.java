@@ -15,39 +15,44 @@
    limitations under the License.
 
  */
-package org.openengsb.eplanTool;
+package org.openengsb.drools.model;
 
-public class EPlanSensor {
+import org.openengsb.drools.model.transformer.TypeToTypeTransformer;
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.MapsTo;
+import org.openengsb.ekb.annotations.SuperConcept;
+import org.openengsb.ekb.annotations.Transformation;
 
-    private String id;
+@Concept(id = "swSensor", version = "1.0.0")
+@SuperConcept(id = "sensor", version = "1.0.0")
+public class SweSensor {
 
-    private String unit;
-
-    private String range;
-
-    private String connectionId;
-
-    private EPlanSensor() {
+    private SweSensor() {
     }
 
-    public EPlanSensor(String id, String unit, String range, String connectionId) {
+    public SweSensor(String id, String unit, String type) {
         this();
         this.id = id;
         this.unit = unit;
-        this.range = range;
-        this.connectionId = connectionId;
+        this.type = type;
     }
+
+    @MapsTo({ "id", "connectionId" })
+    private String id;
+
+    @MapsTo("unit")
+    private String unit;
+
+    @MapsTo("type")
+    @Transformation(TypeToTypeTransformer.class)
+    private String type;
 
     public String getId() {
         return id;
     }
 
-    public String getConnectionId() {
-        return connectionId;
-    }
-
-    public String getRange() {
-        return range;
+    public String getType() {
+        return type;
     }
 
     public String getUnit() {

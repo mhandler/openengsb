@@ -46,6 +46,10 @@
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-workflow-domains</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-ekb-api</artifactId>
+    </dependency>
    
     <dependency>
       <groupId>org.apache.servicemix</groupId>

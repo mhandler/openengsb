@@ -37,6 +37,8 @@ import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.drools.helper.DomainConfigurationImpl;
 import org.openengsb.drools.helper.DroolsHelperImpl;
+import org.openengsb.drools.helper.SensorValidityCheckImpl;
+import org.openengsb.ekb.api.EKB;
 
 public class DroolsSession {
 
@@ -54,6 +56,10 @@ public class DroolsSession {
 
     private MessageProperties msgProperties;
 
+    private SensorValidityCheck sensorValidityCheck;
+
+    private EKB ekb;
+
     public DroolsSession(MessageProperties msgProperties, DroolsEndpoint endpoint) {
         this.msgProperties = msgProperties;
         this.endpoint = endpoint;
@@ -63,6 +69,8 @@ public class DroolsSession {
         this.domainConfiguration = new DomainConfigurationImpl(contextHelper);
         this.droolsHelper = new DroolsHelperImpl(msgProperties, endpoint);
         this.eventHelper = new EventHelperImpl(endpoint, msgProperties);
+        this.ekb = createEKBProxy();
+        this.sensorValidityCheck = new SensorValidityCheckImpl();
     }
 
     /**
@@ -73,9 +81,11 @@ public class DroolsSession {
     public StatefulSession createSession(Collection<Object> objects) {
         Map<String, Object> globals = new HashMap<String, Object>();
         globals.put("ctx", contextHelper);
+        globals.put("ekb", ekb);
         globals.put("config", domainConfiguration);
         globals.put("droolsHelper", droolsHelper);
         globals.put("eventHelper", eventHelper);
+        globals.put("sensorCheck", sensorValidityCheck);
 
         for (Entry<String, Class<? extends Domain>> e : DomainRegistry.domains.entrySet()) {
             Object proxy = createProxy(e.getValue());
@@ -101,6 +111,11 @@ public class DroolsSession {
 
     private Object createProxy(Class<? extends Domain> value) {
         return Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { value },
+                new GuvnorProxyInvocationHandler());
+    }
+
+    private EKB createEKBProxy() {
+        return (EKB) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { EKB.class },
                 new GuvnorProxyInvocationHandler());
     }
 

@@ -22,28 +22,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openengsb.drools.model.SweSensor;
 import org.openengsb.ekb.api.conceptSource.SingleConceptProvider;
 
-public class EclipseProvider extends SingleConceptProvider<SWSensor> {
+public class EclipseProvider extends SingleConceptProvider<SweSensor> {
 
-    private Map<String, SWSensor> data = new HashMap<String, SWSensor>();
+    private Map<String, SweSensor> data = new HashMap<String, SweSensor>();
 
     public EclipseProvider() {
         fillWithTestData();
     }
 
     private void fillWithTestData() {
-        data.put("sensor1", new SWSensor("sensor1", "mbar", "int"));
-        data.put("sensor2", new SWSensor("sensor2", "bool", "boolean"));
+        data.put("sensor1", new SweSensor("sensor1", "mbar", "int"));
+        data.put("sensor2", new SweSensor("sensor2", "bool", "boolean"));
     }
 
     @Override
-    public List<SWSensor> getAll() {
-        return new ArrayList<SWSensor>(data.values());
+    public List<SweSensor> getAll() {
+        return new ArrayList<SweSensor>(data.values());
     }
 
     @Override
-    public SWSensor getByKey(Object key) {
+    public SweSensor getByKey(Object key) {
         return data.get(key);
     }
 

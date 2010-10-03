@@ -13,13 +13,25 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
- */
-package org.openengsb.drools.events;
 
-public class ScmTagCreatedEvent extends ScmDirectoryEvent {
-    public ScmTagCreatedEvent() {
-        super("scmTagCreatedEvent");
+ */
+package org.openengsb.drools.model.transformer;
+
+import org.openengsb.drools.model.Sensor;
+import org.openengsb.ekb.api.mapping.Transformer;
+
+public class TypeToTypeTransformer implements Transformer {
+
+    @Override
+    public Object transform(Object source, Class<?> targetType) {
+        String type = source.toString();
+        if (type.equals("boolean")) {
+            return Sensor.Type.BINARY;
+        } else if (type.equals("int")) {
+            return Sensor.Type.INTEGER;
+        } else {
+            return Sensor.Type.OTHER;
+        }
     }
 
 }
