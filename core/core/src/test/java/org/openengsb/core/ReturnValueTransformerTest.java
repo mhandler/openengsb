@@ -33,7 +33,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testVoid() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value(null, void.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(null, void.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -43,7 +43,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testPrimitiveString() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value("success", String.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value("success", String.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -53,7 +53,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testPrimitiveEmptyString() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value("", String.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value("", String.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -63,7 +63,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testPrimitiveInteger() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value(0, Integer.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(0, Integer.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -73,7 +73,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testBooleanTrue() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value(Boolean.TRUE, Boolean.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(Boolean.TRUE, Boolean.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -83,7 +83,7 @@ public class ReturnValueTransformerTest {
 
     @Test
     public void testBooleanFalse() throws SerializationException {
-        ReturnValue input = new ReturnValue(new Value(Boolean.FALSE, Boolean.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(Boolean.FALSE, Boolean.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -94,7 +94,7 @@ public class ReturnValueTransformerTest {
     @Test
     public void testBean() throws SerializationException {
         TestBean testBean = new TestBean("foo", 42, null);
-        ReturnValue input = new ReturnValue(new Value(testBean, TestBean.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(testBean, TestBean.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -107,7 +107,7 @@ public class ReturnValueTransformerTest {
         TestBean testBeanA = new TestBean("foo", 42, null);
         TestBean testBeanB = new TestBean("bar", 44, testBeanA);
         testBeanA.setBean(testBeanB);
-        ReturnValue input = new ReturnValue(new Value(testBeanB, TestBean.class, "testConcept"));
+        ReturnValue input = new ReturnValue(new Value(testBeanB, TestBean.class));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);
@@ -125,7 +125,7 @@ public class ReturnValueTransformerTest {
     public void testList() throws SerializationException {
         List<String> inList = Arrays.asList("1", "2", "3");
 
-        ReturnValue input = new ReturnValue(new Value(inList, inList.getClass(), "testList"));
+        ReturnValue input = new ReturnValue(new Value(inList, inList.getClass()));
 
         String xml = Transformer.toXml(input);
         ReturnValue output = Transformer.toReturnValue(xml);

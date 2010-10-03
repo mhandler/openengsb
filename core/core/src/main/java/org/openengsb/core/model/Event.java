@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-@ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#Event")
 public class Event {
 
     private Map<String, Object> elements = new TreeMap<String, Object>(new EventKeyComparator());

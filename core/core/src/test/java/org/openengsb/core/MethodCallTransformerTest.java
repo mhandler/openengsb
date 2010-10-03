@@ -47,7 +47,7 @@ public class MethodCallTransformerTest {
     private MethodCall getMethodCall(String methodName, Object[] args, Class<?>[] argTypes) {
         Value[] arguments = new Value[args.length];
         for (int i = 0; i < arguments.length; i++) {
-            arguments[i] = new Value(args[i], argTypes[i], "testConcept" + i);
+            arguments[i] = new Value(args[i], argTypes[i]);
         }
         return new MethodCall(methodName, arguments);
     }

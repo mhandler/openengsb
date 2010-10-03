@@ -13,7 +13,6 @@ import java.util.List;
  *       &lt;xs:element type="xs:string" name="methodName"/>
  *       &lt;xs:element type="XMLTypedValue" name="args" maxOccurs="unbounded"/>
  *     &lt;/xs:sequence>
- *     &lt;xs:attribute type="xs:string" name="domainConcept"/>
  *   &lt;/xs:complexType>
  * &lt;/xs:element>
  * </pre>
@@ -22,7 +21,6 @@ public class XMLMethodCall
 {
     private String methodName;
     private List<XMLTypedValue> argList = new ArrayList<XMLTypedValue>();
-    private String domainConcept;
 
     /** 
      * Get the 'methodName' element value.
@@ -58,23 +56,5 @@ public class XMLMethodCall
      */
     public void setArgs(List<XMLTypedValue> list) {
         argList = list;
-    }
-
-    /** 
-     * Get the 'domainConcept' attribute value.
-     * 
-     * @return value
-     */
-    public String getDomainConcept() {
-        return domainConcept;
-    }
-
-    /** 
-     * Set the 'domainConcept' attribute value.
-     * 
-     * @param domainConcept
-     */
-    public void setDomainConcept(String domainConcept) {
-        this.domainConcept = domainConcept;
     }
 }

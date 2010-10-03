@@ -53,7 +53,6 @@ public class Transformer {
             XMLTypedValue arg = new XMLTypedValue();
             arg.setValue(transformer.toMappable(o));
             arg.setType(argument.getType().getName());
-            arg.setConceptIRI(argument.getConceptIRI());
             arguments.add(arg);
         }
 
@@ -70,7 +69,6 @@ public class Transformer {
 
         XMLTypedValue typedValue = new XMLTypedValue();
         typedValue.setType(value.getType().getName());
-        typedValue.setConceptIRI(value.getConceptIRI());
         typedValue.setValue(transformer.toMappable(value.getValue()));
 
         xrv.setValue(typedValue);
@@ -102,7 +100,7 @@ public class Transformer {
 
         for (XMLTypedValue arg : xmc.getArgs()) {
             Object o = transformer.toObject(arg.getValue());
-            Value value = new Value(o, TransformerUtil.simpleGetClass(arg.getType()), arg.getConceptIRI());
+            Value value = new Value(o, TransformerUtil.simpleGetClass(arg.getType()));
             arguments.add(value);
         }
 
@@ -121,7 +119,7 @@ public class Transformer {
             simpleGetClass = TransformerUtil.simpleGetClass(typedValue.getType());
         }
 
-        return new ReturnValue(new Value(o, simpleGetClass, typedValue.getConceptIRI()));
+        return new ReturnValue(new Value(o, simpleGetClass));
     }
 
     public static Event toEvent(String xml) throws SerializationException {

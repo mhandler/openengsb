@@ -22,9 +22,9 @@
       <structure map-as="XMLEvent" test-method="ifEvent" get-method="getEvent" set-method="setEvent" usage="optional" name="event"/>
       <structure map-as="XMLMapEntryList" test-method="ifMap" get-method="getMap" set-method="setMap" usage="optional" name="map"/>
       <structure map-as="XMLContext" test-method="ifContext" get-method="getContext" set-method="setContext" usage="optional" name="context"/>
+      <value style="element" name="class" test-method="if_Class" get-method="get_Class" set-method="set_Class" usage="optional"/>
     </structure>
     <value style="element" name="id" get-method="getId" set-method="setId" usage="optional"/>
-    <value style="attribute" name="domainConcept" get-method="getDomainConcept" set-method="setDomainConcept" usage="optional"/>
   </mapping>
   <mapping abstract="true" type-name="XMLMappableList" class="org.openengsb.core.xmlmapping.XMLMappableList">
     <collection get-method="getMappables" set-method="setMappables" create-type="java.util.ArrayList">
@@ -74,11 +74,9 @@
     <collection get-method="getArgs" set-method="setArgs" create-type="java.util.ArrayList">
       <structure map-as="XMLTypedValue" name="args"/>
     </collection>
-    <value style="attribute" name="domainConcept" get-method="getDomainConcept" set-method="setDomainConcept" usage="optional"/>
   </mapping>
   <mapping abstract="true" type-name="XMLTypedValue" class="org.openengsb.core.xmlmapping.XMLTypedValue">
     <value style="element" name="type" get-method="getType" set-method="setType"/>
-    <value style="element" name="conceptIRI" get-method="getConceptIRI" set-method="setConceptIRI"/>
     <structure map-as="XMLMappable" get-method="getValue" set-method="setValue" name="value"/>
   </mapping>
   <mapping abstract="true" type-name="XMLContextEntry" class="org.openengsb.core.xmlmapping.XMLContextEntry">

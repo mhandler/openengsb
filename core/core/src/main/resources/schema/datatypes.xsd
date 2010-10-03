@@ -43,10 +43,10 @@
         <xs:element name="event" type="XMLEvent" />
         <xs:element name="map" type="XMLMapEntryList" />
         <xs:element name="context" type="XMLContext" />
+        <xs:element name="class" type="xs:string" />
       </xs:choice>
       <xs:element name="id" type="xs:string" nillable="true" />    
     </xs:sequence>
-    <xs:attribute name="domainConcept" type="xs:string" />
   </xs:complexType>
 
   <xs:complexType name="XMLMappableList">
@@ -115,14 +115,12 @@
         <xs:element name="methodName" type="xs:string" />
         <xs:element name="args" type="XMLTypedValue" maxOccurs="unbounded" />
       </xs:sequence>
-      <xs:attribute name="domainConcept" type="xs:string" />
     </xs:complexType>
   </xs:element>
   
   <xs:complexType  name="XMLTypedValue">
     <xs:sequence>
       <xs:element name="type" type="xs:string" />
-      <xs:element name="conceptIRI" type="xs:string" />
       <xs:element name="value" type="XMLMappable" />
     </xs:sequence>
   </xs:complexType>

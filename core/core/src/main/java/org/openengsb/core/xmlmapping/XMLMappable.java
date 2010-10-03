@@ -15,10 +15,10 @@ package org.openengsb.core.xmlmapping;
  *       &lt;xs:element type="XMLEvent" name="event"/>
  *       &lt;xs:element type="XMLMapEntryList" name="map"/>
  *       &lt;xs:element type="XMLContext" name="context"/>
+ *       &lt;xs:element type="xs:string" name="class"/>
  *     &lt;/xs:choice>
  *     &lt;xs:element type="xs:string" nillable="true" name="id"/>
  *   &lt;/xs:sequence>
- *   &lt;xs:attribute type="xs:string" name="domainConcept"/>
  * &lt;/xs:complexType>
  * </pre>
  */
@@ -33,6 +33,7 @@ public class XMLMappable
     private static final int EVENT_CHOICE = 5;
     private static final int MAP_CHOICE = 6;
     private static final int CONTEXT_CHOICE = 7;
+    private static final int _CLASS_CHOICE = 8;
     private String _null;
     private XMLReference reference;
     private XMLPrimitive primitive;
@@ -41,8 +42,8 @@ public class XMLMappable
     private XMLEvent event;
     private XMLMapEntryList map;
     private XMLContext context;
+    private String _class;
     private String id;
-    private String domainConcept;
 
     private void setChoiceSelect(int choice) {
         if (choiceSelect == -1) {
@@ -285,6 +286,34 @@ public class XMLMappable
     }
 
     /** 
+     * Check if _Class is current selection for choice.
+     * 
+     * @return <code>true</code> if selection, <code>false</code> if not
+     */
+    public boolean if_Class() {
+        return choiceSelect == _CLASS_CHOICE;
+    }
+
+    /** 
+     * Get the 'class' element value.
+     * 
+     * @return value
+     */
+    public String get_Class() {
+        return _class;
+    }
+
+    /** 
+     * Set the 'class' element value.
+     * 
+     * @param _class
+     */
+    public void set_Class(String _class) {
+        setChoiceSelect(_CLASS_CHOICE);
+        this._class = _class;
+    }
+
+    /** 
      * Get the 'id' element value.
      * 
      * @return value
@@ -300,23 +329,5 @@ public class XMLMappable
      */
     public void setId(String id) {
         this.id = id;
-    }
-
-    /** 
-     * Get the 'domainConcept' attribute value.
-     * 
-     * @return value
-     */
-    public String getDomainConcept() {
-        return domainConcept;
-    }
-
-    /** 
-     * Set the 'domainConcept' attribute value.
-     * 
-     * @param domainConcept
-     */
-    public void setDomainConcept(String domainConcept) {
-        this.domainConcept = domainConcept;
     }
 }

@@ -18,13 +18,10 @@
 
 package org.openengsb.core.model;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-
-@ConceptIRI("http://www.openengsb.org/ekb/ekbConcepts.owl#ServiceCall")
 public class MethodCall {
     private final String methodName;
     private final Value[] arguments;
@@ -41,25 +38,9 @@ public class MethodCall {
     private static Value[] extractArguments(Method method, Object[] args) {
         Value[] arguments = new Value[args.length];
         for (int i = 0; i < args.length; i++) {
-            arguments[i] = new Value(args[i], method.getParameterTypes()[i], getConceptIRI(method, i));
+            arguments[i] = new Value(args[i], method.getParameterTypes()[i]);
         }
         return arguments;
-    }
-
-    private static String getConceptIRI(Method method, int argIndex) {
-        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-        Annotation[] argAnnotations = parameterAnnotations[argIndex];
-        for (Annotation annotation : argAnnotations) {
-            if (annotation instanceof ConceptIRI) {
-                return ((ConceptIRI) annotation).value();
-            }
-        }
-        // TODO throw exception
-        return "http://openengsb.org/null-concept";
-        // throw new
-        // IllegalStateException("No conceptIRI found for parameter with index: "
-        // + argIndex + " of method: "
-        // + method);
     }
 
     public ReturnValue invoke(Object instance) throws InvocationFailedException {
@@ -67,8 +48,7 @@ public class MethodCall {
             Class<?> clazz = instance.getClass();
             Method method = clazz.getMethod(methodName, getTypes());
             Object result = method.invoke(instance, getArgValues());
-            String returnValueConcept = getReturnValueConceptIRI(method);
-            Value val = new Value(result, method.getReturnType(), returnValueConcept);
+            Value val = new Value(result, method.getReturnType());
             return new ReturnValue(val);
         } catch (SecurityException e) {
             throwException(e);
@@ -85,21 +65,9 @@ public class MethodCall {
         return null; // unreachable
     }
 
-    private String getReturnValueConceptIRI(Method method) {
-        ReturnValueConceptIRI annotation = method.getAnnotation(ReturnValueConceptIRI.class);
-        if (annotation == null) {
-            // TODO throw exception
-            return "http://openengsb.org/null-concept";
-            // throw new
-            // IllegalStateException("No returnValueConceptIRI found for method: "
-            // + method);
-        }
-        return annotation.value();
-    }
-
     private void throwException(Throwable cause) throws InvocationFailedException {
-        throw new InvocationFailedException(String.format("Invocation failed for method '%s' %s", methodName, Arrays
-                .toString(getTypes())), cause);
+        throw new InvocationFailedException(String.format("Invocation failed for method '%s' %s", methodName,
+                Arrays.toString(getTypes())), cause);
     }
 
     private Class<?>[] getTypes() {

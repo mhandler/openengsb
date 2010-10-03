@@ -21,11 +21,9 @@ package org.openengsb.core;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.openengsb.core.model.ConceptIRI;
 import org.openengsb.core.model.InvocationFailedException;
 import org.openengsb.core.model.MethodCall;
 import org.openengsb.core.model.ReturnValue;
-import org.openengsb.core.model.ReturnValueConceptIRI;
 import org.openengsb.core.model.Value;
 
 public class MethodCallTest {
@@ -36,7 +34,7 @@ public class MethodCallTest {
 
         Value[] arguments = new Value[args.length];
         for (int i = 0; i < arguments.length; i++) {
-            arguments[i] = new Value(args[i], args[i].getClass(), "testConcept" + i);
+            arguments[i] = new Value(args[i], args[i].getClass());
         }
         MethodCall methodCall = new MethodCall("set", arguments);
         Bean bean = new Bean();
@@ -54,9 +52,7 @@ public class MethodCallTest {
         private Integer b;
         private Object c;
 
-        @ReturnValueConceptIRI("testReturnValue")
-        public String set(@ConceptIRI("testArg1") String a, @ConceptIRI("testArg2") Integer b,
-                @ConceptIRI("testArg3") Object c) {
+        public String set(String a, Integer b, Object c) {
             this.a = a;
             this.b = b;
             this.c = c;

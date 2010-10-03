@@ -23,20 +23,13 @@ public class Value {
 
     private final Class<?> type;
 
-    private final String conceptIRI;
-
-    public Value(Object value, Class<?> type, String conceptIRI) {
+    public Value(Object value, Class<?> type) {
         this.value = value;
         this.type = type;
-        this.conceptIRI = conceptIRI;
     }
 
     public Class<?> getType() {
         return type;
-    }
-
-    public String getConceptIRI() {
-        return conceptIRI;
     }
 
     public Object getValue() {
@@ -47,7 +40,6 @@ public class Value {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((conceptIRI == null) ? 0 : conceptIRI.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
@@ -62,11 +54,6 @@ public class Value {
         if (getClass() != obj.getClass())
             return false;
         Value other = (Value) obj;
-        if (conceptIRI == null) {
-            if (other.conceptIRI != null)
-                return false;
-        } else if (!conceptIRI.equals(other.conceptIRI))
-            return false;
         if (type == null) {
             if (other.type != null)
                 return false;
