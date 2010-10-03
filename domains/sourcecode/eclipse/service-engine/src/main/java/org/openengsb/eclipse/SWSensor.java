@@ -17,37 +17,31 @@
  */
 package org.openengsb.eclipse;
 
+
 public class SWSensor {
+
+    private SWSensor() {
+    }
+
+    public SWSensor(String id, String unit, String type) {
+        this();
+        this.id = id;
+        this.unit = unit;
+        this.type = type;
+    }
 
     private String id;
 
     private String unit;
 
-    private String range;
-
-    private String connectionId;
-
-    private SWSensor() {
-    }
-
-    public SWSensor(String id, String unit, String range, String connectionId) {
-        this();
-        this.id = id;
-        this.unit = unit;
-        this.range = range;
-        this.connectionId = connectionId;
-    }
+    private String type;
 
     public String getId() {
         return id;
     }
 
-    public String getConnectionId() {
-        return connectionId;
-    }
-
-    public String getRange() {
-        return range;
+    public String getType() {
+        return type;
     }
 
     public String getUnit() {

@@ -33,12 +33,8 @@ public class EclipseProvider extends SingleConceptProvider<SWSensor> {
     }
 
     private void fillWithTestData() {
-        data.put("s1", new SWSensor("s1", "mbar", "[*,*]", "con1"));
-        data.put("s2", new SWSensor("s2", "mbar", "[*,*]", "con1"));
-        data.put("s3", new SWSensor("s2", "mbar", "[*,*]", "con1"));
-        data.put("s4", new SWSensor("s2", "bool", "[0,1]", "con2"));
-        data.put("s5", new SWSensor("s2", "bool", "[0,1]", "con2"));
-        data.put("s6", new SWSensor("s2", "bool", "[0,1]", "con2"));
+        data.put("sensor1", new SWSensor("sensor1", "mbar", "int"));
+        data.put("sensor2", new SWSensor("sensor2", "bool", "boolean"));
     }
 
     @Override

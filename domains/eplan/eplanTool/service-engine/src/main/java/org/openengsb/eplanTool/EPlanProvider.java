@@ -33,12 +33,12 @@ public class EPlanProvider extends SingleConceptProvider<EPlanSensor> {
     }
 
     private void fillWithTestData() {
-        data.put("s1", new EPlanSensor("s1", "mbar", "[*,*]", "con1"));
-        data.put("s2", new EPlanSensor("s2", "mbar", "[*,*]", "con1"));
-        data.put("s3", new EPlanSensor("s2", "mbar", "[*,*]", "con1"));
-        data.put("s4", new EPlanSensor("s2", "bool", "[0,1]", "con2"));
-        data.put("s5", new EPlanSensor("s2", "bool", "[0,1]", "con2"));
-        data.put("s6", new EPlanSensor("s2", "bool", "[0,1]", "con2"));
+        data.put("s1", new EPlanSensor("s1", "mbar", "[*,*]", "sensor1"));
+        data.put("s2", new EPlanSensor("s2", "mbar", "[*,*]", "sensor1"));
+        data.put("s3", new EPlanSensor("s2", "mbar", "[*,*]", "sensor1"));
+        data.put("s4", new EPlanSensor("s2", "bool", "[0,1]", "sensor2"));
+        data.put("s5", new EPlanSensor("s2", "bool", "[0,1]", "sensor2"));
+        data.put("s6", new EPlanSensor("s2", "bool", "[0,1]", "sensor2"));
     }
 
     @Override

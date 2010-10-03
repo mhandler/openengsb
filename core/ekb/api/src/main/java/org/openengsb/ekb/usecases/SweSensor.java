@@ -22,7 +22,7 @@ import org.openengsb.ekb.annotations.MapsTo;
 import org.openengsb.ekb.annotations.SuperConcept;
 import org.openengsb.ekb.annotations.Transformation;
 
-@Concept(id = "sweSensor", version = "1.0.0")
+@Concept(id = "swSensor", version = "1.0.0")
 @SuperConcept(id = "sensor", version = "1.0.0")
 public class SweSensor {
 
