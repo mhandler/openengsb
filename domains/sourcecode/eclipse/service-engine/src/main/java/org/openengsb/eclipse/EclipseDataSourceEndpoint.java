@@ -24,7 +24,6 @@ import org.openengsb.core.endpoints.DataSourceEndpoint;
 import org.openengsb.core.messaging.MessageProperties;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
-import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
 
 /**
  * @org.apache.xbean.XBean element="conceptSourceEndpoint"
@@ -32,7 +31,7 @@ import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
  */
 public class EclipseDataSourceEndpoint extends DataSourceEndpoint<EclipseProvider> {
 
-    private SimpleConceptSource source;
+    private ConceptSource source;
 
     @Override
     protected EclipseProvider getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
@@ -48,7 +47,7 @@ public class EclipseDataSourceEndpoint extends DataSourceEndpoint<EclipseProvide
     }
 
     private void init() {
-        source = new SimpleConceptSource();
+        source = new ConceptSource();
         source.setId("eclipse");
         source.setServiceName(getService().getLocalPart());
         source.setUrn(getService().getNamespaceURI());

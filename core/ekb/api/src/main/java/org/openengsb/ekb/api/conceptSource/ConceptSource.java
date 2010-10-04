@@ -17,6 +17,7 @@
  */
 package org.openengsb.ekb.api.conceptSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -24,24 +25,80 @@ import javax.xml.namespace.QName;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 
-public interface ConceptSource {
+public class ConceptSource {
 
-    String getId();
+    private String id;
 
-    QName getService();
+    private String urn;
 
-    boolean canProvide(Concept<?> concept);
+    private String serviceName;
 
-    boolean canProvideSubconcept(Concept<?> concept);
+    private List<ConceptKey> providedConcepts = new ArrayList<ConceptKey>();
 
-    List<ConceptKey> getProvidedConcepts();
+    public boolean canProvideSubconcept(Concept<?> concept) {
+        for (Concept<?> subConcept : concept.getSubConcepts()) {
+            if (canProvide(subConcept) || canProvideSubconcept(subConcept)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canProvide(Concept<?> concept) {
+        return providedConcepts.contains(concept.getKey());
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public List<ConceptKey> getProvidedConcepts() {
+        return new ArrayList<ConceptKey>(providedConcepts);
+    }
+
+    public void setProvidedConcepts(List<ConceptKey> providedConcepts) {
+        this.providedConcepts = new ArrayList<ConceptKey>(providedConcepts);
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setUrn(String urn) {
+        this.urn = urn;
+    }
+
+    public String getUrn() {
+        return urn;
+    }
+
+    public QName getService() {
+        return new QName(urn, serviceName);
+    }
 
     @Override
-    String toString();
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConceptSource)) {
+            return false;
+        }
+        return id.equals(((ConceptSource) obj).getId());
+    }
 
     @Override
-    boolean equals(Object obj);
+    public int hashCode() {
+        return id.hashCode();
+    }
 
     @Override
-    int hashCode();
+    public String toString() {
+        return "[ConceptSource(" + id + ") service:" + getService() + "]";
+    }
 }

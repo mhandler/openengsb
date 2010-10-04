@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
-import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
 
 public class ConceptSourceTest {
 
@@ -70,7 +69,7 @@ public class ConceptSourceTest {
         return concept;
     }
 
-    private class TestSource extends SimpleConceptSource {
+    private class TestSource extends ConceptSource {
 
         @Override
         public boolean canProvide(Concept<?> concept) {
