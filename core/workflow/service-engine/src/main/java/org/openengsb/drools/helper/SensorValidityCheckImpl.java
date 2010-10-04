@@ -91,6 +91,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                     testTypeAndUnit(sweSensor, eeSensor);
                 }
             }
+            log.info("Sensor validity check successful - no inconsistencies found.");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
