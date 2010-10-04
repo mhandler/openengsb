@@ -123,6 +123,15 @@
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-domains-eplan-eplanTool-su</artifactId>
     </dependency>
+  <!--  eclipse -->
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-domains-sourcecode-eclipse-su</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.openengsb</groupId>
+      <artifactId>openengsb-test-jms-su</artifactId>
+    </dependency>
 
   </dependencies>
 

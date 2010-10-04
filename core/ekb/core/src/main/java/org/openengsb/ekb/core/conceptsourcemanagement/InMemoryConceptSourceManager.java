@@ -22,15 +22,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
 import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
 import org.openengsb.ekb.api.conceptSource.ExtendedConceptSourceManager;
 
 public class InMemoryConceptSourceManager implements ExtendedConceptSourceManager {
 
+    private static Log log = LogFactory.getLog(InMemoryConceptSourceManager.class);
+
     private Set<ConceptSource> activeSources = new HashSet<ConceptSource>();
 
     private Set<ConceptSourceStatusListener> listeners = new HashSet<ConceptSourceStatusListener>();
+
+    public InMemoryConceptSourceManager() {
+    }
 
     public InMemoryConceptSourceManager(Set<ConceptSourceStatusListener> listeners) {
         this.listeners.addAll(listeners);
@@ -39,12 +46,14 @@ public class InMemoryConceptSourceManager implements ExtendedConceptSourceManage
     @Override
     public void activate(ConceptSource source) {
         activeSources.add(source);
+        log.info("Concept source activated: " + source);
         notifyListeners(source, true);
     }
 
     @Override
     public void deactivate(ConceptSource source) {
         activeSources.remove(source);
+        log.info("Concept source deactivated: " + source);
         notifyListeners(source, false);
     }
 

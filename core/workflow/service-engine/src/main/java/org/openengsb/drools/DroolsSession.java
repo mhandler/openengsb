@@ -56,9 +56,9 @@ public class DroolsSession {
 
     private MessageProperties msgProperties;
 
-    private SensorValidityCheck sensorValidityCheck;
+    private SensorValidityCheckImpl sensorValidityCheck;
 
-    private EKB ekb;
+    private DroolsEKB ekb;
 
     public DroolsSession(MessageProperties msgProperties, DroolsEndpoint endpoint) {
         this.msgProperties = msgProperties;
@@ -71,6 +71,8 @@ public class DroolsSession {
         this.eventHelper = new EventHelperImpl(endpoint, msgProperties);
         this.ekb = createEKBProxy();
         this.sensorValidityCheck = new SensorValidityCheckImpl();
+        sensorValidityCheck.setEkb(ekb);
+        sensorValidityCheck.setCtx(contextHelper);
     }
 
     /**
@@ -87,10 +89,14 @@ public class DroolsSession {
         globals.put("eventHelper", eventHelper);
         globals.put("sensorCheck", sensorValidityCheck);
 
+        domainConfiguration.addDomain(ekb, "ekb");
         for (Entry<String, Class<? extends Domain>> e : DomainRegistry.domains.entrySet()) {
             Object proxy = createProxy(e.getValue());
             domainConfiguration.addDomain((Domain) proxy, e.getKey());
             globals.put(e.getKey(), proxy);
+            if (e.getKey().equals("notification")) {
+                sensorValidityCheck.setNotification((NotificationDomain) proxy);
+            }
         }
 
         StatefulSession session = ruleBase.newStatefulSession();
@@ -114,9 +120,9 @@ public class DroolsSession {
                 new GuvnorProxyInvocationHandler());
     }
 
-    private EKB createEKBProxy() {
-        return (EKB) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] { EKB.class },
-                new GuvnorProxyInvocationHandler());
+    private DroolsEKB createEKBProxy() {
+        return (DroolsEKB) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class[] { EKB.class, DroolsEKB.class }, new GuvnorProxyInvocationHandler());
     }
 
     private class GuvnorProxyInvocationHandler implements InvocationHandler {

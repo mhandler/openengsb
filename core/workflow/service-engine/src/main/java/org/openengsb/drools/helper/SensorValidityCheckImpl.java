@@ -20,6 +20,8 @@ package org.openengsb.drools.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openengsb.contextcommon.ContextHelper;
 import org.openengsb.drools.NotificationDomain;
 import org.openengsb.drools.SensorValidityCheck;
@@ -30,6 +32,8 @@ import org.openengsb.ekb.api.EKB;
 
 public class SensorValidityCheckImpl implements SensorValidityCheck {
 
+    private static Log log = LogFactory.getLog(SensorValidityCheckImpl.class);
+
     private EKB ekb;
 
     private NotificationDomain notification;
@@ -38,14 +42,14 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
 
     public void check() {
         try {
-            System.out.println("running sensor validity check...");
+            log.info("running sensor validity check...");
             ConceptKey sensorConcept = new ConceptKey("sensor", "1.0.0");
             List<String> sensorSources = ekb.getSourceIds(sensorConcept);
 
             String eclipseSourceId = "eclipse";
             String eplanSourceId = "eplan";
 
-            System.out.println("test if sw and ee tool is present and active ...");
+            log.info("test if sw and ee tool is present and active ...");
             // test whether sw tool and electrical engineering tool is present
             if (!checkAvailable(eclipseSourceId, sensorSources)) {
                 reportProblem("No concept source with ID '" + eclipseSourceId + "' active.");
@@ -56,7 +60,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 return;
             }
 
-            System.out.println("test if each sw sensor is linked to three sources ...");
+            log.info("test if each sw sensor is linked to three sources ...");
             // test three sources
             List<Sensor> sweSensors = ekb.getData(eclipseSourceId, sensorConcept, Sensor.class);
             List<Sensor> eeSensors = ekb.getData(eplanSourceId, sensorConcept, Sensor.class);
@@ -69,7 +73,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 }
             }
 
-            System.out.println("test that no ee sensor is linked to no or more than one sw sensor ...");
+            log.info("test that no ee sensor is linked to no or more than one sw sensor ...");
             // test no double connect
             for (Sensor eeSensor : eeSensors) {
                 List<Sensor> connected = getConnectedSensors(eeSensor, sweSensors);
@@ -79,7 +83,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 }
             }
 
-            System.out.println("test type and unit of measurement ...");
+            log.info("test type and unit of measurement ...");
             // test type and unit valid
             for (Sensor sweSensor : sweSensors) {
                 List<Sensor> connected = getConnectedSensors(sweSensor, eeSensors);
@@ -106,6 +110,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
     }
 
     private void reportProblem(String message) {
+        log.info("Reporting problem: " + message);
         Notification n = new Notification();
         n.setSubject("sensor validity problem");
         n.setMessage(message);

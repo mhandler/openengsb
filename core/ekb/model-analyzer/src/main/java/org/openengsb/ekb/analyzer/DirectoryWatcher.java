@@ -70,7 +70,7 @@ public class DirectoryWatcher {
                     }
                 });
                 File modelFile = getNewest(jars);
-                if (!modelFile.equals(last) || modelFile.lastModified() != last.lastModified()) {
+                if (needsAnalyzing(modelFile)) {
                     analyzer.analyzeAndStore(modelFile);
                 }
                 try {
@@ -79,6 +79,13 @@ public class DirectoryWatcher {
                     Thread.interrupted();
                 }
             }
+        }
+
+        private boolean needsAnalyzing(File modelFile) {
+            if (modelFile == null) {
+                return false;
+            }
+            return !modelFile.equals(last) || modelFile.lastModified() != last.lastModified();
         }
 
         private File getNewest(File[] jars) {

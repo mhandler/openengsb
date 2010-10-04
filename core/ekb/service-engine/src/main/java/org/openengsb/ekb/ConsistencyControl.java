@@ -33,6 +33,9 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
 
     private ExtendedConceptSourceManager conceptSourceManager;
 
+    public ConsistencyControl() {
+    }
+
     public ConsistencyControl(KnowledgeManager knowledgeManager, ExtendedConceptSourceManager conceptSourceManager) {
         this.knowledgeManager = knowledgeManager;
         this.conceptSourceManager = conceptSourceManager;
