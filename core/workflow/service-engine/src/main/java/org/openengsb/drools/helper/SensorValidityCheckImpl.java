@@ -38,12 +38,14 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
 
     public void check() {
         try {
+            System.out.println("running sensor validity check...");
             ConceptKey sensorConcept = new ConceptKey("sensor", "1.0.0");
             List<String> sensorSources = ekb.getSourceIds(sensorConcept);
 
             String eclipseSourceId = "eclipse";
             String eplanSourceId = "eplan";
 
+            System.out.println("test if sw and ee tool is present and active ...");
             // test whether sw tool and electrical engineering tool is present
             if (!checkAvailable(eclipseSourceId, sensorSources)) {
                 reportProblem("No concept source with ID '" + eclipseSourceId + "' active.");
@@ -54,6 +56,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 return;
             }
 
+            System.out.println("test if each sw sensor is linked to three sources ...");
             // test three sources
             List<Sensor> sweSensors = ekb.getData(eclipseSourceId, sensorConcept, Sensor.class);
             List<Sensor> eeSensors = ekb.getData(eplanSourceId, sensorConcept, Sensor.class);
@@ -66,6 +69,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 }
             }
 
+            System.out.println("test that no ee sensor is linked to no or more than one sw sensor ...");
             // test no double connect
             for (Sensor eeSensor : eeSensors) {
                 List<Sensor> connected = getConnectedSensors(eeSensor, sweSensors);
@@ -75,6 +79,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                 }
             }
 
+            System.out.println("test type and unit of measurement ...");
             // test type and unit valid
             for (Sensor sweSensor : sweSensors) {
                 List<Sensor> connected = getConnectedSensors(sweSensor, eeSensors);

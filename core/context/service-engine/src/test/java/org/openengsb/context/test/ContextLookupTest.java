@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +39,7 @@ public class ContextLookupTest {
     private EndpointContextHelperImpl context = new EndpointContextHelperImpl();
 
     @Before
-    public void setUp() throws IllegalArgumentException, SecurityException, IllegalAccessException,
-            NoSuchFieldException {
+    public void setUp() throws Exception {
         setContextStore();
         context.setCurrentId("42");
     }
@@ -82,10 +82,16 @@ public class ContextLookupTest {
     }
 
     private void setContextStore() throws IllegalArgumentException, IllegalAccessException, SecurityException,
-            NoSuchFieldException {
+            NoSuchFieldException, URISyntaxException {
         Field field = EndpointContextHelperImpl.class.getDeclaredField("contextStore");
         field.setAccessible(true);
-        field.set(context, new ContextStore(new File("target/test-classes/contextdata.xml")));
+        File contextdata = new File(ClassLoader.getSystemResource("contextdata.xml").toURI());
+        ContextStore store = new ContextStore(contextdata);
+        field.set(context, store);
+
+        Field settings = store.getClass().getDeclaredField("settings");
+        settings.setAccessible(true);
+        settings.set(store, null);
     }
 
     private List<String> getListOfKey(String key) {
