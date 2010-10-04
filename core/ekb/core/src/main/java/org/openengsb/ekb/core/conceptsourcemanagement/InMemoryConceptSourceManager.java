@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
-import org.openengsb.ekb.api.conceptSource.ConceptSourceManager;
 import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.conceptSource.ExtendedConceptSourceManager;
 
-public class InMemoryConceptSourceManager implements ConceptSourceManager {
+public class InMemoryConceptSourceManager implements ExtendedConceptSourceManager {
 
     private Set<ConceptSource> activeSources = new HashSet<ConceptSource>();
 

@@ -17,14 +17,11 @@
  */
 package org.openengsb.ekb.api.conceptSource;
 
-import java.util.List;
 
-public interface ConceptSourceManager {
+public interface ExtendedConceptSourceManager extends ConceptSourceManager {
 
-    void activate(ConceptSource source);
+    void addListener(ConceptSourceStatusListener listener);
 
-    void deactivate(ConceptSource source);
-
-    List<ConceptSource> getActiveConceptSources();
+    void removeListener(ConceptSourceStatusListener listener);
 
 }

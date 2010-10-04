@@ -22,8 +22,8 @@ import java.util.List;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
-import org.openengsb.ekb.api.conceptSource.ConceptSourceManager;
 import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
+import org.openengsb.ekb.api.conceptSource.ExtendedConceptSourceManager;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeChangeListener;
 import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 
@@ -31,9 +31,9 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
 
     private KnowledgeManager knowledgeManager;
 
-    private ConceptSourceManager conceptSourceManager;
+    private ExtendedConceptSourceManager conceptSourceManager;
 
-    public ConsistencyControl(KnowledgeManager knowledgeManager, ConceptSourceManager conceptSourceManager) {
+    public ConsistencyControl(KnowledgeManager knowledgeManager, ExtendedConceptSourceManager conceptSourceManager) {
         this.knowledgeManager = knowledgeManager;
         this.conceptSourceManager = conceptSourceManager;
     }
@@ -103,7 +103,7 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
         // do nothing
     }
 
-    public void setConceptSourceManager(ConceptSourceManager conceptSourceManager) {
+    public void setConceptSourceManager(ExtendedConceptSourceManager conceptSourceManager) {
         if (this.conceptSourceManager != null) {
             this.conceptSourceManager.removeListener(this);
         }
