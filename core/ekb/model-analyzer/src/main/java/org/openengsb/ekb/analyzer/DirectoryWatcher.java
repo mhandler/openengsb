@@ -72,6 +72,7 @@ public class DirectoryWatcher {
                 File modelFile = getNewest(jars);
                 if (needsAnalyzing(modelFile)) {
                     analyzer.analyzeAndStore(modelFile);
+                    last = modelFile;
                 }
                 try {
                     Thread.sleep(SLEEP_TIME);

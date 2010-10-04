@@ -23,12 +23,16 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.NoSuchConceptException;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
 
 public class InMemoryKnowledgeManager implements KnowledgeManager {
+
+    private static Log log = LogFactory.getLog(InMemoryKnowledgeManager.class);
 
     private Set<Concept<?>> activeConcepts = new HashSet<Concept<?>>();
 
@@ -44,6 +48,7 @@ public class InMemoryKnowledgeManager implements KnowledgeManager {
     public void activateConcepts(List<Concept<?>> concepts) {
         inactiveConcepts.removeAll(concepts);
         activeConcepts.addAll(concepts);
+        log.info("Activated concepts: " + concepts);
         notifyAllListeners(NotificationType.ACTIVATION);
     }
 
@@ -51,6 +56,7 @@ public class InMemoryKnowledgeManager implements KnowledgeManager {
     public void deactivateConcepts(List<Concept<?>> concepts) {
         activeConcepts.removeAll(concepts);
         inactiveConcepts.addAll(concepts);
+        log.info("Deactivated concepts: " + concepts);
         notifyAllListeners(NotificationType.DEACTIVATION);
     }
 
@@ -89,6 +95,7 @@ public class InMemoryKnowledgeManager implements KnowledgeManager {
         activeConcepts.clear();
         inactiveConcepts.clear();
         inactiveConcepts.addAll(concepts);
+        log.info("Concepts of knowledge manager have been reset. Concepts: " + concepts);
         notifyAllListeners(NotificationType.CHANGE);
     }
 
