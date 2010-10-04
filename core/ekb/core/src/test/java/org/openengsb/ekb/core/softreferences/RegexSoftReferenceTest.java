@@ -25,12 +25,10 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.api.conceptSource.ConceptSource;
-import org.openengsb.ekb.api.conceptSource.SimpleConceptSource;
+import org.openengsb.ekb.api.NoSuchSoftRefernceException;
 import org.openengsb.ekb.core.ConceptImpl;
 
 public class RegexSoftReferenceTest {
@@ -53,6 +51,7 @@ public class RegexSoftReferenceTest {
         ref.setRegex("#ref\\(([\\d]+)\\)");
         ref.setSourceConcept(getSourceConcept());
         ref.setTargetConcept(getTargetConcept());
+        ref.initId();
     }
 
     @Test
@@ -134,50 +133,61 @@ public class RegexSoftReferenceTest {
     private class MockEKB implements EKB {
 
         @Override
-        public List<Concept<?>> getAllConcepts() {
-            return null;
-        }
-
-        @Override
-        public Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException {
-            return null;
-        }
-
-        @Override
-        public <TYPE> Concept<TYPE> getConcept(ConceptKey key, Class<TYPE> conceptClass) throws NoSuchConceptException {
-            return null;
-        }
-
-        @Override
-        public <TYPE> List<TYPE> getData(ConceptSource source, Concept<TYPE> concept) {
-            return null;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, Object key) {
+        public Object getDataElement(String source, ConceptKey concept, Object key) {
             if (key.equals(target.id)) {
-                return (TYPE) target;
+                return target;
             } else if (key.equals(target2.id)) {
-                return (TYPE) target2;
+                return target2;
             } else if (key.equals(target3.id)) {
-                return (TYPE) target3;
+                return target3;
             }
             return null;
         }
 
         @Override
-        public List<ConceptSource> getSources(Concept<?> concept) {
-            ConceptSource source = new MockSource();
-            return Collections.singletonList(source);
+        @SuppressWarnings("unchecked")
+        public <TYPE> TYPE getDataElement(String sourceId, ConceptKey concept, Class<TYPE> conceptClass, Object key) {
+            return (TYPE) getDataElement(sourceId, concept, key);
         }
-    }
-
-    private class MockSource extends SimpleConceptSource {
 
         @Override
-        public boolean canProvide(Concept<?> concept) {
-            return concept.getKey().getId().equals("target");
+        public List<String> getSourceIds(ConceptKey concept) {
+            return Collections.singletonList("mock");
+        }
+
+        @Override
+        public List<ConceptKey> getAllConcepts() {
+            return null;
+        }
+
+        @Override
+        public List<?> getData(String sourceId, ConceptKey concept) {
+            return null;
+        }
+
+        @Override
+        public <TYPE> List<TYPE> getData(String sourceId, ConceptKey concept, Class<TYPE> conceptClass) {
+            return null;
+        }
+
+        @Override
+        public List<String> getSoftReferenceIds(ConceptKey sourceConcept) throws NoSuchConceptException {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<String> getSoftReferenceIds(ConceptKey sourceConcept, ConceptKey targetConcept)
+                throws NoSuchConceptException {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public <SOURCETYPE, TARGETTYPE> List<TARGETTYPE> follow(ConceptKey sourceConcept, Class<SOURCETYPE> sourceType,
+                String softReferenceId, SOURCETYPE source, ConceptKey targetConcept, Class<TARGETTYPE> targetType)
+                throws NoSuchConceptException, NoSuchSoftRefernceException {
+            return null;
         }
 
     }

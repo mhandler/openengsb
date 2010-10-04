@@ -17,14 +17,22 @@
  */
 package org.openengsb.ekb.api;
 
-import java.util.List;
+public class NoSuchConceptSourceException extends Exception {
 
-public interface SoftReference<SOURCETYPE, TARGETTYPE> {
+    public NoSuchConceptSourceException(String message) {
+        super(message);
+    }
 
-    String getId();
+    public NoSuchConceptSourceException() {
+        super();
+    }
 
-    List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject);
+    public NoSuchConceptSourceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    Concept<TARGETTYPE> getTargetConcept();
+    public NoSuchConceptSourceException(Throwable cause) {
+        super(cause);
+    }
 
 }

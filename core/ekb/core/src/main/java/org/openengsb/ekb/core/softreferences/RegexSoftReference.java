@@ -25,8 +25,9 @@ import java.util.regex.Pattern;
 
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.EKB;
+import org.openengsb.ekb.api.NoSuchConceptException;
+import org.openengsb.ekb.api.NoSuchConceptSourceException;
 import org.openengsb.ekb.api.SoftReference;
-import org.openengsb.ekb.api.conceptSource.ConceptSource;
 
 public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference<SOURCETYPE, TARGETTYPE> {
 
@@ -37,6 +38,8 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
     private String referenceField;
 
     private String regex;
+
+    private String id;
 
     @Override
     public List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject) {
@@ -60,7 +63,8 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
         return sourceFieldValue;
     }
 
-    private List<TARGETTYPE> findAndFollow(EKB ekb, String sourceFieldText) {
+    private List<TARGETTYPE> findAndFollow(EKB ekb, String sourceFieldText) throws NoSuchConceptException,
+            NoSuchConceptSourceException {
         Matcher matcher = Pattern.compile(regex).matcher(sourceFieldText);
 
         List<TARGETTYPE> result = new ArrayList<TARGETTYPE>();
@@ -77,10 +81,12 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
         return result;
     }
 
-    private TARGETTYPE getTargetElementByKey(EKB ekb, String key) {
-        List<ConceptSource> sources = ekb.getSources(targetConcept);
-        for (ConceptSource source : sources) {
-            TARGETTYPE result = ekb.getDataElement(source, targetConcept, key);
+    private TARGETTYPE getTargetElementByKey(EKB ekb, String key) throws NoSuchConceptException,
+            NoSuchConceptSourceException {
+        List<String> sources = ekb.getSourceIds(targetConcept.getKey());
+        for (String source : sources) {
+            TARGETTYPE result = ekb
+                    .getDataElement(source, targetConcept.getKey(), targetConcept.getConceptClass(), key);
             if (result != null) {
                 return result;
             }
@@ -117,4 +123,12 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
         this.sourceConcept = sourceConcept;
     }
 
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void initId() {
+        this.id = sourceConcept.getKey().toString() + " - " + targetConcept.getKey().toString();
+    }
 }

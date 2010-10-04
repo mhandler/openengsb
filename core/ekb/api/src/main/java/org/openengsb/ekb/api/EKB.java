@@ -19,20 +19,29 @@ package org.openengsb.ekb.api;
 
 import java.util.List;
 
-import org.openengsb.ekb.api.conceptSource.ConceptSource;
-
 public interface EKB {
 
-    Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException;
+    List<ConceptKey> getAllConcepts();
 
-    List<Concept<?>> getAllConcepts();
+    List<String> getSourceIds(ConceptKey concept) throws NoSuchConceptException;
 
-    <TYPE> Concept<TYPE> getConcept(ConceptKey key, Class<TYPE> conceptClass) throws NoSuchConceptException;
+    List<?> getData(String sourceId, ConceptKey concept) throws NoSuchConceptException, NoSuchConceptSourceException;
 
-    List<ConceptSource> getSources(Concept<?> concept);
+    <TYPE> List<TYPE> getData(String sourceId, ConceptKey concept, Class<TYPE> conceptClass)
+            throws NoSuchConceptException, NoSuchConceptSourceException;
 
-    <TYPE> List<TYPE> getData(ConceptSource source, Concept<TYPE> concept);
+    Object getDataElement(String sourceId, ConceptKey concept, Object key) throws NoSuchConceptException,
+            NoSuchConceptSourceException;
 
-    <TYPE> TYPE getDataElement(ConceptSource source, Concept<TYPE> concept, Object key);
+    <TYPE> TYPE getDataElement(String sourceId, ConceptKey concept, Class<TYPE> conceptClass, Object key)
+            throws NoSuchConceptException, NoSuchConceptSourceException;
+
+    List<String> getSoftReferenceIds(ConceptKey sourceConcept) throws NoSuchConceptException;
+
+    List<String> getSoftReferenceIds(ConceptKey sourceConcept, ConceptKey targetConcept) throws NoSuchConceptException;
+
+    public <SOURCETYPE, TARGETTYPE> List<TARGETTYPE> follow(ConceptKey sourceConcept, Class<SOURCETYPE> sourceType,
+            String softReferenceId, SOURCETYPE source, ConceptKey targetConcept, Class<TARGETTYPE> targetType)
+            throws NoSuchConceptException, NoSuchSoftRefernceException;
 
 }

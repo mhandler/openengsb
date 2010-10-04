@@ -28,6 +28,9 @@ import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
+import org.openengsb.ekb.api.NoSuchConceptSourceException;
+import org.openengsb.ekb.api.NoSuchSoftRefernceException;
+import org.openengsb.ekb.api.SoftReference;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
 import org.openengsb.ekb.api.conceptSource.ConceptSourceManager;
 import org.openengsb.ekb.api.conceptSource.DomainQueryInterface;
@@ -48,18 +51,25 @@ public class EKBImplementation implements EKB {
     private Transformer transformer;
 
     @Override
-    public List<Concept<?>> getAllConcepts() {
+    public List<ConceptKey> getAllConcepts() {
+        List<Concept<?>> concepts = getConcepts();
+        List<ConceptKey> keys = new ArrayList<ConceptKey>();
+        for (Concept<?> concept : concepts) {
+            keys.add(concept.getKey());
+        }
+        return keys;
+    }
+
+    private List<Concept<?>> getConcepts() {
         return knowledgeManager.getActiveConcepts();
     }
 
-    @Override
-    public Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException {
+    private Concept<?> getConcept(ConceptKey key) throws NoSuchConceptException {
         return knowledgeManager.getActiveConcept(key);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> Concept<T> getConcept(ConceptKey key, Class<T> conceptClass) throws NoSuchConceptException {
+    private <T> Concept<T> getConcept(ConceptKey key, Class<T> conceptClass) throws NoSuchConceptException {
         Concept<?> concept = getConcept(key);
         checkConceptClass(key, conceptClass, concept);
         return (Concept<T>) concept;
@@ -75,29 +85,59 @@ public class EKBImplementation implements EKB {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <T> List<T> getData(ConceptSource source, Concept<T> concept) {
+    public <TYPE> List<TYPE> getData(String sourceId, ConceptKey key, Class<TYPE> conceptClass)
+            throws NoSuchConceptException, NoSuchConceptSourceException {
+        Concept<TYPE> concept = getConcept(key, conceptClass);
+        ConceptSource source = getSource(sourceId);
+        return internalGetData(source, concept);
+    }
+
+    @Override
+    public List<?> getData(String sourceId, ConceptKey conceptKey) throws NoSuchConceptException,
+            NoSuchConceptSourceException {
+        Concept<?> concept = getConcept(conceptKey);
+        ConceptSource source = getSource(sourceId);
+        return internalGetData(source, concept);
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    private <TYPE> List<TYPE> internalGetData(ConceptSource source, Concept<TYPE> concept) {
         checkProvided(source, concept);
 
         if (source.canProvide(concept)) {
             Method method = getQueryMethodGetAll();
             Object[] args = new Object[] { concept.getConceptClass() };
-            return (List<T>) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args,
+            return (List<TYPE>) MethodCallHelper.sendMethodCall(endpoint, source.getService(), method, args,
                     messageProperties);
         }
 
         for (Concept<?> subConcept : concept.getSubConcepts()) {
-            List data = getData(source, subConcept);
+            List<?> data = internalGetData(source, subConcept);
             if (!data.isEmpty()) {
                 return transform(data, subConcept, concept);
             }
         }
-        return new ArrayList<T>();
+        return new ArrayList<TYPE>();
     }
 
     @Override
+    public <TYPE> TYPE getDataElement(String sourceId, ConceptKey conceptKey, Class<TYPE> conceptClass, Object key)
+            throws NoSuchConceptException, NoSuchConceptSourceException {
+        Concept<TYPE> concept = getConcept(conceptKey, conceptClass);
+        ConceptSource source = getSource(sourceId);
+        return internalGetDataElement(source, concept, key);
+    }
+
+    @Override
+    public Object getDataElement(String sourceId, ConceptKey conceptKey, Object key) throws NoSuchConceptException,
+            NoSuchConceptSourceException {
+        Concept<?> concept = getConcept(conceptKey);
+        ConceptSource source = getSource(sourceId);
+        return internalGetDataElement(source, concept, key);
+    }
+
     @SuppressWarnings("unchecked")
-    public <T> T getDataElement(ConceptSource source, Concept<T> concept, Object key) {
+    private <T> T internalGetDataElement(ConceptSource source, Concept<T> concept, Object key) {
         checkProvided(source, concept);
 
         if (source.canProvide(concept)) {
@@ -107,7 +147,7 @@ public class EKBImplementation implements EKB {
         }
 
         for (Concept<?> subConcept : concept.getSubConcepts()) {
-            Object data = getDataElement(source, subConcept, key);
+            Object data = internalGetDataElement(source, subConcept, key);
             if (data != null) {
                 return transform(Collections.singletonList(data), subConcept, concept).get(0);
             }
@@ -144,22 +184,69 @@ public class EKBImplementation implements EKB {
 
     private Method getQueryMethodGetByKey() {
         try {
-            return DomainQueryInterface.class.getMethod("getByKey", Class.class, String.class);
+            return DomainQueryInterface.class.getMethod("getByKey", Class.class, Object.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public List<ConceptSource> getSources(Concept<?> concept) {
+    private ConceptSource getSource(String id) throws NoSuchConceptSourceException {
         List<ConceptSource> activeConceptSources = conceptSourceManager.getActiveConceptSources();
-        List<ConceptSource> sources = new ArrayList<ConceptSource>();
         for (ConceptSource source : activeConceptSources) {
-            if (source.canProvide(concept) || source.canProvideSubconcept(concept)) {
-                sources.add(source);
+            if (source.getId().equals(id)) {
+                return source;
             }
         }
-        return sources;
+        throw new NoSuchConceptSourceException("No active concept source with id " + id);
+    }
+
+    @Override
+    public List<String> getSourceIds(ConceptKey key) throws NoSuchConceptException {
+        List<ConceptSource> activeConceptSources = conceptSourceManager.getActiveConceptSources();
+        List<String> sourceIds = new ArrayList<String>();
+        Concept<?> concept = getConcept(key);
+        for (ConceptSource source : activeConceptSources) {
+            if (source.canProvide(concept) || source.canProvideSubconcept(concept)) {
+                sourceIds.add(source.getId());
+            }
+        }
+        return sourceIds;
+    }
+
+    @Override
+    public List<String> getSoftReferenceIds(ConceptKey sourceConcept) throws NoSuchConceptException {
+        Concept<?> concept = getConcept(sourceConcept);
+        List<String> ids = new ArrayList<String>();
+        for (SoftReference<?, ?> softRef : concept.getSoftReferences()) {
+            ids.add(softRef.getId());
+        }
+        return ids;
+    }
+
+    @Override
+    public List<String> getSoftReferenceIds(ConceptKey sourceConcept, ConceptKey targetConcept)
+            throws NoSuchConceptException {
+        Concept<?> concept = getConcept(sourceConcept);
+        Concept<?> target = getConcept(targetConcept);
+        List<String> ids = new ArrayList<String>();
+        for (SoftReference<?, ?> softRef : concept.getSoftReferences(target)) {
+            ids.add(softRef.getId());
+        }
+        return ids;
+    }
+
+    @Override
+    public <SOURCETYPE, TARGETTYPE> List<TARGETTYPE> follow(ConceptKey sourceConcept, Class<SOURCETYPE> sourceType,
+            String softReferenceId, SOURCETYPE source, ConceptKey targetConcept, Class<TARGETTYPE> targetType)
+            throws NoSuchConceptException, NoSuchSoftRefernceException {
+        Concept<SOURCETYPE> concept = getConcept(sourceConcept, sourceType);
+        Concept<TARGETTYPE> target = getConcept(targetConcept, targetType);
+        for (SoftReference<SOURCETYPE, TARGETTYPE> softRef : concept.getSoftReferences(target)) {
+            if (softRef.getId().equals(softReferenceId)) {
+                return softRef.follow(this, source);
+            }
+        }
+        return null;
     }
 
     public void setKnowledgeManager(KnowledgeManager knowledgeManager) {

@@ -19,36 +19,38 @@ package org.openengsb.ekb.usecases;
 
 import java.util.List;
 
-import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.api.SoftReference;
+import org.openengsb.ekb.api.NoSuchSoftRefernceException;
 
 public class UC2 {
 
     private static EKB ekb = null;
 
-    public static void main(String[] args) throws NoSuchConceptException {
-        Concept<Requirement> reqConcept = ekb.getConcept(new ConceptKey("requirement", "1.0.0"), Requirement.class);
-        Concept<Issue> issueConcept = ekb.getConcept(new ConceptKey("issue", "1.0.0"), Issue.class);
+    public static void main(String[] args) throws Exception {
+        ConceptKey reqConceptKey = new ConceptKey("requirement", "1.0.0");
+        ConceptKey issueConceptKey = new ConceptKey("issue", "1.0.0");
 
         Requirement req = null;
 
-        List<SoftReference<Requirement, Issue>> refs = reqConcept.getSoftReferences(issueConcept);
-        List<Issue> issues = refs.get(0).follow(ekb, req);
+        List<String> refs = ekb.getSoftReferenceIds(reqConceptKey, issueConceptKey);
+        List<Issue> issues = ekb.follow(reqConceptKey, Requirement.class, refs.get(0), req, issueConceptKey,
+                Issue.class);
 
         for (Issue issue : issues) {
-            handleIssue(issueConcept, issue);
+            handleIssue(issueConceptKey, issue);
         }
 
     }
 
-    private static void handleIssue(Concept<Issue> issueConcept, Issue issue) throws NoSuchConceptException {
+    private static void handleIssue(ConceptKey issueConceptKey, Issue issue) throws NoSuchConceptException,
+            NoSuchSoftRefernceException {
         upateIssue(issue);
-        Concept<Developer> devConcept = ekb.getConcept(new ConceptKey("Developer", "1.0.0"), Developer.class);
-        List<SoftReference<Issue, Developer>> refs = issueConcept.getSoftReferences(devConcept);
-        List<Developer> developers = refs.get(0).follow(ekb, issue);
+        ConceptKey devConceptKey = new ConceptKey("Developer", "1.0.0");
+        List<String> refs = ekb.getSoftReferenceIds(issueConceptKey, devConceptKey);
+        List<Developer> developers = ekb.follow(issueConceptKey, Issue.class, refs.get(0), issue, devConceptKey,
+                Developer.class);
         for (Developer dev : developers) {
             notify(dev);
         }

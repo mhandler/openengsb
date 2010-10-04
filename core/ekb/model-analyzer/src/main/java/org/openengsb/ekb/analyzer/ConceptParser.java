@@ -179,6 +179,7 @@ public class ConceptParser {
         ref.setRegex(regexp);
         ref.setSourceConcept(source);
         ref.setTargetConcept(target);
+        ref.initId();
         return ref;
     }
 

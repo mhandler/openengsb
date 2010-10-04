@@ -25,11 +25,8 @@ import org.openengsb.drools.NotificationDomain;
 import org.openengsb.drools.SensorValidityCheck;
 import org.openengsb.drools.model.Notification;
 import org.openengsb.drools.model.Sensor;
-import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.ConceptKey;
 import org.openengsb.ekb.api.EKB;
-import org.openengsb.ekb.api.NoSuchConceptException;
-import org.openengsb.ekb.api.conceptSource.ConceptSource;
 
 public class SensorValidityCheckImpl implements SensorValidityCheck {
 
@@ -41,18 +38,25 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
 
     public void check() {
         try {
-            Concept<Sensor> sensorConcept;
-            sensorConcept = ekb.getConcept(new ConceptKey("sensor", "1.0.0"), Sensor.class);
-            List<ConceptSource> sensorSources = ekb.getSources(sensorConcept);
+            ConceptKey sensorConcept = new ConceptKey("sensor", "1.0.0");
+            List<String> sensorSources = ekb.getSourceIds(sensorConcept);
+
+            String eclipseSourceId = "eclipse";
+            String eplanSourceId = "eplan";
 
             // test whether sw tool and electrical engineering tool is present
-
-            ConceptSource sweSource = getSource("eclipse", sensorSources);
-            ConceptSource eeSource = getSource("eplan", sensorSources);
+            if (!checkAvailable(eclipseSourceId, sensorSources)) {
+                reportProblem("No concept source with ID '" + eclipseSourceId + "' active.");
+                return;
+            }
+            if (!checkAvailable(eplanSourceId, sensorSources)) {
+                reportProblem("No concept source with ID '" + eplanSourceId + "' active.");
+                return;
+            }
 
             // test three sources
-            List<Sensor> sweSensors = ekb.getData(sweSource, sensorConcept);
-            List<Sensor> eeSensors = ekb.getData(eeSource, sensorConcept);
+            List<Sensor> sweSensors = ekb.getData(eclipseSourceId, sensorConcept, Sensor.class);
+            List<Sensor> eeSensors = ekb.getData(eplanSourceId, sensorConcept, Sensor.class);
 
             for (Sensor sweSensor : sweSensors) {
                 List<Sensor> connected = getConnectedSensors(sweSensor, eeSensors);
@@ -78,7 +82,7 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
                     testTypeAndUnit(sweSensor, eeSensor);
                 }
             }
-        } catch (NoSuchConceptException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -114,13 +118,13 @@ public class SensorValidityCheckImpl implements SensorValidityCheck {
         return result;
     }
 
-    private ConceptSource getSource(String sourceId, List<ConceptSource> sources) {
-        for (ConceptSource source : sources) {
-            if (source.getId().equals(sourceId)) {
-                return source;
+    private boolean checkAvailable(String sourceId, List<String> sources) {
+        for (String source : sources) {
+            if (source.equals(sourceId)) {
+                return true;
             }
         }
-        throw new IllegalStateException("No concept source with ID '" + sourceId + "' active.");
+        return false;
     }
 
     public void setEkb(EKB ekb) {

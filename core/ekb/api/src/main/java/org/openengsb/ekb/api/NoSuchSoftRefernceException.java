@@ -17,14 +17,22 @@
  */
 package org.openengsb.ekb.api;
 
-import java.util.List;
+public class NoSuchSoftRefernceException extends Exception {
 
-public interface SoftReference<SOURCETYPE, TARGETTYPE> {
+    public NoSuchSoftRefernceException(String message) {
+        super(message);
+    }
 
-    String getId();
+    public NoSuchSoftRefernceException() {
+        super();
+    }
 
-    List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject);
+    public NoSuchSoftRefernceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    Concept<TARGETTYPE> getTargetConcept();
+    public NoSuchSoftRefernceException(Throwable cause) {
+        super(cause);
+    }
 
 }
