@@ -34,10 +34,24 @@ import org.openengsb.util.serialization.SerializationException;
 
 public class MethodCallTransformerTest {
 
+    public enum TestEnum {
+        T1, T2
+    }
+
     @Test
     public void testNoArg() throws SerializationException {
-        MethodCall input = getMethodCall("getAllValues", new Object[] { "path", String.class }, new Class<?>[] {
-                String.class, Class.class });
+        MethodCall input = getMethodCall("getAllValues", new Object[] {}, new Class<?>[] {});
+
+        String xml = Transformer.toXml(input);
+        MethodCall output = Transformer.toMethodCall(xml);
+
+        check(input, output);
+    }
+
+    @Test
+    public void testWithEnum() throws SerializationException {
+        MethodCall input = getMethodCall("getAllValues", new Object[] { TestEnum.T1, TestEnum.T2 }, new Class<?>[] {
+                TestEnum.class, TestEnum.class });
 
         String xml = Transformer.toXml(input);
         MethodCall output = Transformer.toMethodCall(xml);

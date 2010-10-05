@@ -29,6 +29,7 @@ import org.openengsb.contextcommon.ContextTransformer;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.xmlmapping.XMLBean;
 import org.openengsb.core.xmlmapping.XMLContext;
+import org.openengsb.core.xmlmapping.XMLEnum;
 import org.openengsb.core.xmlmapping.XMLEvent;
 import org.openengsb.core.xmlmapping.XMLField;
 import org.openengsb.core.xmlmapping.XMLMapEntry;
@@ -38,6 +39,8 @@ import org.openengsb.core.xmlmapping.XMLMappableList;
 import org.openengsb.core.xmlmapping.XMLPrimitive;
 import org.openengsb.core.xmlmapping.XMLReference;
 import org.openengsb.core.xmlmapping.XMLStringKeyMapEntry;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class ToXmlTypesTransformer {
 
@@ -77,6 +80,9 @@ public class ToXmlTypesTransformer {
         } else if (o instanceof Class<?>) {
             String className = ((Class<?>) o).getName();
             m.set_Class(className);
+        } else if (o.getClass().isEnum()) {
+            XMLEnum enumeration = toEnum(o);
+            m.setEnum(enumeration);
         } else if (isPrimitive(o)) {
             XMLPrimitive primitive = toPrimitive(o);
             m.setPrimitive(primitive);
@@ -84,6 +90,15 @@ public class ToXmlTypesTransformer {
             m.setBean(toXmlBean(o));
         }
         return m;
+    }
+
+    private XMLEnum toEnum(Object o) {
+        XMLEnum enumeration = new XMLEnum();
+        enumeration.setClassName(o.getClass().getName());
+        List<?> constants = Arrays.asList(o.getClass().getEnumConstants());
+        enumeration.setOrdinal(constants.indexOf(o));
+        enumeration.setName(o.toString());
+        return enumeration;
     }
 
     private XMLMappable toReference(ObjectId objectId, Object o) {

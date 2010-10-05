@@ -20,6 +20,8 @@ package org.openengsb.ekb;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.conceptSource.ConceptSource;
 import org.openengsb.ekb.api.conceptSource.ConceptSourceStatusListener;
@@ -29,6 +31,8 @@ import org.openengsb.ekb.core.knowledgemanagement.KnowledgeManager;
 
 public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourceStatusListener {
 
+    private static Log log = LogFactory.getLog(ConsistencyControl.class);
+
     private KnowledgeManager knowledgeManager;
 
     private ExtendedConceptSourceManager conceptSourceManager;
@@ -37,17 +41,14 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
     }
 
     public ConsistencyControl(KnowledgeManager knowledgeManager, ExtendedConceptSourceManager conceptSourceManager) {
-        this.knowledgeManager = knowledgeManager;
-        this.conceptSourceManager = conceptSourceManager;
+        setKnowledgeManager(knowledgeManager);
+        setConceptSourceManager(conceptSourceManager);
     }
 
     @Override
     public void conceptsChanged() {
+        log.info("EKB Consistency Control activated because concepts have changed.");
         List<Concept<?>> inactiveConcepts = knowledgeManager.getInactiveConcepts();
-        List<Concept<?>> activeConcepts = knowledgeManager.getActiveConcepts();
-        List<Concept<?>> allConcepts = new ArrayList<Concept<?>>(activeConcepts.size() + inactiveConcepts.size());
-        allConcepts.addAll(inactiveConcepts);
-        allConcepts.addAll(activeConcepts);
         activateSupportedConcepts(inactiveConcepts, conceptSourceManager.getActiveConceptSources());
     }
 
@@ -65,11 +66,13 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
 
     @Override
     public void activated(ConceptSource source) {
+        log.info("EKB Consistency Control activated because source was activated.");
         knowledgeManager.activateConcepts(knowledgeManager.getInactiveConcepts(source));
     }
 
     @Override
     public void deactivated(ConceptSource source) {
+        log.info("EKB Consistency Control activated because source was deactivated.");
         List<Concept<?>> candidates = knowledgeManager.getActiveConcepts(source);
         candidates.addAll(getAllSuperConcepts(candidates));
         for (ConceptSource otherSource : conceptSourceManager.getActiveConceptSources()) {
@@ -117,7 +120,13 @@ public class ConsistencyControl implements KnowledgeChangeListener, ConceptSourc
     }
 
     public void setKnowledgeManager(KnowledgeManager knowledgeManager) {
+        if (this.knowledgeManager != null) {
+            this.knowledgeManager.removeListener(this);
+        }
         this.knowledgeManager = knowledgeManager;
+        if (knowledgeManager != null) {
+            knowledgeManager.addListener(this);
+        }
     }
 
 }

@@ -40,7 +40,7 @@ public class JarReader {
     public JarReader(URI jar) {
         this.jar = jar;
         try {
-            this.classloader = new URLClassLoader(new URL[] { jar.toURL() });
+            this.classloader = new URLClassLoader(new URL[] { jar.toURL() }, getClass().getClassLoader());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

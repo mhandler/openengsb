@@ -28,16 +28,18 @@ import org.openengsb.ekb.api.EKB;
  */
 public class EKBEndpoint extends LinkingEndpoint<EKB> {
 
-    private EKB ekb;
+    private EKBImplementation ekb;
 
     private DirectoryWatcher dirWatcher;
 
     @Override
     protected EKB getImplementation(ContextHelper contextHelper, MessageProperties msgProperties) {
+        ekb.setMessageProperties(msgProperties);
         return ekb;
     }
 
-    public void setEkb(EKB ekb) {
+    public void setEkb(EKBImplementation ekb) {
+        ekb.setEndpoint(this);
         this.ekb = ekb;
     }
 

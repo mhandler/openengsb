@@ -28,6 +28,7 @@ import org.openengsb.contextcommon.ContextTransformer;
 import org.openengsb.core.model.Event;
 import org.openengsb.core.xmlmapping.XMLBean;
 import org.openengsb.core.xmlmapping.XMLContext;
+import org.openengsb.core.xmlmapping.XMLEnum;
 import org.openengsb.core.xmlmapping.XMLEvent;
 import org.openengsb.core.xmlmapping.XMLField;
 import org.openengsb.core.xmlmapping.XMLMapEntry;
@@ -44,6 +45,8 @@ public class FromXmlTypesTransformer {
             return null;
         } else if (mappable.ifPrimitive()) {
             return toObject(mappable.getPrimitive(), mappable.getId());
+        } else if (mappable.ifEnum()) {
+            return toEnum(mappable.getEnum(), mappable.getId());
         } else if (mappable.if_Class()) {
             return TransformerUtil.simpleGetClass(mappable.get_Class());
         } else if (mappable.ifList()) {
@@ -60,6 +63,14 @@ public class FromXmlTypesTransformer {
             return references.get(mappable.getReference().getId());
         }
         throw new IllegalStateException();
+    }
+
+    private Object toEnum(XMLEnum enumeration, String id) {
+        Class<?> clazz = TransformerUtil.simpleGetClass(enumeration.getClassName());
+        Object[] enumConstants = clazz.getEnumConstants();
+        Object result = enumConstants[enumeration.getOrdinal()];
+        references.put(id, result);
+        return result;
     }
 
     private Object toBean(XMLBean bean, String id) {

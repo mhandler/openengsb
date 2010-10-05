@@ -112,9 +112,11 @@ public class EKBImplementation implements EKB {
         }
 
         for (Concept<?> subConcept : concept.getSubConcepts()) {
-            List<?> data = internalGetData(source, subConcept);
-            if (!data.isEmpty()) {
-                return transform(data, subConcept, concept);
+            if (source.canProvide(subConcept) || source.canProvideSubconcept(subConcept)) {
+                List<?> data = internalGetData(source, subConcept);
+                if (!data.isEmpty()) {
+                    return transform(data, subConcept, concept);
+                }
             }
         }
         return new ArrayList<TYPE>();

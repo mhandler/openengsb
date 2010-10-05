@@ -17,8 +17,9 @@
  */
 package org.openengsb.ekb.api.conceptSource;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
-
 
 public abstract class SingleConceptProvider<T> implements DomainQueryInterface {
 
@@ -34,7 +35,10 @@ public abstract class SingleConceptProvider<T> implements DomainQueryInterface {
     }
 
     private <TYPE> void checkType(Class<TYPE> type) {
-        if (!this.getClass().getGenericInterfaces()[0].equals(type)) {
+        Type superType = this.getClass().getGenericSuperclass();
+        ParameterizedType parameterizedType = (ParameterizedType) superType;
+        Class<?> actualType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+        if (!actualType.equals(type)) {
             throw new IllegalArgumentException("Type does not match generic type.");
         }
     }

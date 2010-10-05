@@ -16,6 +16,7 @@ package org.openengsb.core.xmlmapping;
  *       &lt;xs:element type="XMLMapEntryList" name="map"/>
  *       &lt;xs:element type="XMLContext" name="context"/>
  *       &lt;xs:element type="xs:string" name="class"/>
+ *       &lt;xs:element type="XMLEnum" name="enum"/>
  *     &lt;/xs:choice>
  *     &lt;xs:element type="xs:string" nillable="true" name="id"/>
  *   &lt;/xs:sequence>
@@ -34,6 +35,7 @@ public class XMLMappable
     private static final int MAP_CHOICE = 6;
     private static final int CONTEXT_CHOICE = 7;
     private static final int _CLASS_CHOICE = 8;
+    private static final int ENUM_CHOICE = 9;
     private String _null;
     private XMLReference reference;
     private XMLPrimitive primitive;
@@ -43,6 +45,7 @@ public class XMLMappable
     private XMLMapEntryList map;
     private XMLContext context;
     private String _class;
+    private XMLEnum _enum;
     private String id;
 
     private void setChoiceSelect(int choice) {
@@ -311,6 +314,34 @@ public class XMLMappable
     public void set_Class(String _class) {
         setChoiceSelect(_CLASS_CHOICE);
         this._class = _class;
+    }
+
+    /** 
+     * Check if Enum is current selection for choice.
+     * 
+     * @return <code>true</code> if selection, <code>false</code> if not
+     */
+    public boolean ifEnum() {
+        return choiceSelect == ENUM_CHOICE;
+    }
+
+    /** 
+     * Get the 'enum' element value.
+     * 
+     * @return value
+     */
+    public XMLEnum getEnum() {
+        return _enum;
+    }
+
+    /** 
+     * Set the 'enum' element value.
+     * 
+     * @param _enum
+     */
+    public void setEnum(XMLEnum _enum) {
+        setChoiceSelect(ENUM_CHOICE);
+        this._enum = _enum;
     }
 
     /** 

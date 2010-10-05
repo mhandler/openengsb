@@ -44,8 +44,17 @@
         <xs:element name="map" type="XMLMapEntryList" />
         <xs:element name="context" type="XMLContext" />
         <xs:element name="class" type="xs:string" />
+        <xs:element name="enum" type="XMLEnum" />
       </xs:choice>
       <xs:element name="id" type="xs:string" nillable="true" />    
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="XMLEnum">
+    <xs:sequence>
+      <xs:element name="className" type="xs:string" />
+      <xs:element name="ordinal" type="xs:int" />
+      <xs:element name="name" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 

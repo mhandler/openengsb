@@ -23,8 +23,14 @@
       <structure map-as="XMLMapEntryList" test-method="ifMap" get-method="getMap" set-method="setMap" usage="optional" name="map"/>
       <structure map-as="XMLContext" test-method="ifContext" get-method="getContext" set-method="setContext" usage="optional" name="context"/>
       <value style="element" name="class" test-method="if_Class" get-method="get_Class" set-method="set_Class" usage="optional"/>
+      <structure map-as="XMLEnum" test-method="ifEnum" get-method="getEnum" set-method="setEnum" usage="optional" name="enum"/>
     </structure>
     <value style="element" name="id" get-method="getId" set-method="setId" usage="optional"/>
+  </mapping>
+  <mapping abstract="true" type-name="XMLEnum" class="org.openengsb.core.xmlmapping.XMLEnum">
+    <value style="element" name="className" get-method="getClassName" set-method="setClassName"/>
+    <value style="element" name="ordinal" get-method="getOrdinal" set-method="setOrdinal"/>
+    <value style="element" name="name" get-method="getName" set-method="setName"/>
   </mapping>
   <mapping abstract="true" type-name="XMLMappableList" class="org.openengsb.core.xmlmapping.XMLMappableList">
     <collection get-method="getMappables" set-method="setMappables" create-type="java.util.ArrayList">
