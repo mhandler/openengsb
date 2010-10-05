@@ -20,6 +20,7 @@ package org.openengsb.core.transformation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,6 @@ import org.openengsb.core.xmlmapping.XMLMappableList;
 import org.openengsb.core.xmlmapping.XMLPrimitive;
 import org.openengsb.core.xmlmapping.XMLReference;
 import org.openengsb.core.xmlmapping.XMLStringKeyMapEntry;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class ToXmlTypesTransformer {
 
