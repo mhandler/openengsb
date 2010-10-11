@@ -25,7 +25,7 @@ public class Singleton<A> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public boolean equals(Object o) {
         if (this == o) {
             return true;

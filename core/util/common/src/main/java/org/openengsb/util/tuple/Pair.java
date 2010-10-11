@@ -27,7 +27,7 @@ public class Pair<A, B> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public boolean equals(Object o) {
         if (this == o) {
             return true;
