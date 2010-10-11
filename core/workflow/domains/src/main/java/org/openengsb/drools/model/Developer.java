@@ -17,6 +17,32 @@
  */
 package org.openengsb.drools.model;
 
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.Key;
+
+@Concept(id = "developer", version = "1.0.0")
 public class Developer {
+
+    @Key
+    private String id;
+
+    private String email;
+
+    private Developer() {
+    }
+
+    public Developer(String id, String email) {
+        this();
+        this.id = id;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getId() {
+        return id;
+    }
 
 }

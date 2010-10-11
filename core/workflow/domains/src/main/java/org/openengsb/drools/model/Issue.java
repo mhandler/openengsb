@@ -17,6 +17,42 @@
  */
 package org.openengsb.drools.model;
 
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.Key;
+import org.openengsb.ekb.annotations.ReferenceId;
+
+@Concept(id = "issue", version = "1.0.0")
 public class Issue {
+
+    @Key
+    private String id;
+
+    @ReferenceId(targetConceptId = "developer", targetConceptVersion = "1.0.0", regexp = ".+")
+    private String assignee;
+
+    @ReferenceId(targetConceptId = "requirement", targetConceptVersion = "1.0.0", regexp = "#requirement\\((.+)\\)")
+    private String description;
+
+    private Issue() {
+    }
+
+    public Issue(String id, String assignee, String description) {
+        this();
+        this.id = id;
+        this.assignee = assignee;
+        this.description = description;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getId() {
+        return id;
+    }
 
 }

@@ -17,6 +17,29 @@
  */
 package org.openengsb.drools.model;
 
+import org.openengsb.ekb.annotations.Concept;
+import org.openengsb.ekb.annotations.Key;
+
+@Concept(id = "requirement", version = "1.0.0")
 public class Requirement {
+
+    @Key
+    private String id;
+
+    private Requirement() {
+    }
+
+    public Requirement(String id) {
+        this();
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
 }

@@ -34,8 +34,8 @@ public class ReqProProvider extends SingleConceptProvider<Requirement> {
     }
 
     private void fillWithTestData() {
-        data.put("req1", new Requirement());
-        data.put("req2", new Requirement());
+        data.put("req1", new Requirement("req1"));
+        data.put("req2", new Requirement("req2"));
     }
 
     @Override
