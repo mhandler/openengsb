@@ -161,12 +161,14 @@
     <module>domains/report/plaintext/service-engine</module>
     <module>domains/issues/trac/service-engine</module>
     <module>domains/requirements/reqpro/service-engine</module>
+    <module>domains/devs/devtool/service-engine</module>
 
     <!-- Implementation Modules -->
     <module>domains/notification/email/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
     <module>domains/requirements/reqpro/service-unit</module>  
+    <module>domains/devs/devtool/service-unit</module>
 
     <!-- Packaging Modules -->
     <module>package/all</module>
@@ -828,6 +830,16 @@
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-requirements-reqpro-se</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-devs-devtool-su</artifactId>
+        <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openengsb</groupId>
+        <artifactId>openengsb-domains-devs-devtool-se</artifactId>
         <version>${pom.version}</version>
       </dependency>
 

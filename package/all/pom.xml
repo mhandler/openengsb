@@ -119,6 +119,12 @@
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-domains-requirements-reqpro-su</artifactId>
     </dependency>
+   <!-- devtool -->
+   <dependency>
+     <groupId>org.openengsb</groupId>
+     <artifactId>openengsb-domains-devs-devtool-su</artifactId>
+   </dependency>
+
     <dependency>
       <groupId>org.openengsb</groupId>
       <artifactId>openengsb-test-jms-su</artifactId>
