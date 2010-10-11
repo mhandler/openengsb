@@ -26,7 +26,6 @@ public class DomainRegistry {
     public final static Map<String, Class<? extends Domain>> domains = new HashMap<String, Class<? extends Domain>>();
 
     static {
-        domains.put("issue", IssuesDomain.class);
         domains.put("notification", NotificationDomain.class);
         domains.put("report", ReportDomain.class);
     }

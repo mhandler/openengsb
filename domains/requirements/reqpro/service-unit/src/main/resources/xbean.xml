@@ -1,4 +1,5 @@
-/**
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 
    Copyright 2010 OpenEngSB Division, Vienna University of Technology
 
@@ -13,20 +14,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
- */
-package org.openengsb.trac;
 
-import org.openengsb.core.OpenEngSBComponent;
+-->
+<beans xmlns:reqpro="http://www.openengsb.org/connector/reqpro/1.0" xmlns:rqp="urn:openengsb:reqpro"
+  xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-/**
- * @org.apache.xbean.XBean element="tracComponent"
- *                         description="Trac issue management component"
- */
-public class TracComponent extends OpenEngSBComponent {
-    @Override
-    protected Class<?>[] getEndpointClasses() {
-        return new Class[] { TracDataSourceEndpoint.class };
-    }
+  <reqpro:conceptSourceEndpoint endpoint="conceptSourceEndpoint" service="rqp:conceptSourceService" />
 
-}
+</beans>

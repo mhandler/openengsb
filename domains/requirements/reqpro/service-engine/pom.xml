@@ -28,12 +28,12 @@
     <relativePath>../../../..</relativePath>
   </parent>
 
-  <artifactId>openengsb-domains-issues-trac-se</artifactId>
-  <name>openengsb-domains-issues-trac-se</name>
+  <artifactId>openengsb-domains-requirements-reqpro-se</artifactId>
+  <name>openengsb-domains-requirements-reqpro-se</name>
   <packaging>jbi-component</packaging>
 
   <description>
-    OpenEngSB trac issue management JBI SE
+    OpenEngSB reqpro requirement management JBI SE
   </description>
 
   <build>
@@ -52,7 +52,7 @@
         <extensions>true</extensions>
         <configuration>
           <type>service-engine</type>
-          <component>org.openengsb.trac.TracComponent</component>
+          <component>org.openengsb.reqpro.ReqProComponent</component>
         </configuration>
       </plugin>
       <plugin>
@@ -64,7 +64,7 @@
               <goal>mapping</goal>
             </goals>
             <configuration>
-              <namespace>http://www.openengsb.org/connector/trac/1.0</namespace>
+              <namespace>http://www.openengsb.org/connector/reqpro/1.0</namespace>
             </configuration>
           </execution>
         </executions>

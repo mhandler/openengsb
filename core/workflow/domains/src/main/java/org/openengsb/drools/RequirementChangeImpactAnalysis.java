@@ -13,20 +13,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
- */
-package org.openengsb.trac;
 
-import org.openengsb.core.OpenEngSBComponent;
-
-/**
- * @org.apache.xbean.XBean element="tracComponent"
- *                         description="Trac issue management component"
  */
-public class TracComponent extends OpenEngSBComponent {
-    @Override
-    protected Class<?>[] getEndpointClasses() {
-        return new Class[] { TracDataSourceEndpoint.class };
-    }
+package org.openengsb.drools;
+
+public interface RequirementChangeImpactAnalysis {
+
+    void check();
 
 }

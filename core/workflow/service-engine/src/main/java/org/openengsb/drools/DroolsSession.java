@@ -35,9 +35,9 @@ import org.openengsb.core.EventHelper;
 import org.openengsb.core.EventHelperImpl;
 import org.openengsb.core.MethodCallHelper;
 import org.openengsb.core.messaging.MessageProperties;
+import org.openengsb.drools.helper.ChangeImpactAnalysisImpl;
 import org.openengsb.drools.helper.DomainConfigurationImpl;
 import org.openengsb.drools.helper.DroolsHelperImpl;
-import org.openengsb.drools.helper.SensorValidityCheckImpl;
 import org.openengsb.ekb.api.EKB;
 
 public class DroolsSession {
@@ -56,7 +56,7 @@ public class DroolsSession {
 
     private MessageProperties msgProperties;
 
-    private SensorValidityCheckImpl sensorValidityCheck;
+    private ChangeImpactAnalysisImpl changeImpactAnalysis;
 
     private DroolsEKB ekb;
 
@@ -70,9 +70,9 @@ public class DroolsSession {
         this.droolsHelper = new DroolsHelperImpl(msgProperties, endpoint);
         this.eventHelper = new EventHelperImpl(endpoint, msgProperties);
         this.ekb = createEKBProxy();
-        this.sensorValidityCheck = new SensorValidityCheckImpl();
-        sensorValidityCheck.setEkb(ekb);
-        sensorValidityCheck.setCtx(contextHelper);
+        this.changeImpactAnalysis = new ChangeImpactAnalysisImpl();
+        changeImpactAnalysis.setEkb(ekb);
+        changeImpactAnalysis.setCtx(contextHelper);
     }
 
     /**
@@ -87,7 +87,7 @@ public class DroolsSession {
         globals.put("config", domainConfiguration);
         globals.put("droolsHelper", droolsHelper);
         globals.put("eventHelper", eventHelper);
-        globals.put("sensorCheck", sensorValidityCheck);
+        globals.put("changeImpactAnalysis", changeImpactAnalysis);
 
         domainConfiguration.addDomain(ekb, "ekb");
         for (Entry<String, Class<? extends Domain>> e : DomainRegistry.domains.entrySet()) {
@@ -95,7 +95,7 @@ public class DroolsSession {
             domainConfiguration.addDomain((Domain) proxy, e.getKey());
             globals.put(e.getKey(), proxy);
             if (e.getKey().equals("notification")) {
-                sensorValidityCheck.setNotification((NotificationDomain) proxy);
+                changeImpactAnalysis.setNotification((NotificationDomain) proxy);
             }
         }
 

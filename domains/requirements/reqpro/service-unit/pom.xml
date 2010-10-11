@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <componentName>openengsb-domains-issues-trac-se</componentName>
+    <componentName>openengsb-domains-requirements-reqpro-se</componentName>
   </properties>
 
   <parent>
@@ -32,18 +32,18 @@
     <relativePath>../../../..</relativePath>
   </parent>
 
-  <artifactId>openengsb-domains-issues-trac-su</artifactId>
-  <name>openengsb-domains-issues-trac-su</name>
+  <artifactId>openengsb-domains-requirements-reqpro-su</artifactId>
+  <name>openengsb-domains-requirements-reqpro-su</name>
   <packaging>jbi-service-unit</packaging>
 
   <description>
-    Trac issue management connector SU
+    ReqPro requirement management connector SU
   </description>
 
   <dependencies>
     <dependency>
       <groupId>org.openengsb</groupId>
-      <artifactId>openengsb-domains-issues-trac-se</artifactId>
+      <artifactId>openengsb-domains-requirements-reqpro-se</artifactId>
     </dependency>
   </dependencies>
 

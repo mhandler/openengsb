@@ -25,8 +25,8 @@
       <map key-type="java.lang.String" value-type="java.util.Map">
         <entry key="42">
           <map key-type="java.lang.String" value-type="java.lang.String">
-            <entry key="issues/trac/servicename" value="tracService" />
-            <entry key="issues/trac/namespace" value="urn:openengsb:trac" />
+            <entry key="requirements/reqpro/servicename" value="reqproService" />
+            <entry key="requirements/reqpro/namespace" value="urn:openengsb:reqpro" />
           </map>
         </entry>
       </map>

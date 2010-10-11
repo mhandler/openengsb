@@ -39,26 +39,25 @@ import org.openengsb.ekb.api.NoSuchConceptException;
 # openengsb-model
 import org.openengsb.drools.model.Notification
 import org.openengsb.drools.model.Attachment
-import org.openengsb.drools.model.Sensor
+import org.openengsb.drools.model.Requirement
+import org.openengsb.drools.model.Developer
 import org.openengsb.drools.model.Report
 import org.openengsb.drools.model.Issue
 # openengsb-domains-infrastructure
 import org.openengsb.drools.DomainConfiguration
 import org.openengsb.drools.DroolsHelper
-import org.openengsb.drools.SensorValidityCheck
+import org.openengsb.drools.RequirementChangeImpactAnalysis
 # openengsb-domains
 import org.openengsb.drools.NotificationDomain
-import org.openengsb.drools.IssuesDomain
 import org.openengsb.drools.ReportDomain
 # globals
 global org.openengsb.drools.DroolsHelper droolsHelper
 global org.openengsb.drools.DomainConfiguration config
 global org.openengsb.core.EventHelper eventHelper
-global org.openengsb.drools.SensorValidityCheck sensorCheck
+global org.openengsb.drools.RequirementChangeImpactAnalysis changeImpactAnalysis
 global org.openengsb.ekb.api.EKB ekb
 global org.openengsb.contextcommon.ContextHelper ctx
 global org.openengsb.drools.NotificationDomain notification
-global org.openengsb.drools.IssuesDomain issue
 global org.openengsb.drools.ReportDomain report
 
 rule "hello1"

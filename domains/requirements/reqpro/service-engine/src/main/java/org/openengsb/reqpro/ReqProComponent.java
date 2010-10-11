@@ -15,18 +15,18 @@
    limitations under the License.
    
  */
-package org.openengsb.trac;
+package org.openengsb.reqpro;
 
 import org.openengsb.core.OpenEngSBComponent;
 
 /**
- * @org.apache.xbean.XBean element="tracComponent"
- *                         description="Trac issue management component"
+ * @org.apache.xbean.XBean element="reqproComponent"
+ *                         description="ReqPro requirement management component"
  */
-public class TracComponent extends OpenEngSBComponent {
+public class ReqProComponent extends OpenEngSBComponent {
     @Override
     protected Class<?>[] getEndpointClasses() {
-        return new Class[] { TracDataSourceEndpoint.class };
+        return new Class[] { ReqProDataSourceEndpoint.class };
     }
 
 }

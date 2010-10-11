@@ -152,10 +152,6 @@
     <module>domains/notification/implementation/service-engine</module>
     <module>domains/notification/implementation/service-unit</module>
    
-    <!--  Issues Domain -->
-    <module>domains/issues/implementation/service-engine</module>
-    <module>domains/issues/implementation/service-unit</module>
-
     <!--  Report Domain -->
     <module>domains/report/implementation/service-engine</module>
     <module>domains/report/implementation/service-unit</module>
@@ -164,15 +160,13 @@
     <module>domains/notification/email/service-engine</module>
     <module>domains/report/plaintext/service-engine</module>
     <module>domains/issues/trac/service-engine</module>
-    <module>domains/eplan/eplanTool/service-engine</module>
-    <module>domains/sourcecode/eclipse/service-engine</module>
+    <module>domains/requirements/reqpro/service-engine</module>
 
     <!-- Implementation Modules -->
     <module>domains/notification/email/service-unit</module>
     <module>domains/report/plaintext/service-unit</module>
     <module>domains/issues/trac/service-unit</module>
-    <module>domains/eplan/eplanTool/service-unit</module>
-    <module>domains/sourcecode/eclipse/service-unit</module>
+    <module>domains/requirements/reqpro/service-unit</module>  
 
     <!-- Packaging Modules -->
     <module>package/all</module>
@@ -796,18 +790,6 @@
         <version>${pom.version}</version>
       </dependency>
 
-      <!-- Issue Domain -->
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-issues-implementation-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-issues-implementation-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      
       <dependency>
         <groupId>org.openengsb</groupId>
         <artifactId>openengsb-domains-issues-trac-se</artifactId>
@@ -840,22 +822,12 @@
       </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-eplan-eplanTool-su</artifactId>
+        <artifactId>openengsb-domains-requirements-reqpro-su</artifactId>
         <version>${pom.version}</version>
       </dependency>
       <dependency>
         <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-eplan-eplanTool-se</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-sourcecode-eclipse-su</artifactId>
-        <version>${pom.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.openengsb</groupId>
-        <artifactId>openengsb-domains-sourcecode-eclipse-se</artifactId>
+        <artifactId>openengsb-domains-requirements-reqpro-se</artifactId>
         <version>${pom.version}</version>
       </dependency>
 
