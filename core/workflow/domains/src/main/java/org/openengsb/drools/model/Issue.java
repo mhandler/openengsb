@@ -24,6 +24,10 @@ import org.openengsb.ekb.annotations.ReferenceId;
 @Concept(id = "issue", version = "1.0.0")
 public class Issue {
 
+    public enum Status {
+        OPEN, CLOSED, IN_PROGRESS
+    }
+
     @Key
     private String id;
 
@@ -33,14 +37,17 @@ public class Issue {
     @ReferenceId(targetConceptId = "requirement", targetConceptVersion = "1.0.0", regexp = "#requirement\\((.+)\\)")
     private String description;
 
+    private Status status;
+
     private Issue() {
     }
 
-    public Issue(String id, String assignee, String description) {
+    public Issue(String id, String assignee, String description, Status status) {
         this();
         this.id = id;
         this.assignee = assignee;
         this.description = description;
+        this.status = status;
     }
 
     public String getAssignee() {
@@ -52,6 +59,19 @@ public class Issue {
     }
 
     public String getId() {
+        return id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
         return id;
     }
 

@@ -174,7 +174,7 @@ public class ContextStore {
         setValue("42/event/defaultTarget/servicename", "droolsService");
 
         setValue("42/workflows/ci/notification/recipient", "email@openengsb.org");
-        setValue("42/workflows/uc1/notification/recipient", "email@openengsb.org");
+        setValue("42/workflows/uc2/notification/recipient", "email@openengsb.org");
 
         /* hydro-edb-commit-usecase */
         setValue("42/workflows/edbcommit/notification/email/max.mustermann@openengsb.org", "true");

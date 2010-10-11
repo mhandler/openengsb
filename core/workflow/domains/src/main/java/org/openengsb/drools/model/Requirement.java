@@ -42,4 +42,18 @@ public class Requirement {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Requirement)) {
+            return false;
+        }
+        Requirement other = (Requirement) obj;
+        return id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
 }

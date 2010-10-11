@@ -19,6 +19,6 @@ package org.openengsb.drools;
 
 public interface RequirementChangeImpactAnalysis {
 
-    void check();
+    void check(String reqId);
 
 }

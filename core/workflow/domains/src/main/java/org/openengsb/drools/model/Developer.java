@@ -45,4 +45,9 @@ public class Developer {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return id;
+    }
+
 }
