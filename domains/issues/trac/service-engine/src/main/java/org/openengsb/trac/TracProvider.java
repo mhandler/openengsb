@@ -37,7 +37,7 @@ public class TracProvider extends SingleConceptProvider<Issue> {
     private void fillWithTestData() {
         data.put("issue1", new Issue("issue1", "dev1",
                 "This issue is related to #requirement(req1) and #requirement(req2).", Status.OPEN));
-        data.put("issue2", new Issue("issue2", "dev2", "This issue is related to #requirement(req2).", Status.CLOSED));
+        data.put("issue2", new Issue("issue2", "dev2", "This issue is related to #requirement(req1).", Status.CLOSED));
         data.put("issue3", new Issue("issue2", "dev2", "This issue is related to no requirement.", Status.IN_PROGRESS));
     }
 
