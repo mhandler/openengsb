@@ -34,7 +34,7 @@ public class Issue {
     @ReferenceId(targetConceptId = "developer", targetConceptVersion = "1.0.0", regexp = ".+")
     private String assignee;
 
-    @ReferenceId(targetConceptId = "requirement", targetConceptVersion = "1.0.0", regexp = "#requirement\\((.+)\\)")
+    @ReferenceId(targetConceptId = "requirement", targetConceptVersion = "1.0.0", regexp = "#requirement\\(([^\\)]+)\\)")
     private String description;
 
     private Status status;

@@ -115,11 +115,11 @@ public class ChangeImpactAnalysisImpl implements RequirementChangeImpactAnalysis
             NoSuchSoftRefernceException {
         upateIssue(issue);
         ConceptKey devConceptKey = new ConceptKey("developer", "1.0.0");
-        log.info("Get affected developers for issue " + issue.getId());
+        log.info("Get affected developers for issue: " + issue.getId());
         List<String> refs = ekb.getSoftReferenceIds(issueConceptKey, devConceptKey);
         List<Developer> developers = ekb.follow(issueConceptKey, Issue.class, refs.get(0), issue, devConceptKey,
                 Developer.class);
-        log.info("Affected developers for issue " + issue + ": " + developers);
+        log.info("Affected developers for issue '" + issue.getId() + "' are: " + developers);
         for (Developer dev : developers) {
             notify(dev, req, issue);
         }
@@ -127,7 +127,7 @@ public class ChangeImpactAnalysisImpl implements RequirementChangeImpactAnalysis
 
     private void upateIssue(Issue issue) {
         if (issue.getStatus() == Status.CLOSED) {
-            reportIssueStateChange("Issue " + issue.getId() + "has to be reviewed and possibly reopened.");
+            reportIssueStateChange("Issue " + issue.getId() + " has to be reviewed and possibly reopened.");
         }
         if (issue.getStatus() == Status.OPEN) {
             reportIssueStateChange("Issue " + issue.getId() + " has to be reviewed.");

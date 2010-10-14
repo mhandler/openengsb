@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openengsb.ekb.api.Concept;
 import org.openengsb.ekb.api.EKB;
 import org.openengsb.ekb.api.NoSuchConceptException;
@@ -30,6 +32,8 @@ import org.openengsb.ekb.api.NoSuchConceptSourceException;
 import org.openengsb.ekb.api.SoftReference;
 
 public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference<SOURCETYPE, TARGETTYPE> {
+
+    private static Log log = LogFactory.getLog(RegexSoftReference.class);
 
     private Concept<SOURCETYPE> sourceConcept;
 
@@ -43,6 +47,7 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
 
     @Override
     public List<TARGETTYPE> follow(EKB ekb, SOURCETYPE sourceObject) {
+        log.info("Following soft ref from " + sourceConcept + " to " + targetConcept + " on object " + sourceObject);
         try {
             Class<SOURCETYPE> sourceClass = sourceConcept.getConceptClass();
             Object sourceFieldValue = getReferenceFieldValue(sourceObject, sourceClass);
@@ -67,9 +72,16 @@ public class RegexSoftReference<SOURCETYPE, TARGETTYPE> implements SoftReference
             NoSuchConceptSourceException {
         Matcher matcher = Pattern.compile(regex).matcher(sourceFieldText);
 
+        log.info("using regex " + regex + " to extract soft reference from field: " + sourceFieldText);
         List<TARGETTYPE> result = new ArrayList<TARGETTYPE>();
         while (matcher.find()) {
-            String key = matcher.group(1);
+            String key = null;
+            if (matcher.groupCount() == 0) {
+                key = matcher.group();
+            } else {
+                key = matcher.group(1);
+            }
+            log.info("reference key for soft reference is: " + key);
             if (key != null) {
                 TARGETTYPE element = getTargetElementByKey(ekb, key);
                 if (element != null) {
